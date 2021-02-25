@@ -1,1 +1,1 @@
-web cd $HOME/heroku_output && ./src/Api
+web cd $HOME/heroku_output && ls
