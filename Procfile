@@ -1,1 +1,1 @@
-web cd $HOME/heroku_output && ls
+web cd $HOME/heroku_output && ./"AluguelIdeal.Api"
