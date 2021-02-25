@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AluguelIdeal.Api.Controllers
 {
     [ApiController]
-    [RequireHttps]
     [Produces("application/json")]
     public abstract class ApiControllerBase : ControllerBase
     {
