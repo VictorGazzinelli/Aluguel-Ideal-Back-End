@@ -33,12 +33,6 @@ namespace AluguelIdeal.Api
 
             services.AddHttpContextAccessor();
 
-            services.AddHttpsRedirection(options =>
-            {
-                options.RedirectStatusCode = StatusCodes.Status308PermanentRedirect;
-                options.HttpsPort = 443;
-            });
-
             services.Configure<ApiBehaviorOptions>(options => options.SuppressMapClientErrors = true);
 
             services.AddTransient<IAdvertisementGateway, AdvertisementGateway>();
@@ -53,8 +47,6 @@ namespace AluguelIdeal.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 
