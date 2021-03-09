@@ -2,7 +2,7 @@
 {
     public class Advertisement
     {
-        public int Id { get; set; }
+        public int AdvertisementId { get; set; }
         public string Title { get; set; }
     }
 }

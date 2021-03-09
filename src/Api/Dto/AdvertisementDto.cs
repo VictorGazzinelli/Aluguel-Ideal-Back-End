@@ -15,7 +15,7 @@ namespace AluguelIdeal.Api.Dto
 
         public AdvertisementDto(Advertisement advertisment)
         {
-            this.Id = advertisment.Id;
+            this.Id = advertisment.AdvertisementId;
             this.Title = advertisment.Title;
         }
 

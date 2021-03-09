@@ -25,4 +25,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Api\Api.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interactors\Client\" />
+  </ItemGroup>
 </Project>

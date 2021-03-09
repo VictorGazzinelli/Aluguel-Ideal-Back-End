@@ -13,12 +13,12 @@ namespace AluguelIdeal.Api.Gateways
             IEnumerable<Advertisement> result = new Advertisement[] {
                 new Advertisement()
                 {
-                    Id = 1,
+                    AdvertisementId = 1,
                     Title = "Title1",
                 },
                 new Advertisement()
                 {
-                    Id = 2,
+                    AdvertisementId = 2,
                     Title = "Title2",
                 }
             };

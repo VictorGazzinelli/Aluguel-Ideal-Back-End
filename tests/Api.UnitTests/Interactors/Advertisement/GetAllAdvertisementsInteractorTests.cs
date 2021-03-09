@@ -50,12 +50,12 @@ namespace Api.UnitTests.Interactors.Advertisement
             IEnumerable<AdvertisementEntity> mockedAdvertisements = new AdvertisementEntity[] {
                 new AdvertisementEntity()
                 {
-                    Id = 1,
+                    AdvertisementId = 1,
                     Title = "Title1",
                 },
                 new AdvertisementEntity()
                 {
-                    Id = 2,
+                    AdvertisementId = 2,
                     Title = "Title2",
                 }
             };
@@ -88,7 +88,5 @@ namespace Api.UnitTests.Interactors.Advertisement
             actualResponse.Should()
                 .Be(expectedResponse);
         }
-
-
     }
 }
