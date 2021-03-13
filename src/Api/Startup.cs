@@ -1,3 +1,4 @@
+using AluguelIdeal.Api.Database;
 using AluguelIdeal.Api.Gateways;
 using AluguelIdeal.Api.Gateways.Interfaces;
 using MediatR;
@@ -35,7 +36,10 @@ namespace AluguelIdeal.Api
 
             services.Configure<ApiBehaviorOptions>(options => options.SuppressMapClientErrors = true);
 
+            services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
+            services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
             services.AddTransient<IAdvertisementGateway, AdvertisementGateway>();
+            services.AddTransient<IClientGateway, ClientGateway>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

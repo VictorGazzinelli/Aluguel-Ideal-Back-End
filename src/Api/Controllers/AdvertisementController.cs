@@ -11,6 +11,18 @@ namespace AluguelIdeal.Api.Controllers
         /// Get all advertisements
         /// </summary>
         /// <remarks> Gets all advertisements </remarks>
+        //[HttpPost]
+        //[Route("api/[controller]")]
+        //[Consumes("application/json")]
+        //public int InsertAdvertisement(CancellationToken cancellationToken)
+        //{
+            
+        //}
+
+        /// <summary>
+        /// Get all advertisements
+        /// </summary>
+        /// <remarks> Gets all advertisements </remarks>
         [HttpGet]
         [Route("api/[controller]")]
         [Consumes("application/json")]

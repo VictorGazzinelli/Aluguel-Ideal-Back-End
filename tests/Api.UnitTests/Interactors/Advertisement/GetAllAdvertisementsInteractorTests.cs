@@ -50,12 +50,12 @@ namespace Api.UnitTests.Interactors.Advertisement
             IEnumerable<AdvertisementEntity> mockedAdvertisements = new AdvertisementEntity[] {
                 new AdvertisementEntity()
                 {
-                    AdvertisementId = 1,
+                    Id = 1,
                     Title = "Title1",
                 },
                 new AdvertisementEntity()
                 {
-                    AdvertisementId = 2,
+                    Id = 2,
                     Title = "Title2",
                 }
             };
