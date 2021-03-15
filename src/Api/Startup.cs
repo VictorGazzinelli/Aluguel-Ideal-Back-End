@@ -4,7 +4,6 @@ using AluguelIdeal.Api.Gateways.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,8 +37,8 @@ namespace AluguelIdeal.Api
 
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
-            services.AddTransient<IAdvertisementGateway, AdvertisementGateway>();
-            services.AddTransient<IClientGateway, ClientGateway>();
+            services.AddTransient<IAdvertisementRepository, AdvertisementRepository>();
+            services.AddTransient<IContactRepository, ContactRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

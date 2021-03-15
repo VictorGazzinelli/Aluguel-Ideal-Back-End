@@ -1,29 +1,37 @@
 ﻿using Microsoft.Extensions.Options;
 using Npgsql;
+using System;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
-using System;
 
 namespace AluguelIdeal.Api.Database
 {
-    public class DatabaseConnectionFactory : IDatabaseConnectionFactory
+    public sealed class DatabaseConnectionFactory : IDatabaseConnectionFactory
     {
         private readonly DatabaseSettings databaseSettings;
 
         public DatabaseConnectionFactory(IOptions<DatabaseSettings> databaseSettingsOptions)
         {
-            this.databaseSettings = databaseSettingsOptions.Value;
+            databaseSettings = databaseSettingsOptions.Value;
+            RegisterFactories();
+        }
+
+        private static void RegisterFactories()
+        {
             DbProviderFactories.RegisterFactory("Npgsql", NpgsqlFactory.Instance);
         }
 
-        public IDbConnection GetDbConnection(string databaseName)
+        public IDbConnection GetDbConnection(string databaseName = null)
         {
-            Database requestedDatabase = FindDatabaseByName(databaseName);
+            Database requestedDatabase = SelectDatabase(databaseName);
             DbConnection requestedDatabaseConnection = DbProviderFactories.GetFactory(requestedDatabase.Provider).CreateConnection();
             requestedDatabaseConnection.ConnectionString = requestedDatabase.Connection;
             return requestedDatabaseConnection;
         }
+
+        private Database SelectDatabase(string databaseName = null) =>
+            databaseName != null ? FindDatabaseByName(databaseName) : databaseSettings.Databases.First();
 
         private Database FindDatabaseByName(string databaseName)
         {
@@ -31,7 +39,7 @@ namespace AluguelIdeal.Api.Database
                 throw new ArgumentNullException(nameof(databaseName));
 
             return databaseSettings?.Databases?.FirstOrDefault(d => string.Equals(databaseName, d.Name, StringComparison.InvariantCultureIgnoreCase)) ??
-            throw new CouldNotFindDatabaseException($"Could not find the database {databaseName}");
+                throw new CouldNotFindDatabaseException($"Could not find the database {databaseName}");
         }
     }
 }

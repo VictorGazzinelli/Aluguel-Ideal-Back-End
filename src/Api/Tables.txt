@@ -1,0 +1,11 @@
+﻿CREATE TABLE "Advertisement" (
+	id serial PRIMARY KEY,
+	title VARCHAR ( 255 ) NOT NULL,
+	deletedAt TIMESTAMP NULL
+);
+
+CREATE TABLE "Contact" (
+	id serial PRIMARY KEY,
+	name VARCHAR ( 255 ) NOT NULL,
+	deletedAt TIMESTAMP NULL
+);

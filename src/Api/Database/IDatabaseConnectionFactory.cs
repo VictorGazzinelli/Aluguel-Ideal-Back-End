@@ -4,6 +4,6 @@ namespace AluguelIdeal.Api.Database
 {
     public interface IDatabaseConnectionFactory
     {
-        IDbConnection GetDbConnection(string databaseName);
+        IDbConnection GetDbConnection(string databaseName = null);
     }
 }
