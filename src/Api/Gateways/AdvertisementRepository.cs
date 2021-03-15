@@ -1,10 +1,9 @@
 ﻿using AluguelIdeal.Api.Database;
 using AluguelIdeal.Api.Entities;
 using AluguelIdeal.Api.Gateways.Interfaces;
-using Dapper;
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,6 +22,14 @@ namespace AluguelIdeal.Api.Gateways
                 title AS Title
                 FROM ""Advertisement""
                 WHERE deleteAt IS NULL
+        ";
+
+        private static readonly string SELECT_BY_ID = @"
+                SELECT id AS Id,
+                title AS Title
+                FROM ""Advertisement""
+                WHERE deleteAt IS NULL
+                AND id = @Id
         ";
 
         private static readonly string UPDATE = @"
@@ -51,6 +58,10 @@ namespace AluguelIdeal.Api.Gateways
         {
             return await ExecuteQueryAsync(SELECT, cancellationToken: cancellationToken);
         }
+        public async Task<Advertisement> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        {
+            return (await ExecuteQueryAsync(SELECT_BY_ID, new { Id = id }, cancellationToken: cancellationToken)).FirstOrDefault();
+        }
 
         public async Task UpdateAsync(Advertisement advertisement, CancellationToken cancellationToken = default)
         {
@@ -63,5 +74,6 @@ namespace AluguelIdeal.Api.Gateways
             if (await ExecuteCommandAsync(DELETE, new { Id = id, DeletedAt = DateTime.Now }, cancellationToken: cancellationToken) == 0)
                 throw new UnexpectedDatabaseBehaviourException($"Could not delete the advertisement {id}");
         }
+
     }
 }
