@@ -3,6 +3,7 @@ using AluguelIdeal.Api.Entities;
 using AluguelIdeal.Api.Gateways.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,6 +22,14 @@ namespace AluguelIdeal.Api.Gateways
                 name AS Name
                 FROM ""Contact""
                 WHERE deleteAt IS NULL
+        ";
+
+        private static readonly string SELECT_BY_ID = @"
+                SELECT id AS Id,
+                name AS Name
+                FROM ""Contact""
+                WHERE deleteAt IS NULL
+                AND id = @Id
         ";
 
         private static readonly string UPDATE = @"
@@ -49,6 +58,11 @@ namespace AluguelIdeal.Api.Gateways
         public async Task<IEnumerable<Contact>> ReadAsync(CancellationToken cancellationToken = default)
         {
             return await ExecuteQueryAsync(SELECT, cancellationToken: cancellationToken);
+        }
+
+        public async Task<Contact> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        {
+            return (await ExecuteQueryAsync(SELECT_BY_ID, new { Id = id }, cancellationToken: cancellationToken)).FirstOrDefault();
         }
 
         public async Task UpdateAsync(Contact contact, CancellationToken cancellationToken = default)
