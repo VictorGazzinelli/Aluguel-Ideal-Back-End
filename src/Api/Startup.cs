@@ -1,6 +1,6 @@
 using AluguelIdeal.Api.Database;
-using AluguelIdeal.Api.Gateways;
-using AluguelIdeal.Api.Gateways.Interfaces;
+using AluguelIdeal.Api.Repositories;
+using AluguelIdeal.Api.Repositories.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AluguelIdeal.Api.Gateways
+namespace AluguelIdeal.Api.Repositories
 {
     public sealed class UnexpectedDatabaseBehaviourException : Exception
     {

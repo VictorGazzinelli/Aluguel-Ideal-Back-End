@@ -1,5 +1,5 @@
 ﻿using AluguelIdeal.Api.Dto;
-using AluguelIdeal.Api.Gateways.Interfaces;
+using AluguelIdeal.Api.Repositories.Interfaces;
 using AluguelIdeal.Api.Interactors.Contact.Request;
 using AluguelIdeal.Api.Interactors.Contact.Response;
 using MediatR;

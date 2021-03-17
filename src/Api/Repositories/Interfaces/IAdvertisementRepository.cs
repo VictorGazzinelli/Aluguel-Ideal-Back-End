@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AluguelIdeal.Api.Gateways.Interfaces
+namespace AluguelIdeal.Api.Repositories.Interfaces
 {
     public interface IAdvertisementRepository
     {

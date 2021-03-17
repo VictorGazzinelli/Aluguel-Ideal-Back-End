@@ -1,13 +1,13 @@
 ﻿using AluguelIdeal.Api.Database;
 using AluguelIdeal.Api.Entities;
-using AluguelIdeal.Api.Gateways.Interfaces;
+using AluguelIdeal.Api.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AluguelIdeal.Api.Gateways
+namespace AluguelIdeal.Api.Repositories
 {
     public class ContactRepository : Repository<Contact>, IContactRepository
     {

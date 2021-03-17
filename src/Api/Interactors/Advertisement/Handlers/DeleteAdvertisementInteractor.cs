@@ -1,4 +1,4 @@
-﻿using AluguelIdeal.Api.Gateways.Interfaces;
+﻿using AluguelIdeal.Api.Repositories.Interfaces;
 using AluguelIdeal.Api.Interactors.Advertisement.Request;
 using MediatR;
 using System.Threading;
