@@ -25,7 +25,7 @@ namespace AluguelIdeal.Api.Interactors.Advertisement
                 Title = request.Title
             };
 
-            await advertisementRepository.UpdateAsync(advertisement);
+            await advertisementRepository.UpdateAsync(advertisement, cancellationToken);
 
             return new UpdateAdvertisementResponse()
             {

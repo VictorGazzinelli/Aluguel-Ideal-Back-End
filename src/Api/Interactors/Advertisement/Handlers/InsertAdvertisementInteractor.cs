@@ -24,7 +24,7 @@ namespace AluguelIdeal.Api.Interactors.Advertisement
                 Title = request.Title
             };
 
-            advertisement.Id = await advertisementRepository.CreateAsync(advertisement);
+            advertisement.Id = await advertisementRepository.CreateAsync(advertisement, cancellationToken);
 
             return new InsertAdvertisementResponse()
             {
