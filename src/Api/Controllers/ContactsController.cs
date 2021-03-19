@@ -15,6 +15,7 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Post Contact </remarks>
         [HttpPost]
+        [Route("api/[controller]")]
         public async Task<IActionResult> Post(PostContactModel model, CancellationToken cancellationToken)
         {
             InsertContactRequest request = new InsertContactRequest()
@@ -32,6 +33,7 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Get Contact </remarks>
         [HttpGet]
+        [Route("api/[controller]")]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
             GetContactRequest request = new GetContactRequest();

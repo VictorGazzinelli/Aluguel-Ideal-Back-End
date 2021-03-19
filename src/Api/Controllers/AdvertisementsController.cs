@@ -15,6 +15,7 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Post Advertisement </remarks>
         [HttpPost]
+        [Route("api/[controller]")]
         public async Task<IActionResult> Post(PostAdvertisementModel model, CancellationToken cancellationToken)
         {
             InsertAdvertisementRequest request = new InsertAdvertisementRequest()
@@ -32,6 +33,7 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Get Advertisement </remarks>
         [HttpGet]
+        [Route("api/[controller]")]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
             GetAdvertisementRequest request = new GetAdvertisementRequest();

@@ -21,15 +21,15 @@ namespace AluguelIdeal.Api.Repositories
                 SELECT id AS Id,
                 title AS Title
                 FROM ""Advertisement""
-                WHERE deleteAt IS NULL
+                WHERE ""Advertisement"".""deletedAt"" IS NULL
         ";
 
         private static readonly string SELECT_BY_ID = @"
                 SELECT id AS Id,
                 title AS Title
                 FROM ""Advertisement""
-                WHERE deleteAt IS NULL
-                AND id = @Id
+                WHERE ""Advertisement"".""deletedAt"" IS NULL
+                AND ""Advertisement"".id = @Id
         ";
 
         private static readonly string UPDATE = @"

@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AluguelIdeal.Api.Controllers.Base
 {
     [ApiController]
-    [Route("api/[controller]")]
     [Consumes("application/json")]
     [Produces("application/json")]
     public abstract class ApiController : ControllerBase
