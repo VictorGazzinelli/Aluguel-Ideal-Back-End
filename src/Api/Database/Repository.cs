@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AluguelIdeal.Api.Database
 {
-    public abstract class Repository<TEntity> where TEntity : class, IEntity
+    public abstract class Repository<TEntity> where TEntity : class
     {
         private readonly IDatabaseConnectionFactory databaseConnectionFactory;
 
@@ -22,10 +22,10 @@ namespace AluguelIdeal.Api.Database
             return await SqlMapper.ExecuteAsync(databaseConnection, new CommandDefinition(command, dynamicParameters, cancellationToken: cancellationToken));
         }
 
-        protected async Task<int> ExecuteCommandReturningIdAsync(string command, object dynamicParameters = null, string databaseName = null, CancellationToken cancellationToken = default)
+        protected async Task<object> ExecuteScalarFunctionAsync(string function, object dynamicParameters = null, string databaseName = null, CancellationToken cancellationToken = default)
         {
             using IDbConnection databaseConnection = databaseConnectionFactory.GetDbConnection(databaseName);
-            return await SqlMapper.ExecuteScalarAsync<int>(databaseConnection, new CommandDefinition(command, dynamicParameters, cancellationToken: cancellationToken));
+            return await SqlMapper.ExecuteScalarAsync<object>(databaseConnection, new CommandDefinition(function, dynamicParameters, cancellationToken: cancellationToken));
         }
 
         protected async Task<IEnumerable<TEntity>> ExecuteQueryAsync(string query, object dynamicParameters = null, string databaseName = null, CancellationToken cancellationToken = default)

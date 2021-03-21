@@ -12,7 +12,7 @@ namespace AluguelIdeal.Api.Repositories
     public sealed class AdvertisementRepository : Repository<Advertisement>, IAdvertisementRepository
     {
         private static readonly string INSERT = @"
-                INSERT INTO ""Advertisement"" (id, title)
+                INSERT INTO advertisement (id, title)
                 VALUES (DEFAULT, @Title)
                 RETURNING id;
         ";
@@ -20,27 +20,27 @@ namespace AluguelIdeal.Api.Repositories
         private static readonly string SELECT = @"
                 SELECT id AS Id,
                 title AS Title
-                FROM ""Advertisement""
-                WHERE ""Advertisement"".""deletedAt"" IS NULL
+                FROM advertisement
+                WHERE advertisement.deleted_at IS NULL
         ";
 
         private static readonly string SELECT_BY_ID = @"
                 SELECT id AS Id,
                 title AS Title
-                FROM ""Advertisement""
-                WHERE ""Advertisement"".""deletedAt"" IS NULL
-                AND ""Advertisement"".id = @Id
+                FROM advertisement
+                WHERE advertisement.deleted_at IS NULL
+                AND advertisement.id = @Id
         ";
 
         private static readonly string UPDATE = @"
-                UPDATE TOP(1) ""Advertisement""
-                SET title = @Title,
+                UPDATE advertisement
+                SET title = @Title
                 WHERE id = @Id
         ";
 
         private static readonly string DELETE = @"
-                UPDATE TOP(1) ""Advertisement""
-                SET deletedAt = @DeletedAt,
+                UPDATE advertisement
+                SET deleted_at = @DeletedAt
                 WHERE id = @Id
         ";
 
@@ -51,7 +51,7 @@ namespace AluguelIdeal.Api.Repositories
 
         public async Task<int> CreateAsync(Advertisement advertisement, CancellationToken cancellationToken = default)
         {
-            return await ExecuteCommandReturningIdAsync(INSERT, new { advertisement.Title }, cancellationToken: cancellationToken);
+            return (int)(await ExecuteScalarFunctionAsync(INSERT, new { advertisement.Title }, cancellationToken: cancellationToken));
         }
 
         public async Task<IEnumerable<Advertisement>> ReadAsync(CancellationToken cancellationToken = default)

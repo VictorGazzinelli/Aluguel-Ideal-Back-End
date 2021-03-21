@@ -1,13 +1,14 @@
 ﻿using AluguelIdeal.Api.Controllers.Base;
 using AluguelIdeal.Api.Interactors.Contact.Request;
 using AluguelIdeal.Api.Interactors.Contact.Response;
-using AluguelIdeal.Api.Models.Contact;
+using AluguelIdeal.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AluguelIdeal.Api.Controllers
 {
+    [Route("api/[controller]")]
     public sealed class ContactsController : ApiController
     {
         /// <summary>
@@ -15,8 +16,7 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Post Contact </remarks>
         [HttpPost]
-        [Route("api/[controller]")]
-        public async Task<IActionResult> Post(PostContactModel model, CancellationToken cancellationToken)
+        public async Task<IActionResult> Post(ContactModel model, CancellationToken cancellationToken)
         {
             InsertContactRequest request = new InsertContactRequest()
             {
@@ -33,7 +33,6 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Get Contact </remarks>
         [HttpGet]
-        [Route("api/[controller]")]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
             GetContactRequest request = new GetContactRequest();
@@ -47,8 +46,7 @@ namespace AluguelIdeal.Api.Controllers
         /// Get Contact by id
         /// </summary>
         /// <remarks> Get Contact by id </remarks>
-        [HttpGet]
-        [Route("api/[controller]/{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
         {
             GetContactByIdRequest request = new GetContactByIdRequest()
@@ -56,8 +54,7 @@ namespace AluguelIdeal.Api.Controllers
                 Id = id,
             };
 
-            GetContactByIdResponse response =
-                await Mediator.Send(request, cancellationToken);
+            GetContactByIdResponse response = await Mediator.Send(request, cancellationToken);
 
             return new OkObjectResult(new { response.Contact });
         }
@@ -66,9 +63,8 @@ namespace AluguelIdeal.Api.Controllers
         /// Put Contact
         /// </summary>
         /// <remarks> Put Contact </remarks>
-        [HttpPut]
-        [Route("api/[controller]/{id}")]
-        public async Task<IActionResult> Put(int id, PutContactModel model, CancellationToken cancellationToken)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Put(int id, ContactModel model, CancellationToken cancellationToken)
         {
             UpdateContactRequest request = new UpdateContactRequest()
             {
@@ -86,8 +82,7 @@ namespace AluguelIdeal.Api.Controllers
         /// Delete Contact
         /// </summary>
         /// <remarks> Delete Contact </remarks>
-        [HttpDelete]
-        [Route("api/[controller]/{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             DeleteContactRequest request = new DeleteContactRequest()

@@ -1,7 +1,10 @@
 using AluguelIdeal.Api.Database;
+using AluguelIdeal.Api.Interactors.Behaviours;
+using AluguelIdeal.Api.Migrations;
 using AluguelIdeal.Api.Repositories;
 using AluguelIdeal.Api.Repositories.Interfaces;
 using FluentMigrator.Runner;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Reflection;
 
@@ -31,6 +35,11 @@ namespace AluguelIdeal.Api
             services.AddCors();
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            AssemblyScanner
+                .FindValidatorsInAssembly(Assembly.GetExecutingAssembly())
+                .ForEach(validator => services.AddTransient(validator.InterfaceType, validator.ValidatorType));
+            
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateRequest<,>));
 
             services.AddControllers();
 
@@ -51,6 +60,11 @@ namespace AluguelIdeal.Api
                 migrationRunnerBuilder.AddPostgres()
                 .WithGlobalConnectionString(globalConnectionString)
                 .ScanIn(Assembly.Load("AluguelIdeal.Api")).For.Migrations();
+            });
+
+            services.AddSwaggerGen(swaggerGenOptions =>
+            {
+                swaggerGenOptions.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
         }
 
@@ -74,7 +88,7 @@ namespace AluguelIdeal.Api
         private static void ResetDatabase(IServiceProvider serviceProvider)
         {
             IMigrationRunner migrationRunner = serviceProvider.GetService<IMigrationRunner>();
-            migrationRunner.MigrateUp(2021_03_20_001);
+            migrationRunner.Up(new AluguelIdealMigration20210320001());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,6 +99,15 @@ namespace AluguelIdeal.Api
             {
                 ResetDatabase(serviceScope.ServiceProvider);
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(swaggerUIOptions =>
+            {
+                swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                swaggerUIOptions.RoutePrefix = string.Empty;
+                swaggerUIOptions.DisplayRequestDuration();
+                swaggerUIOptions.EnableFilter();
+            });
 
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 

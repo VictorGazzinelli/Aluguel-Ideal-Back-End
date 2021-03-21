@@ -12,7 +12,7 @@ namespace AluguelIdeal.Api.Repositories
     public class ContactRepository : Repository<Contact>, IContactRepository
     {
         private static readonly string INSERT = @"
-                INSERT INTO ""Contact"" (id, name)
+                INSERT INTO contact (id, name)
                 VALUES (DEFAULT, @Name)
                 RETURNING id;
         ";
@@ -20,27 +20,27 @@ namespace AluguelIdeal.Api.Repositories
         private static readonly string SELECT = @"
                 SELECT id AS Id,
                 name AS Name
-                FROM ""Contact""
-                WHERE deleteAt IS NULL
+                FROM contact
+                WHERE deleted_at IS NULL
         ";
 
         private static readonly string SELECT_BY_ID = @"
                 SELECT id AS Id,
                 name AS Name
-                FROM ""Contact""
-                WHERE deleteAt IS NULL
+                FROM contact
+                WHERE deleted_at IS NULL
                 AND id = @Id
         ";
 
         private static readonly string UPDATE = @"
-                UPDATE TOP(1) ""Contact""
-                SET Name = @Name,
+                UPDATE contact
+                SET Name = @Name
                 WHERE id = @Id
         ";
 
         private static readonly string DELETE = @"
-                UPDATE TOP(1) ""Contact""
-                SET deletedAt = @DeletedAt,
+                UPDATE contact
+                SET deleted_at = @DeletedAt
                 WHERE id = @Id
         ";
 
@@ -51,9 +51,8 @@ namespace AluguelIdeal.Api.Repositories
 
         public async Task<int> CreateAsync(Contact contact, CancellationToken cancellationToken = default)
         {
-            return await ExecuteCommandReturningIdAsync(INSERT, new { contact.Name }, cancellationToken: cancellationToken);
+            return (int)(await ExecuteScalarFunctionAsync(INSERT, new { contact.Name }, cancellationToken: cancellationToken));
         }
-
 
         public async Task<IEnumerable<Contact>> ReadAsync(CancellationToken cancellationToken = default)
         {
@@ -70,6 +69,7 @@ namespace AluguelIdeal.Api.Repositories
             if (await ExecuteCommandAsync(UPDATE, new { contact.Id, contact.Name }, cancellationToken: cancellationToken) == 0)
                 throw new UnexpectedDatabaseBehaviourException($"Could not update the contact {contact.Id}");
         }
+
         public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
             if (await ExecuteCommandAsync(DELETE, new { Id = id, DeletedAt = DateTime.Now }, cancellationToken: cancellationToken) == 0)

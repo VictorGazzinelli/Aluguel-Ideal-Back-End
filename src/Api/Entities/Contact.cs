@@ -2,7 +2,7 @@
 
 namespace AluguelIdeal.Api.Entities
 {
-    public class Contact : IEntity
+    public class Contact 
     {
         public int Id { get; set; }
         public string Name { get; set; }
