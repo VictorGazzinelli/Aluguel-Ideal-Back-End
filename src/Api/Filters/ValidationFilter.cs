@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,12 +11,10 @@ namespace AluguelIdeal.Api.Filters
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (!context.ModelState.IsValid && !context.HttpContext.Response.HasStarted)
+            ValidateIdsIfAny(context);
+            if (!context.ModelState.IsValid)
             {
                 ModelStateDictionary modelStateDictionary = context.ModelState;
-                foreach (string key in modelStateDictionary.Keys)
-                    if (key.EndsWith("id", true, null) && context.ActionArguments[key] as int? < 0)
-                        modelStateDictionary.AddModelError(key, "less or equal to zero");
                 object errors;
                 if (modelStateDictionary.Keys.All(key => string.IsNullOrEmpty(key)))
                     errors = modelStateDictionary.SelectMany(modelStateEntryByPropName => modelStateEntryByPropName.Value.Errors.Select(e => e.ErrorMessage));
@@ -30,6 +27,13 @@ namespace AluguelIdeal.Api.Filters
             }
 
             await next();
+        }
+
+        private static void ValidateIdsIfAny(ActionExecutingContext context)
+        {
+            foreach (string key in context.ModelState.Keys.Where(key => key.EndsWith("id", true, null)))
+                if (context.ActionArguments[key] as int? < 0)
+                    context.ModelState.AddModelError(key, "less or equal to zero");
         }
     }
 }
