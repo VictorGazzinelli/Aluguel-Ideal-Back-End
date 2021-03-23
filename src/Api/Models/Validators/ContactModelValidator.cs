@@ -9,7 +9,18 @@ namespace AluguelIdeal.Api.Models.Validators
             RuleFor(model => model.Name)
                 .NotNull()
                 .NotEmpty()
-                .MaximumLength(255);
+                .MaximumLength(255)
+                .WithName("name");
+
+            RuleFor(model => model.Email)
+                .NotNull()
+                .EmailAddress()
+                .WithName("email");
+
+            RuleFor(model => model.Phone)
+                .NotNull()
+                .WithName("phone");
+
         }
     }
 }

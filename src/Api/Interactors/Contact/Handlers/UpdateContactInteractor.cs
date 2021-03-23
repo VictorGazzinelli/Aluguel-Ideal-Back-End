@@ -22,7 +22,9 @@ namespace AluguelIdeal.Api.Interactors.Contact
             ContactEntity contact = new ContactEntity()
             {
                 Id = request.Id,
-                Name = request.Name
+                Name = request.Name,
+                Email = request.Email,
+                Phone = request.Phone
             };
 
             await contactRepository.UpdateAsync(contact, cancellationToken);

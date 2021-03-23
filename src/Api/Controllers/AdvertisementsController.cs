@@ -23,7 +23,7 @@ namespace AluguelIdeal.Api.Controllers
                 Title = model.Title,
             };
 
-            InsertAdvertisementResponse response = await Mediator.Send(request, cancellationToken);
+            InsertAdvertisementResponse response =  await Mediator.Send(request, cancellationToken);
 
             return new OkObjectResult(new { response.Advertisement.Id });
         }
@@ -37,7 +37,7 @@ namespace AluguelIdeal.Api.Controllers
         {
             GetAdvertisementRequest request = new GetAdvertisementRequest();
 
-            GetAdvertisementResponse response = await Mediator.Send(request, cancellationToken);
+            GetAdvertisementResponse response = await Mediator.Send(request, cancellationToken).ConfigureAwait(false);
 
             return new OkObjectResult(new { response.Advertisements });
         }
@@ -54,7 +54,7 @@ namespace AluguelIdeal.Api.Controllers
                 Id = id,
             };
 
-            GetAdvertisementByIdResponse response = await Mediator.Send(request, cancellationToken);
+            GetAdvertisementByIdResponse response = await Mediator.Send(request, cancellationToken).ConfigureAwait(false);
 
             return new OkObjectResult(new { response.Advertisement });
         }
@@ -66,13 +66,18 @@ namespace AluguelIdeal.Api.Controllers
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Put(int id, AdvertisementModel model, CancellationToken cancellationToken)
         {
+            if (!ModelState.IsValid)
+            {
+                return new BadRequestObjectResult(ModelState.Values);
+            }
+
             UpdateAdvertisementRequest request = new UpdateAdvertisementRequest()
             {
                 Id = id,
                 Title = model.Title,
             };
 
-            UpdateAdvertisementResponse response = await Mediator.Send(request, cancellationToken);
+            UpdateAdvertisementResponse response = await Mediator.Send(request, cancellationToken).ConfigureAwait(false);
 
             return new OkObjectResult(new{ response.Advertisement });
         }
@@ -89,7 +94,7 @@ namespace AluguelIdeal.Api.Controllers
                 Id = id,
             };
 
-            await Mediator.Send(request, cancellationToken);
+            await Mediator.Send(request, cancellationToken).ConfigureAwait(false);
 
             return new NoContentResult();
         }

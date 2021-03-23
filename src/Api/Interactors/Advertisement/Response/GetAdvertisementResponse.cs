@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AluguelIdeal.Api.Interactors.Advertisement.Response
 {
-    public sealed class GetAdvertisementResponse
+    public class GetAdvertisementResponse
     {
         public List<AdvertisementDto> Advertisements { get; set; }
     }

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace AluguelIdeal.Api.Database
 {
-    public sealed class DatabaseConnectionFactory : IDatabaseConnectionFactory
+    public class DatabaseConnectionFactory : IDatabaseConnectionFactory
     {
         private readonly DatabaseSettings databaseSettings;
 

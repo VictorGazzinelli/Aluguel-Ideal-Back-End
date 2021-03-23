@@ -1,13 +1,18 @@
 using AluguelIdeal.Api.Database;
+using AluguelIdeal.Api.Filters;
 using AluguelIdeal.Api.Interactors.Behaviours;
+using AluguelIdeal.Api.Middlewares;
 using AluguelIdeal.Api.Migrations;
+using AluguelIdeal.Api.Models.Validators;
 using AluguelIdeal.Api.Repositories;
 using AluguelIdeal.Api.Repositories.Interfaces;
 using FluentMigrator.Runner;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +20,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Reflection;
+using System.Text.Json;
 
 namespace AluguelIdeal.Api
 {
@@ -35,17 +41,26 @@ namespace AluguelIdeal.Api
             services.AddCors();
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
-            AssemblyScanner
-                .FindValidatorsInAssembly(Assembly.GetExecutingAssembly())
-                .ForEach(validator => services.AddTransient(validator.InterfaceType, validator.ValidatorType));
             
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateRequest<,>));
 
-            services.AddControllers();
+            services.Configure<ApiBehaviorOptions>(apiBehaviorOptions => {
+                apiBehaviorOptions.SuppressModelStateInvalidFilter = true;
+            });
+
+            services.AddControllers(mvcOptions => mvcOptions.Filters.Add<ValidationFilter>())
+                .AddFluentValidation(fluentValidationMvcConfiguration => {
+                    fluentValidationMvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>();
+                });
+
+            //List<AssemblyScanResult> tmp = AssemblyScanner
+            //    .FindValidatorsInAssembly(Assembly.GetExecutingAssembly()).ToList();
+
+            //AssemblyScanner
+            //    .FindValidatorsInAssembly(Assembly.GetExecutingAssembly())
+            //    .ForEach(validator => services.AddTransient(validator.InterfaceType, validator.ValidatorType));
 
             services.AddHttpContextAccessor();
-
-            services.Configure<ApiBehaviorOptions>(options => options.SuppressMapClientErrors = true);
 
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
@@ -115,6 +130,8 @@ namespace AluguelIdeal.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseExceptionHandler(ExceptionHandlerExtension.ExceptionHandler(Environment));
 
             app.UseRouting();
 

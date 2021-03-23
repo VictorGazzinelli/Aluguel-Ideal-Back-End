@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AluguelIdeal.Api.Controllers
 {
     [Route("api/[controller]")]
-    public sealed class ContactsController : ApiController
+    public class ContactsController : ApiController
     {
         /// <summary>
         /// Post Contact
@@ -21,6 +21,8 @@ namespace AluguelIdeal.Api.Controllers
             InsertContactRequest request = new InsertContactRequest()
             {
                 Name = model.Name,
+                Email = model.Email,
+                Phone = model.Phone
             };
 
             InsertContactResponse response = await Mediator.Send(request, cancellationToken);
@@ -56,6 +58,8 @@ namespace AluguelIdeal.Api.Controllers
 
             GetContactByIdResponse response = await Mediator.Send(request, cancellationToken);
 
+            if (response.Contact == null)
+                return new NotFoundObjectResult(null);
             return new OkObjectResult(new { response.Contact });
         }
 
@@ -70,6 +74,8 @@ namespace AluguelIdeal.Api.Controllers
             {
                 Id = id,
                 Name = model.Name,
+                Email = model.Email,
+                Phone = model.Phone
             };
 
             UpdateContactResponse response = await Mediator.Send(request, cancellationToken);

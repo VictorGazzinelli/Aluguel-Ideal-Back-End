@@ -21,7 +21,9 @@ namespace AluguelIdeal.Api.Interactors.Contact
         {
             ContactEntity contact = new ContactEntity()
             {
-                Name = request.Name
+                Name = request.Name,
+                Email = request.Email,
+                Phone = request.Phone
             };
 
             contact.Id = await contactRepository.CreateAsync(contact);

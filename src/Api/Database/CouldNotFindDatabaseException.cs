@@ -1,10 +1,17 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace AluguelIdeal.Api.Database
 {
-    public sealed class CouldNotFindDatabaseException : Exception
+    [Serializable]
+    public class CouldNotFindDatabaseException : Exception
     {
-        public CouldNotFindDatabaseException(string message) : base(message)
+        public CouldNotFindDatabaseException(string message = null, Exception innerException = null) : base(message, innerException)
+        {
+           
+        }
+
+        protected CouldNotFindDatabaseException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
 
         }

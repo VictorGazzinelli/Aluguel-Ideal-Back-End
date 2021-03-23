@@ -2,7 +2,7 @@
 
 namespace AluguelIdeal.Api.Interactors.Advertisement.Response
 {
-    public sealed class GetAdvertisementByIdResponse
+    public class GetAdvertisementByIdResponse
     {
         public AdvertisementDto Advertisement { get; set; }
     }

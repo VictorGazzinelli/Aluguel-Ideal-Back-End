@@ -9,7 +9,8 @@ namespace AluguelIdeal.Api.Models.Validators
             RuleFor(model => model.Title)
                 .NotNull()
                 .NotEmpty()
-                .MaximumLength(255);
+                .MaximumLength(255)
+                .WithName("title");
         }
     }
 }

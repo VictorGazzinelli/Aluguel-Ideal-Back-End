@@ -23,7 +23,7 @@ namespace AluguelIdeal.Api.Interactors.Contact
 
             return new GetContactByIdResponse()
             {
-                Contact = new ContactDto(contact)
+                Contact = contact != null ? new ContactDto(contact) : null
             };
         }
     }
