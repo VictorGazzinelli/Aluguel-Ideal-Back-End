@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,6 +15,9 @@ namespace AluguelIdeal.Api.Filters
             if (!context.ModelState.IsValid && !context.HttpContext.Response.HasStarted)
             {
                 ModelStateDictionary modelStateDictionary = context.ModelState;
+                foreach (string key in modelStateDictionary.Keys)
+                    if (key.EndsWith("id", true, null) && context.ActionArguments[key] as int? < 0)
+                        modelStateDictionary.AddModelError(key, "less or equal to zero");
                 object errors;
                 if (modelStateDictionary.Keys.All(key => string.IsNullOrEmpty(key)))
                     errors = modelStateDictionary.SelectMany(modelStateEntryByPropName => modelStateEntryByPropName.Value.Errors.Select(e => e.ErrorMessage));

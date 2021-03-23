@@ -53,13 +53,6 @@ namespace AluguelIdeal.Api
                     fluentValidationMvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>();
                 });
 
-            //List<AssemblyScanResult> tmp = AssemblyScanner
-            //    .FindValidatorsInAssembly(Assembly.GetExecutingAssembly()).ToList();
-
-            //AssemblyScanner
-            //    .FindValidatorsInAssembly(Assembly.GetExecutingAssembly())
-            //    .ForEach(validator => services.AddTransient(validator.InterfaceType, validator.ValidatorType));
-
             services.AddHttpContextAccessor();
 
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
