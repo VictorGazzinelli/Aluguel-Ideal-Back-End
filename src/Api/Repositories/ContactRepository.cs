@@ -57,7 +57,7 @@ namespace AluguelIdeal.Api.Repositories
 
         public async Task<int> CreateAsync(Contact contact, CancellationToken cancellationToken = default)
         {
-            return (int)(await ExecuteScalarFunctionAsync(INSERT, new { contact.Name, contact.Email, contact.Phone }, cancellationToken: cancellationToken));
+            return await ExecuteScalarFunctionAsync<int>(INSERT, new { contact.Name, contact.Email, contact.Phone }, cancellationToken: cancellationToken);
         }
 
         public async Task<IEnumerable<Contact>> ReadAsync(CancellationToken cancellationToken = default)

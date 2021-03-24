@@ -1,5 +1,4 @@
-﻿using AluguelIdeal.Api.Entities;
-using Dapper;
+﻿using Dapper;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading;
@@ -22,10 +21,10 @@ namespace AluguelIdeal.Api.Database
             return await SqlMapper.ExecuteAsync(databaseConnection, new CommandDefinition(command, dynamicParameters, cancellationToken: cancellationToken));
         }
 
-        protected async Task<object> ExecuteScalarFunctionAsync(string function, object dynamicParameters = null, string databaseName = null, CancellationToken cancellationToken = default)
+        protected async Task<TScalar> ExecuteScalarFunctionAsync<TScalar>(string function, object dynamicParameters = null, string databaseName = null, CancellationToken cancellationToken = default)
         {
             using IDbConnection databaseConnection = databaseConnectionFactory.GetDbConnection(databaseName);
-            return await SqlMapper.ExecuteScalarAsync<object>(databaseConnection, new CommandDefinition(function, dynamicParameters, cancellationToken: cancellationToken));
+            return await SqlMapper.ExecuteScalarAsync<TScalar>(databaseConnection, new CommandDefinition(function, dynamicParameters, cancellationToken: cancellationToken));
         }
 
         protected async Task<IEnumerable<TEntity>> ExecuteQueryAsync(string query, object dynamicParameters = null, string databaseName = null, CancellationToken cancellationToken = default)
