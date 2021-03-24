@@ -1,26 +1,25 @@
+using AluguelIdeal.Api.Conventions;
 using AluguelIdeal.Api.Database;
 using AluguelIdeal.Api.Filters;
 using AluguelIdeal.Api.Interactors.Behaviours;
-using AluguelIdeal.Api.Middlewares;
+using AluguelIdeal.Api.Middlewares.Extensions;
 using AluguelIdeal.Api.Migrations;
-using AluguelIdeal.Api.Models.Validators;
 using AluguelIdeal.Api.Repositories;
 using AluguelIdeal.Api.Repositories.Interfaces;
 using FluentMigrator.Runner;
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Reflection;
-using System.Text.Json;
 
 namespace AluguelIdeal.Api
 {
@@ -48,7 +47,10 @@ namespace AluguelIdeal.Api
                 apiBehaviorOptions.SuppressModelStateInvalidFilter = true;
             });
 
-            services.AddControllers(mvcOptions => mvcOptions.Filters.Add<ValidationFilter>())
+            services.AddControllers(mvcOptions => {
+                    mvcOptions.Filters.Add<ValidationFilter>();
+                    mvcOptions.Conventions.Add(new RouteTokenTransformerConvention(new SlugCaseRouteTransformer()));
+                })
                 .AddFluentValidation(fluentValidationMvcConfiguration => {
                     fluentValidationMvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>();
                 });
@@ -73,6 +75,7 @@ namespace AluguelIdeal.Api
             services.AddSwaggerGen(swaggerGenOptions =>
             {
                 swaggerGenOptions.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                swaggerGenOptions.AddFluentValidationRules();
             });
         }
 
@@ -124,7 +127,8 @@ namespace AluguelIdeal.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseExceptionHandler(ExceptionHandlerExtension.ExceptionHandler(Environment));
+            app.UseCustomExceptionHandler(Environment);
+            app.UseRequestResponseLogging();
 
             app.UseRouting();
 

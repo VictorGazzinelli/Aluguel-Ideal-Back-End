@@ -3,12 +3,15 @@ using AluguelIdeal.Api.Interactors.Contact.Request;
 using AluguelIdeal.Api.Interactors.Contact.Response;
 using AluguelIdeal.Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AluguelIdeal.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
     public class ContactsController : ApiController
     {
         /// <summary>

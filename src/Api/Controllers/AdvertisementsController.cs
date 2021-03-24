@@ -3,12 +3,15 @@ using AluguelIdeal.Api.Interactors.Advertisement.Request;
 using AluguelIdeal.Api.Interactors.Advertisement.Response;
 using AluguelIdeal.Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AluguelIdeal.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
     public class AdvertisementsController : ApiController
     {
         /// <summary>
@@ -66,11 +69,6 @@ namespace AluguelIdeal.Api.Controllers
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Put(int id, AdvertisementModel model, CancellationToken cancellationToken)
         {
-            if (!ModelState.IsValid)
-            {
-                return new BadRequestObjectResult(ModelState.Values);
-            }
-
             UpdateAdvertisementRequest request = new UpdateAdvertisementRequest()
             {
                 Id = id,
