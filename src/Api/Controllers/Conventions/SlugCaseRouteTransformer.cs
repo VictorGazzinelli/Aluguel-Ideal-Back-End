@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Routing;
 using System.Text.RegularExpressions;
 
-namespace AluguelIdeal.Api.Conventions
+namespace AluguelIdeal.Api.Controllers.Conventions
 {
     public class SlugCaseRouteTransformer : IOutboundParameterTransformer
     {

@@ -72,14 +72,12 @@ namespace AluguelIdeal.Api.Repositories
 
         public async Task UpdateAsync(Contact contact, CancellationToken cancellationToken = default)
         {
-            if (await ExecuteCommandAsync(UPDATE, new { contact.Id, contact.Name, contact.Email, contact.Phone }, cancellationToken: cancellationToken) == 0)
-                throw new UnexpectedDatabaseBehaviourException($"Could not update the contact {contact}");
+            await ExecuteCommandAsync(UPDATE, new { contact.Id, contact.Name, contact.Email, contact.Phone }, cancellationToken: cancellationToken);
         }
 
         public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            if (await ExecuteCommandAsync(DELETE, new { Id = id, DeletedAt = DateTime.Now }, cancellationToken: cancellationToken) == 0)
-                throw new UnexpectedDatabaseBehaviourException($"Could not delete the contact of id {id}");
+            await ExecuteCommandAsync(DELETE, new { Id = id, DeletedAt = DateTime.Now }, cancellationToken: cancellationToken);
         }
     }
 }

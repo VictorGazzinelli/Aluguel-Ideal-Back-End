@@ -1,4 +1,5 @@
 ﻿using AluguelIdeal.Api.Utils.Exceptions;
+using AluguelIdeal.Api.Utils.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -18,21 +19,25 @@ namespace AluguelIdeal.Api.Utils
         public (int statusCode, Dictionary<string, object> responseBody) AsHttpResponse(Exception exception)
         {
             if (exception == null)
-                throw new Exception("Can't parse null exception as http response");
-
-            Dictionary<string, object> responseBody = new Dictionary<string, object>()
-            {
-                ["message"] = exception.Message,
-            };
-            if (environment.IsDevelopment())
-            {
-                responseBody.Add("type", exception.GetType().FullName);
-                responseBody.Add("stackTrace", exception.StackTrace);
-            }
+                throw new ArgumentNullException(nameof(exception), "Can't parse null exception as http response");
 
             int statusCode = exception is HttpResponseException httpResponseException ?
                     httpResponseException.Status :
                     StatusCodes.Status500InternalServerError;
+            Dictionary<string, object> responseBody = new Dictionary<string, object>();
+            if (environment.IsDevelopment())
+            {
+                responseBody.Add(nameof(exception.Message).ToCamelCase(), exception.Message);
+                responseBody.Add(nameof(Type).ToCamelCase(), exception.GetType().FullName);
+                responseBody.Add(nameof(exception.StackTrace).ToCamelCase(), exception.StackTrace);
+            }
+            else
+            {
+                responseBody.Add(nameof(exception.Message).ToCamelCase(), exception is HttpResponseException ?
+                    exception.Message :
+                    "an error occured");
+            }
+
             return (statusCode, responseBody);
         }
     }

@@ -1,4 +1,4 @@
-using AluguelIdeal.Api.Conventions;
+using AluguelIdeal.Api.Controllers.Conventions;
 using AluguelIdeal.Api.Database;
 using AluguelIdeal.Api.Filters;
 using AluguelIdeal.Api.Interactors.Behaviours;
@@ -7,6 +7,7 @@ using AluguelIdeal.Api.Migrations;
 using AluguelIdeal.Api.Repositories;
 using AluguelIdeal.Api.Repositories.Interfaces;
 using FluentMigrator.Runner;
+using FluentMigrator.Runner.Initialization;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -19,6 +20,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
 using System.Reflection;
 
 namespace AluguelIdeal.Api
@@ -39,37 +43,22 @@ namespace AluguelIdeal.Api
         {
             services.AddCors();
 
-            services.AddMediatR(Assembly.GetExecutingAssembly());
-            
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateRequest<,>));
+            services.AddHttpContextAccessor();
 
-            services.Configure<ApiBehaviorOptions>(apiBehaviorOptions => {
+            services.Configure<ApiBehaviorOptions>(apiBehaviorOptions =>
+            {
                 apiBehaviorOptions.SuppressModelStateInvalidFilter = true;
             });
 
-            services.AddControllers(mvcOptions => {
-                    mvcOptions.Filters.Add<ValidationFilter>();
-                    mvcOptions.Conventions.Add(new RouteTokenTransformerConvention(new SlugCaseRouteTransformer()));
-                })
-                .AddFluentValidation(fluentValidationMvcConfiguration => {
-                    fluentValidationMvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>();
-                });
-
-            services.AddHttpContextAccessor();
-
-            services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
-            services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
-            services.AddTransient<IAdvertisementRepository, AdvertisementRepository>();
-            services.AddTransient<IContactRepository, ContactRepository>();
-
-            services.AddFluentMigratorCore();
-            services.ConfigureRunner(migrationRunnerBuilder =>
+            services.AddControllers(mvcOptions =>
             {
-                string globalConnectionString = Configuration.GetSection("DatabaseSettings:Databases:0:Connection").Value;
-
-                migrationRunnerBuilder.AddPostgres()
-                .WithGlobalConnectionString(globalConnectionString)
-                .ScanIn(Assembly.Load("AluguelIdeal.Api")).For.Migrations();
+                mvcOptions.Filters.Add<ValidationFilter>();
+                mvcOptions.Filters.Add<HandleExceptionFilter>();
+                mvcOptions.Conventions.Add(new RouteTokenTransformerConvention(new SlugCaseRouteTransformer()));
+            })
+            .AddFluentValidation(fluentValidationMvcConfiguration =>
+            {
+                fluentValidationMvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>();
             });
 
             services.AddSwaggerGen(swaggerGenOptions =>
@@ -77,39 +66,54 @@ namespace AluguelIdeal.Api
                 swaggerGenOptions.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
                 swaggerGenOptions.AddFluentValidationRules();
             });
-        }
 
-        private static IServiceProvider CreateSerivces(IConfiguration configuration)
-        {
-            ServiceCollection services = new ServiceCollection();
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateRequest<,>));
 
-            services.AddFluentMigratorCore();
-            services.ConfigureRunner(migrationRunnerBuilder =>
+            services.Configure<List<ConnectionStringSettings>>(Configuration.GetSection(nameof(ConnectionStringSettingsCollection)));
+            services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
+            services.AddTransient<IAdvertisementRepository, AdvertisementRepository>();
+            services.AddTransient<IContactRepository, ContactRepository>();
+
+            if (Environment.IsDevelopment())
             {
-                string globalConnectionString = configuration.GetSection("DatabaseSettings:Databases:0:Connection").Value;
+                services.AddFluentMigratorCore();
+                services.ConfigureRunner(migrationRunnerBuilder =>
+                {
+                    List<ConnectionStringSettings> connectionStringSettingsList =
+                       Configuration.GetSection(nameof(ConnectionStringSettingsCollection)).Get<List<ConnectionStringSettings>>();
+                    if (connectionStringSettingsList.Any())
+                        migrationRunnerBuilder.AddPostgres()
+                        .WithGlobalConnectionString(connectionStringSettingsList.First().ConnectionString)
+                        .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations();
+                })
+                .AddLogging(loggingBuilder => loggingBuilder.AddFluentMigratorConsole());
+            }
 
-                migrationRunnerBuilder.AddPostgres()
-                .WithGlobalConnectionString(globalConnectionString)
-                .ScanIn(Assembly.Load("AluguelIdeal.Api")).For.Migrations();
-            });
-
-            return services.BuildServiceProvider(validateScopes: false);
         }
-
-        private static void ResetDatabase(IServiceProvider serviceProvider)
-        {
-            IMigrationRunner migrationRunner = serviceProvider.GetService<IMigrationRunner>();
-            migrationRunner.Up(new AluguelIdealMigration20210320001());
-        }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
-            IServiceProvider serviceProvider = CreateSerivces(Configuration);
-            using (IServiceScope serviceScope = serviceProvider.CreateScope())
+            if (Environment.IsDevelopment())
             {
-                ResetDatabase(serviceScope.ServiceProvider);
+                app.UseDeveloperExceptionPage();
+                IServiceProvider serviceProvider = app.ApplicationServices;
+                using IServiceScope serviceScope = serviceProvider.CreateScope();
+                IMigrationRunner migrationRunner = serviceScope.ServiceProvider.GetService<IMigrationRunner>();
+                migrationRunner.Up(new AluguelIdealDatabaseMigration());
             }
+
+            app.UseCustomExceptionHandler(Environment);
+
+            app.UseRequestResponseLogging();
+
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
 
             app.UseSwagger();
             app.UseSwaggerUI(swaggerUIOptions =>
@@ -118,23 +122,9 @@ namespace AluguelIdeal.Api
                 swaggerUIOptions.RoutePrefix = string.Empty;
                 swaggerUIOptions.DisplayRequestDuration();
                 swaggerUIOptions.EnableFilter();
+                swaggerUIOptions.EnableDeepLinking();
+                swaggerUIOptions.DefaultModelsExpandDepth(-1);
             });
-
-            app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-
-            if (Environment.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseCustomExceptionHandler(Environment);
-            app.UseRequestResponseLogging();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }

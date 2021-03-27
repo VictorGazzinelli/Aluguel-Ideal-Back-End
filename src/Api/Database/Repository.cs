@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AluguelIdeal.Api.Database
 {
-    public abstract class Repository<TEntity> where TEntity : class
+    public abstract class Repository<TEntity> 
     {
         private readonly IDatabaseConnectionFactory databaseConnectionFactory;
 

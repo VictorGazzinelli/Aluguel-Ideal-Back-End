@@ -11,7 +11,7 @@ using ContactEntity = AluguelIdeal.Api.Entities.Contact;
 
 namespace AluguelIdeal.Api.Interactors.Contact
 {
-    public sealed class GetContactInteractor : IRequestHandler<GetContactRequest, GetContactResponse>
+    public class GetContactInteractor : IRequestHandler<GetContactRequest, GetContactResponse>
     {
         private readonly IContactRepository contactRepository;
         public GetContactInteractor(IContactRepository contactRepository)

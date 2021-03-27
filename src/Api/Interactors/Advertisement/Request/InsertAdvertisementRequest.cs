@@ -3,7 +3,7 @@ using MediatR;
 
 namespace AluguelIdeal.Api.Interactors.Advertisement.Request
 {
-    public sealed class InsertAdvertisementRequest : IRequest<InsertAdvertisementResponse>
+    public class InsertAdvertisementRequest : IRequest<InsertAdvertisementResponse>
     {
         public string Title { get; set; }
     }

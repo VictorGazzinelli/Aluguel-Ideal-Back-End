@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AluguelIdeal.Api.Interactors.Contact
 {
-    public sealed class DeleteContactInteractor : IRequestHandler<DeleteContactRequest>
+    public class DeleteContactInteractor : IRequestHandler<DeleteContactRequest>
     {
         private readonly IContactRepository contactRepository;
         public DeleteContactInteractor(IContactRepository contactRepository)

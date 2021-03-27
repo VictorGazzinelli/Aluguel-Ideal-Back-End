@@ -9,7 +9,6 @@ namespace AluguelIdeal.Api.Interactors.Advertisement.Validators
         {
             RuleFor(request => request.Id)
                 .GreaterThan(0);
-
         }
     }
 }

@@ -11,7 +11,7 @@ using ContactEntity = AluguelIdeal.Api.Entities.Contact;
 namespace AluguelIdeal.Api.Migrations
 {
     [Migration(1)]
-    public class AluguelIdealMigration20210320001 : Migration
+    public class AluguelIdealDatabaseMigration : Migration
     {
         public override void Up()
         {

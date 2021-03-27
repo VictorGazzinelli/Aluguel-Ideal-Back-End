@@ -80,7 +80,8 @@ namespace AluguelIdeal.Api.Middlewares
                 (int statusCode, Dictionary<string, object> responseBody) httpResponse =
                             new ExceptionParser(environment).AsHttpResponse(exception);
                 byte[] responseBodyContent = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(httpResponse.responseBody));
-                text = await new StreamReader(new MemoryStream(responseBodyContent)).ReadToEndAsync();
+                using (MemoryStream ms = new MemoryStream(responseBodyContent))
+                    text = await new StreamReader(ms).ReadToEndAsync();
 
                 logger.LogInformation($"Http Response Information:{Environment.NewLine}" +
                                    $"Schema:{context.Request.Scheme} " +
@@ -106,9 +107,7 @@ namespace AluguelIdeal.Api.Middlewares
             int readChunkLength;
             do
             {
-                readChunkLength = reader.ReadBlock(readChunk,
-                                                   0,
-                                                   readChunkBufferLength);
+                readChunkLength = reader.ReadBlock(readChunk,0,readChunkBufferLength);
                 textWriter.Write(readChunk, 0, readChunkLength);
             } while (readChunkLength > 0);
             return textWriter.ToString();

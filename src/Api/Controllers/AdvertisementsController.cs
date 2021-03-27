@@ -3,6 +3,7 @@ using AluguelIdeal.Api.Interactors.Advertisement.Request;
 using AluguelIdeal.Api.Interactors.Advertisement.Response;
 using AluguelIdeal.Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,10 +24,10 @@ namespace AluguelIdeal.Api.Controllers
         {
             InsertAdvertisementRequest request = new InsertAdvertisementRequest()
             {
-                Title = model.Title,
+                Title = "",
             };
 
-            InsertAdvertisementResponse response =  await Mediator.Send(request, cancellationToken);
+            InsertAdvertisementResponse response = await Mediator.Send(request, cancellationToken);
 
             return new OkObjectResult(new { response.Advertisement.Id });
         }

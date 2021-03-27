@@ -9,7 +9,7 @@ using AdvertisementEntity = AluguelIdeal.Api.Entities.Advertisement;
 
 namespace AluguelIdeal.Api.Interactors.Advertisement
 {
-    public sealed class UpdateAdvertisementInteractor : IRequestHandler<UpdateAdvertisementRequest, UpdateAdvertisementResponse>
+    public class UpdateAdvertisementInteractor : IRequestHandler<UpdateAdvertisementRequest, UpdateAdvertisementResponse>
     {
         private readonly IAdvertisementRepository advertisementRepository;
         public UpdateAdvertisementInteractor(IAdvertisementRepository advertisementRepository)

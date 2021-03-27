@@ -15,8 +15,8 @@ namespace AluguelIdeal.Api.Dto
 
         public AdvertisementDto(Advertisement advertisment)
         {
-            this.Id = advertisment.Id;
-            this.Title = advertisment.Title;
+            Id = advertisment.Id;
+            Title = advertisment.Title;
         }
 
         public override bool Equals(object obj) =>

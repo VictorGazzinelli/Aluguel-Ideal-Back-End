@@ -11,6 +11,11 @@ namespace AluguelIdeal.Api.Middlewares
 {
     public class ExceptionHandlerMiddleware
     {
+        protected ExceptionHandlerMiddleware()
+        {
+
+        }
+
         public static Action<IApplicationBuilder> ExceptionHandler(IHostEnvironment environment)
         {
             return app =>
@@ -25,7 +30,6 @@ namespace AluguelIdeal.Api.Middlewares
                         byte[] responseBodyContent = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(responseBody));
                         context.Response.ContentType = "application/json";
                         await context.Response.Body.WriteAsync(responseBodyContent, 0, responseBodyContent.Length);
-                        int i = 0;
                     }
                 });
             };

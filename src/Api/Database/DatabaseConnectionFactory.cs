@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using Npgsql;
 using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -9,11 +11,13 @@ namespace AluguelIdeal.Api.Database
 {
     public class DatabaseConnectionFactory : IDatabaseConnectionFactory
     {
-        private readonly DatabaseSettings databaseSettings;
+        private readonly List<ConnectionStringSettings> connectionStringSettingsList;
 
-        public DatabaseConnectionFactory(IOptions<DatabaseSettings> databaseSettingsOptions)
+        public DatabaseConnectionFactory(IOptions<List<ConnectionStringSettings>> connectionStringSettingsListOptions)
         {
-            databaseSettings = databaseSettingsOptions.Value;
+            connectionStringSettingsList = connectionStringSettingsListOptions.Value.Any() ?
+                connectionStringSettingsListOptions.Value : 
+                throw new ArgumentException($"No connection string settings were given", nameof(connectionStringSettingsListOptions));
             RegisterFactories();
         }
 
@@ -22,24 +26,20 @@ namespace AluguelIdeal.Api.Database
             DbProviderFactories.RegisterFactory("Npgsql", NpgsqlFactory.Instance);
         }
 
-        public IDbConnection GetDbConnection(string databaseName = null)
+        public IDbConnection GetDbConnection(string name = null)
         {
-            Database requestedDatabase = SelectDatabase(databaseName);
-            DbConnection requestedDatabaseConnection = DbProviderFactories.GetFactory(requestedDatabase.Provider).CreateConnection();
-            requestedDatabaseConnection.ConnectionString = requestedDatabase.Connection;
+            ConnectionStringSettings requestedConnectionStringSettings = SelectRequestedConnectionStringSettings(name);
+            DbConnection requestedDatabaseConnection = 
+                DbProviderFactories.GetFactory(requestedConnectionStringSettings.ProviderName).CreateConnection();
+            requestedDatabaseConnection.ConnectionString = requestedConnectionStringSettings.ConnectionString;
             return requestedDatabaseConnection;
         }
 
-        private Database SelectDatabase(string databaseName = null) =>
-            databaseName != null ? FindDatabaseByName(databaseName) : databaseSettings.Databases.First();
+        private ConnectionStringSettings SelectRequestedConnectionStringSettings(string name = null) =>
+            name != null ? FindConnectionStringSettingsByName(name) : connectionStringSettingsList[0];
 
-        private Database FindDatabaseByName(string databaseName)
-        {
-            if (databaseName == null)
-                throw new ArgumentNullException(nameof(databaseName));
-
-            return databaseSettings?.Databases?.FirstOrDefault(d => string.Equals(databaseName, d.Name, StringComparison.InvariantCultureIgnoreCase)) ??
-                throw new CouldNotFindDatabaseException($"Could not find the database {databaseName}");
-        }
+        private ConnectionStringSettings FindConnectionStringSettingsByName(string name) =>
+             connectionStringSettingsList.FirstOrDefault(c => string.Equals(name, c.Name, StringComparison.InvariantCultureIgnoreCase)) ??
+                throw new ArgumentException($"Could not find the connection string settings with name {name}", nameof(name));
     }
 }

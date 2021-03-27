@@ -17,10 +17,10 @@ namespace AluguelIdeal.Api.Dto
 
         public ContactDto(Contact client)
         {
-            this.Id = client.Id;
-            this.Name = client.Name;
-            this.Email = client.Email;
-            this.Phone = client.Phone;
+            Id = client.Id;
+            Name = client.Name;
+            Email = client.Email;
+            Phone = client.Phone;
         }
 
         public override bool Equals(object obj) =>

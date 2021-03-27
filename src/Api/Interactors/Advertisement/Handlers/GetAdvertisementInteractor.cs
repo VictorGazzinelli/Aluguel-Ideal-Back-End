@@ -11,7 +11,7 @@ using AdvertisementEntity = AluguelIdeal.Api.Entities.Advertisement;
 
 namespace AluguelIdeal.Api.Interactors.Advertisement
 {
-    public sealed class GetAdvertisementInteractor : IRequestHandler<GetAdvertisementRequest, GetAdvertisementResponse>
+    public class GetAdvertisementInteractor : IRequestHandler<GetAdvertisementRequest, GetAdvertisementResponse>
     {
         private readonly IAdvertisementRepository advertisementRepository;
         public GetAdvertisementInteractor(IAdvertisementRepository advertisementRepository)

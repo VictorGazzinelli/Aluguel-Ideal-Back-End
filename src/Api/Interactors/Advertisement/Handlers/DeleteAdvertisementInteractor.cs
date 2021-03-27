@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AluguelIdeal.Api.Interactors.Advertisement
 {
-    public sealed class DeleteAdvertisementInteractor : IRequestHandler<DeleteAdvertisementRequest>
+    public class DeleteAdvertisementInteractor : IRequestHandler<DeleteAdvertisementRequest>
     {
         private readonly IAdvertisementRepository advertisementRepository;
         public DeleteAdvertisementInteractor(IAdvertisementRepository advertisementRepository)

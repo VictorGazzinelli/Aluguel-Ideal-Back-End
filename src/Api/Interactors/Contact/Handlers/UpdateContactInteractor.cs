@@ -9,7 +9,7 @@ using ContactEntity = AluguelIdeal.Api.Entities.Contact;
 
 namespace AluguelIdeal.Api.Interactors.Contact
 {
-    public sealed class UpdateContactInteractor : IRequestHandler<UpdateContactRequest, UpdateContactResponse>
+    public class UpdateContactInteractor : IRequestHandler<UpdateContactRequest, UpdateContactResponse>
     {
         private readonly IContactRepository contactRepository;
         public UpdateContactInteractor(IContactRepository contactRepository)
