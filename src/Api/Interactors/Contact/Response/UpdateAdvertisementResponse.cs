@@ -1,4 +1,4 @@
-﻿using AluguelIdeal.Api.Dto;
+﻿using AluguelIdeal.Api.Dto.Contact;
 
 namespace AluguelIdeal.Api.Interactors.Contact.Response
 {

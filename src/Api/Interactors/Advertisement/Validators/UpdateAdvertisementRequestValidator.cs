@@ -1,4 +1,4 @@
-﻿using AluguelIdeal.Api.Interactors.Advertisement.Request;
+﻿using AluguelIdeal.Api.Interactors.Advertisement.Requests;
 using FluentValidation;
 
 namespace AluguelIdeal.Api.Interactors.Advertisement.Validators

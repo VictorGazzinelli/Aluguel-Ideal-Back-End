@@ -1,5 +1,5 @@
-﻿using AluguelIdeal.Api.Repositories.Interfaces;
-using AluguelIdeal.Api.Interactors.Advertisement.Request;
+﻿using AluguelIdeal.Api.Interactors.Advertisement.Requests;
+using AluguelIdeal.Api.Repositories.Interfaces;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;

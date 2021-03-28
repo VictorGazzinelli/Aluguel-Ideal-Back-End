@@ -7,14 +7,20 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>$(MSBuildProjectDirectory)/AluguelIdeal.xml</DocumentationFile>
+    <DocumentationFile>$(MSBuildProjectDirectory)/AluguelIdeal.Api.xml</DocumentationFile>
     <NoWarn>1701;1702;1591;TS2304</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>$(MSBuildProjectDirectory)/AluguelIdeal.xml</DocumentationFile>
+    <DocumentationFile>$(MSBuildProjectDirectory)/AluguelIdeal.Api.xml</DocumentationFile>
     <NoWarn>1701;1702;1591;TS2304</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="AluguelIdeal.Api.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Bogus" Version="33.0.2" />

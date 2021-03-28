@@ -1,4 +1,5 @@
-﻿using AluguelIdeal.Api.Database;
+﻿using AluguelIdeal.Api.Database.Access;
+using AluguelIdeal.Api.Database.Repositories;
 using AluguelIdeal.Api.Entities;
 using AluguelIdeal.Api.Repositories.Interfaces;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AluguelIdeal.Api.Repositories
 {
-    public class ContactRepository : Repository<Contact>, IContactRepository
+    public class ContactRepository : Repository, IContactRepository
     {
         private static readonly string INSERT = @"
                 INSERT INTO contact (id, name, email, phone)
@@ -62,12 +63,12 @@ namespace AluguelIdeal.Api.Repositories
 
         public async Task<IEnumerable<Contact>> ReadAsync(CancellationToken cancellationToken = default)
         {
-            return await ExecuteQueryAsync(SELECT, cancellationToken: cancellationToken);
+            return await ExecuteQueryAsync<Contact>(SELECT, cancellationToken: cancellationToken);
         }
 
         public async Task<Contact> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            return (await ExecuteQueryAsync(SELECT_BY_ID, new { Id = id }, cancellationToken: cancellationToken)).FirstOrDefault();
+            return (await ExecuteQueryAsync<Contact>(SELECT_BY_ID, new { Id = id }, cancellationToken: cancellationToken)).FirstOrDefault();
         }
 
         public async Task UpdateAsync(Contact contact, CancellationToken cancellationToken = default)

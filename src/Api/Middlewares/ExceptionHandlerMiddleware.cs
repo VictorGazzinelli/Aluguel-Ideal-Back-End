@@ -1,11 +1,9 @@
-﻿using AluguelIdeal.Api.Utils;
+﻿using AluguelIdeal.Api.Utils.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Net.Mime;
 
 namespace AluguelIdeal.Api.Middlewares
 {
@@ -25,11 +23,10 @@ namespace AluguelIdeal.Api.Middlewares
                     Exception exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
                     if(exception != null)
                     {
-                        (int statusCode, Dictionary<string, object> responseBody) = 
-                            new ExceptionParser(environment).AsHttpResponse(exception);
-                        byte[] responseBodyContent = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(responseBody));
-                        context.Response.ContentType = "application/json";
-                        await context.Response.Body.WriteAsync(responseBodyContent, 0, responseBodyContent.Length);
+                        context.Response.StatusCode = exception.GetHttpResponseStatus();
+                        context.Response.ContentType = MediaTypeNames.Application.Json;
+                        byte[] responseBody = exception.GetHttpResponseBody(environment);
+                        await context.Response.Body.WriteAsync(responseBody, 0, responseBody.Length);
                     }
                 });
             };

@@ -1,7 +1,6 @@
-﻿using AluguelIdeal.Api.Controllers.Base;
+﻿using AluguelIdeal.Api.Controllers.Models.Contact;
 using AluguelIdeal.Api.Interactors.Contact.Request;
 using AluguelIdeal.Api.Interactors.Contact.Response;
-using AluguelIdeal.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 using System.Threading;

@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AluguelIdeal.Api</name>
+    </assembly>
+    <members>
+        <member name="M:AluguelIdeal.Api.Controllers.AdvertisementsController.Post(AluguelIdeal.Api.Controllers.Models.Advertisement.AdvertisementModel,System.Threading.CancellationToken)">
+            <summary>
+            Post Advertisement
+            </summary>
+            <remarks> Post Advertisement </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.AdvertisementsController.Get(System.Threading.CancellationToken)">
+            <summary>
+            Get Advertisement
+            </summary>
+            <remarks> Get Advertisement </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.AdvertisementsController.GetById(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Get Advertisement by id
+            </summary>
+            <remarks> Get Advertisement by id </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.AdvertisementsController.Put(System.Int32,AluguelIdeal.Api.Controllers.Models.Advertisement.AdvertisementModel,System.Threading.CancellationToken)">
+            <summary>
+            Put Advertisement
+            </summary>
+            <remarks> Put Advertisement </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.AdvertisementsController.Delete(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Delete Advertisement
+            </summary>
+            <remarks> Delete Advertisement </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.ContactsController.Post(AluguelIdeal.Api.Controllers.Models.Contact.ContactModel,System.Threading.CancellationToken)">
+            <summary>
+            Post Contact
+            </summary>
+            <remarks> Post Contact </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.ContactsController.Get(System.Threading.CancellationToken)">
+            <summary>
+            Get Contact
+            </summary>
+            <remarks> Get Contact </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.ContactsController.GetById(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Get Contact by id
+            </summary>
+            <remarks> Get Contact by id </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.ContactsController.Put(System.Int32,AluguelIdeal.Api.Controllers.Models.Contact.ContactModel,System.Threading.CancellationToken)">
+            <summary>
+            Put Contact
+            </summary>
+            <remarks> Put Contact </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.ContactsController.Delete(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Delete Contact
+            </summary>
+            <remarks> Delete Contact </remarks>
+        </member>
+    </members>
+</doc>

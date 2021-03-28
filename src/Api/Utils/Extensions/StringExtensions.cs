@@ -14,10 +14,10 @@ namespace AluguelIdeal.Api.Utils.Extensions
 
         public static string ToCamelCase(this string value)
         {
-            if (String.IsNullOrEmpty(value) || Char.IsLower(value, 0))
+            if (string.IsNullOrEmpty(value) || char.IsLower(value, 0))
                 return value;
 
-            return Char.ToLowerInvariant(value[0]) + value[1..];
+            return char.ToLowerInvariant(value[0]) + value[1..];
         }
     }
 }

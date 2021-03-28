@@ -1,7 +1,8 @@
 ﻿using AluguelIdeal.Api.Dto;
-using AluguelIdeal.Api.Repositories.Interfaces;
+using AluguelIdeal.Api.Dto.Contact;
 using AluguelIdeal.Api.Interactors.Contact.Request;
 using AluguelIdeal.Api.Interactors.Contact.Response;
+using AluguelIdeal.Api.Repositories.Interfaces;
 using MediatR;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace AluguelIdeal.Api.Interactors.Contact
 
             return new GetContactResponse()
             {
-                Contacts = contacts.Select(a => new ContactDto(a)).ToList()
+                Contacts = contacts.Select(c => new ContactDto(c)).ToList()
             };
         }
     }

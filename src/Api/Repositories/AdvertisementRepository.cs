@@ -1,4 +1,5 @@
-﻿using AluguelIdeal.Api.Database;
+﻿using AluguelIdeal.Api.Database.Access;
+using AluguelIdeal.Api.Database.Repositories;
 using AluguelIdeal.Api.Entities;
 using AluguelIdeal.Api.Repositories.Interfaces;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AluguelIdeal.Api.Repositories
 {
-    public sealed class AdvertisementRepository : Repository<Advertisement>, IAdvertisementRepository
+    public sealed class AdvertisementRepository : Repository, IAdvertisementRepository
     {
         private static readonly string INSERT = @"
                 INSERT INTO advertisement (id, title)
@@ -56,11 +57,11 @@ namespace AluguelIdeal.Api.Repositories
 
         public async Task<IEnumerable<Advertisement>> ReadAsync(CancellationToken cancellationToken = default)
         {
-            return await ExecuteQueryAsync(SELECT, cancellationToken: cancellationToken);
+            return await ExecuteQueryAsync<Advertisement>(SELECT, cancellationToken: cancellationToken);
         }
         public async Task<Advertisement> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            return (await ExecuteQueryAsync(SELECT_BY_ID, new { Id = id }, cancellationToken: cancellationToken)).FirstOrDefault();
+            return (await ExecuteQueryAsync<Advertisement>(SELECT_BY_ID, new { Id = id }, cancellationToken: cancellationToken)).FirstOrDefault();
         }
 
         public async Task UpdateAsync(Advertisement advertisement, CancellationToken cancellationToken = default)

@@ -1,14 +1,10 @@
-﻿using AluguelIdeal.Api.Utils;
-using Microsoft.AspNetCore.Diagnostics;
+﻿using AluguelIdeal.Api.Utils.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IO;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AluguelIdeal.Api.Middlewares
@@ -41,60 +37,56 @@ namespace AluguelIdeal.Api.Middlewares
             context.Request.EnableBuffering();
             await using var requestStream = recyclableMemoryStreamManager.GetStream();
             await context.Request.Body.CopyToAsync(requestStream);
-            logger.LogInformation($"Http Request Information:{Environment.NewLine}" +
-                                   $"Schema:{context.Request.Scheme} " +
-                                   $"Host: {context.Request.Host} " +
-                                   $"Path: {context.Request.Path} " +
-                                   $"QueryString: {context.Request.QueryString} " +
-                                   $"Request Body: {ReadStreamInChunks(requestStream)}");
+            LogRequest(context, requestStream);
             context.Request.Body.Position = 0;
+        }
+
+        private void LogRequest(HttpContext context, MemoryStream requestStream)
+        {
+            logger.LogInformation($"Http Request Information:{Environment.NewLine}" +
+                                    $"Schema:{context.Request.Scheme} " +
+                                    $"Host: {context.Request.Host} " +
+                                    $"Path: {context.Request.Path} " +
+                                    $"QueryString: {context.Request.QueryString} " +
+                                    $"Request Body: {ReadStreamInChunks(requestStream)}");
         }
 
         private async Task LogResponse(HttpContext context)
         {
             var originalBodyStream = context.Response.Body;
-            await using var responseBody = recyclableMemoryStreamManager.GetStream();
-            context.Response.Body = responseBody;
+            await using var temporary = recyclableMemoryStreamManager.GetStream();
+            context.Response.Body = temporary;
+            string responseBodyAsJson;
 
-            string text;
             try
             {
                 await next(context);
-
-                context.Response.Body.Seek(0, SeekOrigin.Begin);
-                text = await new StreamReader(context.Response.Body).ReadToEndAsync();
-                context.Response.Body.Seek(0, SeekOrigin.Begin);
-
-                logger.LogInformation($"Http Response Information:{Environment.NewLine}" +
-                                   $"Schema:{context.Request.Scheme} " +
-                                   $"Host: {context.Request.Host} " +
-                                   $"Path: {context.Request.Path} " +
-                                   $"QueryString: {context.Request.QueryString} " +
-                                   $"StatusCode: {context.Response.StatusCode} " +
-                                   $"Response Body: {text}");
-
-                await responseBody.CopyToAsync(originalBodyStream);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
-                (int statusCode, Dictionary<string, object> responseBody) httpResponse =
-                            new ExceptionParser(environment).AsHttpResponse(exception);
-                byte[] responseBodyContent = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(httpResponse.responseBody));
-                using (MemoryStream ms = new MemoryStream(responseBodyContent))
-                    text = await new StreamReader(ms).ReadToEndAsync();
-
-                logger.LogInformation($"Http Response Information:{Environment.NewLine}" +
-                                   $"Schema:{context.Request.Scheme} " +
-                                   $"Host: {context.Request.Host} " +
-                                   $"Path: {context.Request.Path} " +
-                                   $"QueryString: {context.Request.QueryString} " +
-                                   $"StatusCode: {httpResponse.statusCode} " +
-                                   $"Response Body: {text}");
-
+                byte[] responseBody =  exception.GetHttpResponseBody(environment);
+                using (MemoryStream ms = new MemoryStream(responseBody))
+                    responseBodyAsJson = await new StreamReader(ms).ReadToEndAsync();
+                LogResponse(context, responseBodyAsJson);
                 context.Response.Body = originalBodyStream;
-
                 throw;
             }
+            context.Response.Body.Seek(0, SeekOrigin.Begin);
+            responseBodyAsJson = await new StreamReader(context.Response.Body).ReadToEndAsync();
+            context.Response.Body.Seek(0, SeekOrigin.Begin);
+            LogResponse(context, responseBodyAsJson);
+            await temporary.CopyToAsync(originalBodyStream);
+        }
+
+        private void LogResponse(HttpContext context, string responseBodyAsJson)
+        {
+            logger.LogInformation($"Http Response Information:{Environment.NewLine}" +
+                                               $"Schema:{context.Request.Scheme} " +
+                                               $"Host: {context.Request.Host} " +
+                                               $"Path: {context.Request.Path} " +
+                                               $"QueryString: {context.Request.QueryString} " +
+                                               $"StatusCode: {context.Response.StatusCode} " +
+                                               $"Response Body: {responseBodyAsJson}");
         }
 
         private static string ReadStreamInChunks(Stream stream)

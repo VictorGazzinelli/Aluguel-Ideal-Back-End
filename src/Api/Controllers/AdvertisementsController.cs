@@ -1,9 +1,8 @@
-﻿using AluguelIdeal.Api.Controllers.Base;
-using AluguelIdeal.Api.Interactors.Advertisement.Request;
-using AluguelIdeal.Api.Interactors.Advertisement.Response;
-using AluguelIdeal.Api.Models;
+﻿using AluguelIdeal.Api.Controllers.Models.Advertisement;
+using AluguelIdeal.Api.Interactors.Advertisement.Requests;
+using AluguelIdeal.Api.Interactors.Advertisement.Responses;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,6 +19,7 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Post Advertisement </remarks>
         [HttpPost]
+        //[ProducesResponseType(typeof(), StatusCodes.Status200OK)]
         public async Task<IActionResult> Post(AdvertisementModel model, CancellationToken cancellationToken)
         {
             InsertAdvertisementRequest request = new InsertAdvertisementRequest()
@@ -37,6 +37,7 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Get Advertisement </remarks>
         [HttpGet]
+        //[ProducesResponseType(typeof(), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
             GetAdvertisementRequest request = new GetAdvertisementRequest();
@@ -51,6 +52,7 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Get Advertisement by id </remarks>
         [HttpGet("{id:int}")]
+        //[ProducesResponseType(typeof(), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
         {
             GetAdvertisementByIdRequest request = new GetAdvertisementByIdRequest()
@@ -68,6 +70,7 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Put Advertisement </remarks>
         [HttpPut("{id:int}")]
+        //[ProducesResponseType(typeof(), StatusCodes.Status200OK)]
         public async Task<IActionResult> Put(int id, AdvertisementModel model, CancellationToken cancellationToken)
         {
             UpdateAdvertisementRequest request = new UpdateAdvertisementRequest()
@@ -86,6 +89,7 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Delete Advertisement </remarks>
         [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             DeleteAdvertisementRequest request = new DeleteAdvertisementRequest()

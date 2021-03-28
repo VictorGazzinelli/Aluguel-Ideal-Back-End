@@ -1,17 +1,18 @@
 using AluguelIdeal.Api.Controllers.Conventions;
-using AluguelIdeal.Api.Database;
-using AluguelIdeal.Api.Filters;
+using AluguelIdeal.Api.Controllers.Filters;
+using AluguelIdeal.Api.Controllers.Models.Responses.Http;
+using AluguelIdeal.Api.Database.Access;
+using AluguelIdeal.Api.Database.Migrations;
 using AluguelIdeal.Api.Interactors.Behaviours;
 using AluguelIdeal.Api.Middlewares.Extensions;
-using AluguelIdeal.Api.Migrations;
 using AluguelIdeal.Api.Repositories;
 using AluguelIdeal.Api.Repositories.Interfaces;
 using FluentMigrator.Runner;
-using FluentMigrator.Runner.Initialization;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +23,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -53,7 +55,8 @@ namespace AluguelIdeal.Api
             services.AddControllers(mvcOptions =>
             {
                 mvcOptions.Filters.Add<ValidationFilter>();
-                mvcOptions.Filters.Add<HandleExceptionFilter>();
+                mvcOptions.Filters.Add(new ProducesResponseTypeAttribute(typeof(BadRequestResponse), StatusCodes.Status400BadRequest));
+                mvcOptions.Filters.Add(new ProducesResponseTypeAttribute(typeof(InternalServerErrorResponse), StatusCodes.Status500InternalServerError));
                 mvcOptions.Conventions.Add(new RouteTokenTransformerConvention(new SlugCaseRouteTransformer()));
             })
             .AddFluentValidation(fluentValidationMvcConfiguration =>
@@ -63,12 +66,15 @@ namespace AluguelIdeal.Api
 
             services.AddSwaggerGen(swaggerGenOptions =>
             {
-                swaggerGenOptions.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                swaggerGenOptions.SwaggerDoc("v1", new OpenApiInfo { Title = "AluguelIdeal API", Version = "v1" });
+                string xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                string xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFileName);
+                swaggerGenOptions.IncludeXmlComments(xmlFilePath);
                 swaggerGenOptions.AddFluentValidationRules();
             });
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateRequest<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateRequestBehaviour<,>));
 
             services.Configure<List<ConnectionStringSettings>>(Configuration.GetSection(nameof(ConnectionStringSettingsCollection)));
             services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
@@ -105,20 +111,20 @@ namespace AluguelIdeal.Api
 
             app.UseCustomExceptionHandler(Environment);
 
-            app.UseRequestResponseLogging();
+            app.UseRouting();
 
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
-            app.UseRouting();
-
             app.UseAuthorization();
+
+            app.UseRequestResponseLogging();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
 
             app.UseSwagger();
             app.UseSwaggerUI(swaggerUIOptions =>
             {
-                swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "AluguelIdeal API V1");
                 swaggerUIOptions.RoutePrefix = string.Empty;
                 swaggerUIOptions.DisplayRequestDuration();
                 swaggerUIOptions.EnableFilter();
