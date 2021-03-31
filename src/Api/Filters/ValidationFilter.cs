@@ -18,7 +18,7 @@ namespace AluguelIdeal.Api.Filters
             {
                 ModelStateDictionary modelStateDictionary = context.ModelState;
                 Dictionary<string, List<string>> errors = modelStateDictionary.ToDictionary(
-                       keySelector: modelStateEntryByPropName => modelStateEntryByPropName.Key.ToCamelCase(),
+                       keySelector: modelStateEntryByPropName => ToCamelCase(modelStateEntryByPropName.Key),
                        elementSelector: modelStateEntryByPropName => modelStateEntryByPropName.Value.Errors.Select(e => e.ErrorMessage).ToList());
                 context.Result = new BadRequestObjectResult(new BadRequestResponse() { Errors = errors });
                 return;
@@ -32,6 +32,14 @@ namespace AluguelIdeal.Api.Filters
             foreach (string key in context.ModelState.Keys.Where(key => key.EndsWith("id", true, null)))
                 if (context.ActionArguments[key] as int? < 0)
                     context.ModelState.AddModelError(key, "less or equal to zero");
+        }
+
+        public static string ToCamelCase(string value)
+        {
+            if (string.IsNullOrEmpty(value) || char.IsLower(value, 0))
+                return value;
+
+            return char.ToLowerInvariant(value[0]) + value[1..];
         }
     }
 }

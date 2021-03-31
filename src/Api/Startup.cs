@@ -1,15 +1,10 @@
-using AluguelIdeal.Api.Controllers.Conventions;
-using AluguelIdeal.Api.Controllers.Filters;
 using AluguelIdeal.Api.Controllers.Models.Responses.Http;
-using AluguelIdeal.Api.Database.Access;
-using AluguelIdeal.Api.Database.Migrations;
-using AluguelIdeal.Api.Interactors.Behaviours;
-using AluguelIdeal.Api.Middlewares.Extensions;
-using AluguelIdeal.Api.Repositories;
-using AluguelIdeal.Api.Repositories.Interfaces;
-using FluentMigrator.Runner;
+using AluguelIdeal.Api.Conventions;
+using AluguelIdeal.Api.Filters;
+using AluguelIdeal.Api.Middlewares;
+using AluguelIdeal.Application;
+using AluguelIdeal.Infrastructure;
 using FluentValidation.AspNetCore;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -21,10 +16,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 namespace AluguelIdeal.Api
@@ -73,29 +65,8 @@ namespace AluguelIdeal.Api
                 swaggerGenOptions.AddFluentValidationRules();
             });
 
-            services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateRequestBehaviour<,>));
-
-            services.Configure<List<ConnectionStringSettings>>(Configuration.GetSection(nameof(ConnectionStringSettingsCollection)));
-            services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
-            services.AddTransient<IAdvertisementRepository, AdvertisementRepository>();
-            services.AddTransient<IContactRepository, ContactRepository>();
-
-            if (Environment.IsDevelopment())
-            {
-                services.AddFluentMigratorCore();
-                services.ConfigureRunner(migrationRunnerBuilder =>
-                {
-                    List<ConnectionStringSettings> connectionStringSettingsList =
-                       Configuration.GetSection(nameof(ConnectionStringSettingsCollection)).Get<List<ConnectionStringSettings>>();
-                    if (connectionStringSettingsList.Any())
-                        migrationRunnerBuilder.AddPostgres()
-                        .WithGlobalConnectionString(connectionStringSettingsList.First().ConnectionString)
-                        .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations();
-                })
-                .AddLogging(loggingBuilder => loggingBuilder.AddFluentMigratorConsole());
-            }
-
+            services.AddApplication();
+            services.AddInfrastructure(Configuration, Environment);
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
@@ -103,25 +74,24 @@ namespace AluguelIdeal.Api
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                IServiceProvider serviceProvider = app.ApplicationServices;
-                using IServiceScope serviceScope = serviceProvider.CreateScope();
-                IMigrationRunner migrationRunner = serviceScope.ServiceProvider.GetService<IMigrationRunner>();
-                migrationRunner.Up(new AluguelIdealDatabaseMigration());
             }
 
-            app.UseCustomExceptionHandler(Environment);
+            app.UseExceptionHandler(ExceptionHandlerMiddleware.ExceptionHandler(Environment));
 
             app.UseRouting();
 
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
-            app.UseRequestResponseLogging();
+            app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
 
             app.UseSwagger();
+
             app.UseSwaggerUI(swaggerUIOptions =>
             {
                 swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "AluguelIdeal API V1");

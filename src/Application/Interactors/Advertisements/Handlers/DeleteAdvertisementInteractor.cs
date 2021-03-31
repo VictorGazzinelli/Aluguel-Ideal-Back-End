@@ -1,4 +1,5 @@
-﻿using AluguelIdeal.Application.Interactors.Advertisement.Requests;
+﻿using AluguelIdeal.Application.Interactors.Advertisements.Requests;
+using AluguelIdeal.Application.Repositories;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;

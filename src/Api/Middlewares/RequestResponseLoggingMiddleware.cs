@@ -67,7 +67,7 @@ namespace AluguelIdeal.Api.Middlewares
                 byte[] responseBody =  exception.GetHttpResponseBody(environment);
                 using (MemoryStream ms = new MemoryStream(responseBody))
                     responseBodyAsJson = await new StreamReader(ms).ReadToEndAsync();
-                LogResponse(context, responseBodyAsJson);
+                LogResponse(context, responseBodyAsJson, exception.GetHttpResponseStatus());
                 context.Response.Body = originalBodyStream;
                 throw;
             }
@@ -78,14 +78,14 @@ namespace AluguelIdeal.Api.Middlewares
             await temporary.CopyToAsync(originalBodyStream);
         }
 
-        private void LogResponse(HttpContext context, string responseBodyAsJson)
+        private void LogResponse(HttpContext context, string responseBodyAsJson, int? statusCode = null)
         {
             logger.LogInformation($"Http Response Information:{Environment.NewLine}" +
                                                $"Schema:{context.Request.Scheme} " +
                                                $"Host: {context.Request.Host} " +
                                                $"Path: {context.Request.Path} " +
                                                $"QueryString: {context.Request.QueryString} " +
-                                               $"StatusCode: {context.Response.StatusCode} " +
+                                               $"StatusCode: {statusCode ?? context.Response.StatusCode} " +
                                                $"Response Body: {responseBodyAsJson}");
         }
 

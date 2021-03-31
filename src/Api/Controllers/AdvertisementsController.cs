@@ -1,6 +1,7 @@
 ﻿using AluguelIdeal.Api.Controllers.Models.Advertisement;
-using AluguelIdeal.Api.Interactors.Advertisement.Requests;
-using AluguelIdeal.Api.Interactors.Advertisement.Responses;
+using AluguelIdeal.Api.Responses.Advertisements;
+using AluguelIdeal.Application.Interactors.Advertisements.Requests;
+using AluguelIdeal.Application.Interactors.Advertisements.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
@@ -19,17 +20,17 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Post Advertisement </remarks>
         [HttpPost]
-        //[ProducesResponseType(typeof(), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AdvertisementIdResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> Post(AdvertisementModel model, CancellationToken cancellationToken)
         {
             InsertAdvertisementRequest request = new InsertAdvertisementRequest()
             {
-                Title = "",
+                Title = model.Title,
             };
 
             InsertAdvertisementResponse response = await Mediator.Send(request, cancellationToken);
 
-            return new OkObjectResult(new { response.Advertisement.Id });
+            return new OkObjectResult(new AdvertisementIdResponse() { Id = response.Advertisement.Id });
         }
 
         /// <summary>

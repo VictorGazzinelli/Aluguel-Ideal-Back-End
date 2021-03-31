@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using AluguelIdeal.Application.Interactors.Contacts.Requests;
+using AluguelIdeal.Application.Repositories;
+using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 

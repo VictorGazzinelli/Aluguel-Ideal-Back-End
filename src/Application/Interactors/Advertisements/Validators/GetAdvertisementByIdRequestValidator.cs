@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using AluguelIdeal.Application.Interactors.Advertisements.Requests;
+using FluentValidation;
 
 namespace AluguelIdeal.Application.Interactors.Advertisements.Validators
 {

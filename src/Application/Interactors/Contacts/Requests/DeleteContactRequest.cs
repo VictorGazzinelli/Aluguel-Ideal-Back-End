@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace AluguelIdeal.Application.Interactors.Contacts.Request
+namespace AluguelIdeal.Application.Interactors.Contacts.Requests
 {
     public sealed class DeleteContactRequest : IRequest
     {

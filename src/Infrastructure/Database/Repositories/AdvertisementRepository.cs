@@ -1,14 +1,13 @@
 ﻿using AluguelIdeal.Application.Repositories;
 using AluguelIdeal.Domain.Entities;
 using AluguelIdeal.Infrastructure.Database.Access;
-using AluguelIdeal.Infrastructure.Database.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AluguelIdeal.Infrastructure.Repositories
+namespace AluguelIdeal.Infrastructure.Database.Repositories
 {
     public sealed class AdvertisementRepository : Repository, IAdvertisementRepository
     {

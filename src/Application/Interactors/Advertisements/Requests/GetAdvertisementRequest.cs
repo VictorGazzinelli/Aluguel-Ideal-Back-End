@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AluguelIdeal.Application.Interactors.Advertisements.Responses;
+using MediatR;
 
 namespace AluguelIdeal.Application.Interactors.Advertisements.Requests
 {

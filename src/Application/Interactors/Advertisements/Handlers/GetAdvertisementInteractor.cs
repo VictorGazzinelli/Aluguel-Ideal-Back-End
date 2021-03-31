@@ -1,4 +1,8 @@
-﻿using MediatR;
+﻿using AluguelIdeal.Application.Dto.Advertisements;
+using AluguelIdeal.Application.Interactors.Advertisements.Requests;
+using AluguelIdeal.Application.Interactors.Advertisements.Responses;
+using AluguelIdeal.Application.Repositories;
+using MediatR;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
