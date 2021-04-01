@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IO;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AluguelIdeal.Api.Middlewares
@@ -15,6 +16,12 @@ namespace AluguelIdeal.Api.Middlewares
         private readonly RecyclableMemoryStreamManager recyclableMemoryStreamManager;
         private readonly RequestDelegate next;
         private readonly IHostEnvironment environment;
+        private readonly string[] pathsToIgnore = new string []
+        {
+            "/index",
+            "/swagger",
+            "/favicon",
+        };
 
         public RequestResponseLoggingMiddleware(ILoggerFactory loggerFactory,
                                                 RequestDelegate next,
@@ -28,8 +35,15 @@ namespace AluguelIdeal.Api.Middlewares
 
         public async Task Invoke(HttpContext context)
         {
-            await LogRequest(context);
-            await LogResponse(context);
+            if(!pathsToIgnore.Any(p => context.Request.Path.ToString().StartsWith(p)))
+            {
+                await LogRequest(context);
+                await LogResponse(context);
+            }
+            else
+            {
+                await next(context);
+            }
         }
 
         private async Task LogRequest(HttpContext context)

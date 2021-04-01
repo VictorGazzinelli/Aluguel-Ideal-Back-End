@@ -37,6 +37,11 @@ namespace AluguelIdeal.Infrastructure.Database.Migrations
             foreach (object contact in GenerateFakeContacts())
                 Insert.IntoTable("contact").Row(contact);
         }
+        public override void Down()
+        {
+            Execute.Sql("DROP TABLE IF EXISTS advertisement");
+            Execute.Sql("DROP TABLE IF EXISTS contact");
+        }
 
         private static IEnumerable<object> GenerateFakeContacts()
         {
@@ -79,10 +84,5 @@ namespace AluguelIdeal.Infrastructure.Database.Migrations
             return value.Length <= maxLength ? value : value.Substring(0, maxLength);
         }
 
-        public override void Down()
-        {
-            Execute.Sql("DROP TABLE IF EXISTS advertisement");
-            Execute.Sql("DROP TABLE IF EXISTS contact");
-        }
     }
 }
