@@ -1,6 +1,7 @@
 ﻿using AluguelIdeal.Api.Controllers.Models.Contact;
 using AluguelIdeal.Application.Interactors.Contacts.Requests;
 using AluguelIdeal.Application.Interactors.Contacts.Responses;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 using System.Threading;
@@ -91,6 +92,7 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Delete Contact </remarks>
         [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             DeleteContactRequest request = new DeleteContactRequest()

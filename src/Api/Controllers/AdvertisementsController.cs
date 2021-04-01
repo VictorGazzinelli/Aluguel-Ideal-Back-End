@@ -1,5 +1,4 @@
 ﻿using AluguelIdeal.Api.Controllers.Models.Advertisement;
-using AluguelIdeal.Api.Responses.Advertisements;
 using AluguelIdeal.Application.Interactors.Advertisements.Requests;
 using AluguelIdeal.Application.Interactors.Advertisements.Responses;
 using Microsoft.AspNetCore.Http;
@@ -20,7 +19,6 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Post Advertisement </remarks>
         [HttpPost]
-        [ProducesResponseType(typeof(AdvertisementIdResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> Post(AdvertisementModel model, CancellationToken cancellationToken)
         {
             InsertAdvertisementRequest request = new InsertAdvertisementRequest()
@@ -30,7 +28,7 @@ namespace AluguelIdeal.Api.Controllers
 
             InsertAdvertisementResponse response = await Mediator.Send(request, cancellationToken);
 
-            return new OkObjectResult(new AdvertisementIdResponse() { Id = response.Advertisement.Id });
+            return new OkObjectResult(new { response.Advertisement.Id });
         }
 
         /// <summary>
@@ -38,7 +36,6 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Get Advertisement </remarks>
         [HttpGet]
-        //[ProducesResponseType(typeof(), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
             GetAdvertisementRequest request = new GetAdvertisementRequest();
@@ -53,7 +50,6 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Get Advertisement by id </remarks>
         [HttpGet("{id:int}")]
-        //[ProducesResponseType(typeof(), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
         {
             GetAdvertisementByIdRequest request = new GetAdvertisementByIdRequest()
@@ -71,7 +67,6 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Put Advertisement </remarks>
         [HttpPut("{id:int}")]
-        //[ProducesResponseType(typeof(), StatusCodes.Status200OK)]
         public async Task<IActionResult> Put(int id, AdvertisementModel model, CancellationToken cancellationToken)
         {
             UpdateAdvertisementRequest request = new UpdateAdvertisementRequest()
