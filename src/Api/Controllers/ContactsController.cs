@@ -52,6 +52,7 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Get Contact by id </remarks>
         [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
         {
             GetContactByIdRequest request = new GetContactByIdRequest()

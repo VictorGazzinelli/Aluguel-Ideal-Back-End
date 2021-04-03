@@ -42,6 +42,7 @@ namespace AluguelIdeal.Api
             services.Configure<ApiBehaviorOptions>(apiBehaviorOptions =>
             {
                 apiBehaviorOptions.SuppressModelStateInvalidFilter = true;
+                apiBehaviorOptions.SuppressMapClientErrors = true;
             });
 
             services.AddControllers(mvcOptions =>

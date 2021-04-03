@@ -23,7 +23,9 @@ namespace AluguelIdeal.Application.Interactors.Advertisements.Handlers
 
             return new GetAdvertisementByIdResponse()
             {
-                Advertisement = new AdvertisementDto(advertisement)
+                Advertisement = advertisement != null ?
+                    new AdvertisementDto(advertisement) :
+                    null
             };
         }
     }

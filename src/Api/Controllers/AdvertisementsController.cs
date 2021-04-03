@@ -50,6 +50,7 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Get Advertisement by id </remarks>
         [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
         {
             GetAdvertisementByIdRequest request = new GetAdvertisementByIdRequest()
@@ -58,6 +59,9 @@ namespace AluguelIdeal.Api.Controllers
             };
 
             GetAdvertisementByIdResponse response = await Mediator.Send(request, cancellationToken).ConfigureAwait(false);
+
+            if (response.Advertisement == null)
+                return new NotFoundObjectResult(null);
 
             return new OkObjectResult(new { response.Advertisement });
         }
