@@ -1,5 +1,4 @@
 using AluguelIdeal.Api.Controllers.Models.Responses.Http;
-using AluguelIdeal.Api.Conventions;
 using AluguelIdeal.Api.Filters;
 using AluguelIdeal.Api.Middlewares;
 using AluguelIdeal.Application;
