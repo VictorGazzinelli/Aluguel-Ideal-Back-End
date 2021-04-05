@@ -36,6 +36,7 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
                 UPDATE advertisement
                 SET title = @Title
                 WHERE id = @Id
+                AND deleted_at IS NULL
         ";
 
         private static readonly string DELETE = @"

@@ -72,6 +72,7 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Put Contact </remarks>
         [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Put(int id, ContactModel model, CancellationToken cancellationToken)
         {
             UpdateContactRequest request = new UpdateContactRequest()
@@ -83,6 +84,9 @@ namespace AluguelIdeal.Api.Controllers
             };
 
             UpdateContactResponse response = await Mediator.Send(request, cancellationToken);
+
+            if (response.Contact == null)
+                return new NotFoundObjectResult(null);
 
             return new OkObjectResult(new { response.Contact });
 

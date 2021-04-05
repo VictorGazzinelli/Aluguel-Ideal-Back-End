@@ -1,4 +1,4 @@
-﻿using AluguelIdeal.Application.Dto.Contacts;
+﻿using AluguelIdeal.Application.Dtos.Contacts;
 using AluguelIdeal.Application.Interactors.Contacts.Requests;
 using AluguelIdeal.Application.Interactors.Contacts.Responses;
 using AluguelIdeal.Application.Repositories;
@@ -26,7 +26,7 @@ namespace AluguelIdeal.Api.Interactors.Contacts.Handlers
                 Phone = request.Phone
             };
 
-            contact.Id = await contactRepository.CreateAsync(contact);
+            contact.Id = await contactRepository.CreateAsync(contact, cancellationToken);
 
             return new InsertContactResponse()
             {

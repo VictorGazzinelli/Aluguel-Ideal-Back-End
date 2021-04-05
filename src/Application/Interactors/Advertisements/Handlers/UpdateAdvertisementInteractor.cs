@@ -1,4 +1,4 @@
-﻿using AluguelIdeal.Application.Dto.Advertisements;
+﻿using AluguelIdeal.Application.Dtos.Advertisements;
 using AluguelIdeal.Application.Interactors.Advertisements.Requests;
 using AluguelIdeal.Application.Interactors.Advertisements.Responses;
 using AluguelIdeal.Application.Repositories;
@@ -19,6 +19,12 @@ namespace AluguelIdeal.Application.Interactors.Advertisements.Handlers
 
         public async Task<UpdateAdvertisementResponse> Handle(UpdateAdvertisementRequest request, CancellationToken cancellationToken)
         {
+            if (await advertisementRepository.GetByIdAsync(request.Id, cancellationToken) == null)
+                return new UpdateAdvertisementResponse()
+                {
+                    Advertisement = null
+                };
+
             AdvertisementEntity advertisement = new AdvertisementEntity()
             {
                 Id = request.Id,

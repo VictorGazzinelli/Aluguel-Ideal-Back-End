@@ -1,4 +1,4 @@
-﻿using AluguelIdeal.Application.Dto.Contacts;
+﻿using AluguelIdeal.Application.Dtos.Contacts;
 using AluguelIdeal.Application.Interactors.Contacts.Requests;
 using AluguelIdeal.Application.Interactors.Contacts.Responses;
 using AluguelIdeal.Application.Repositories;
@@ -19,6 +19,12 @@ namespace AluguelIdeal.Api.Interactors.Contacts.Handlers
 
         public async Task<UpdateContactResponse> Handle(UpdateContactRequest request, CancellationToken cancellationToken)
         {
+            if(await contactRepository.GetByIdAsync(request.Id, cancellationToken) == null)
+                return new UpdateContactResponse()
+                {
+                    Contact = null
+                };
+
             ContactEntity contact = new ContactEntity()
             {
                 Id = request.Id,

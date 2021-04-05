@@ -1,7 +1,7 @@
 ﻿using System;
 using ContactEntity = AluguelIdeal.Domain.Entities.Contact;
 
-namespace AluguelIdeal.Application.Dto.Contacts
+namespace AluguelIdeal.Application.Dtos.Contacts
 {
     public class ContactDto
     {
@@ -26,6 +26,12 @@ namespace AluguelIdeal.Application.Dto.Contacts
         public override bool Equals(object obj) =>
             obj is ContactDto dto &&
             Id == dto.Id &&
+            Equals(Name, dto.Name) &&
+            Equals(Email, dto.Email) &&
+            Equals(Phone, dto.Phone);
+
+        public bool EqualsIgnoreId(object obj) =>
+            obj is ContactDto dto &&
             Equals(Name, dto.Name) &&
             Equals(Email, dto.Email) &&
             Equals(Phone, dto.Phone);

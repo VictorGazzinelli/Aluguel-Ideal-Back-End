@@ -1,7 +1,7 @@
 ﻿using System;
 using AdvertisementEntity = AluguelIdeal.Domain.Entities.Advertisement;
 
-namespace AluguelIdeal.Application.Dto.Advertisements
+namespace AluguelIdeal.Application.Dtos.Advertisements
 {
     public class AdvertisementDto
     {

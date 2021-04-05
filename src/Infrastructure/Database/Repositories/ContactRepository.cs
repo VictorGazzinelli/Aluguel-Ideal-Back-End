@@ -42,6 +42,7 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
                 email = @Email,
                 phone = @Phone
                 WHERE id = @Id
+                AND deleted_at IS NULL
         ";
 
         private static readonly string DELETE = @"

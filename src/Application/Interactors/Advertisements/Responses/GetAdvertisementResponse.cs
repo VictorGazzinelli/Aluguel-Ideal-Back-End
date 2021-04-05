@@ -1,4 +1,4 @@
-﻿using AluguelIdeal.Application.Dto.Advertisements;
+﻿using AluguelIdeal.Application.Dtos.Advertisements;
 using System.Collections.Generic;
 
 namespace AluguelIdeal.Application.Interactors.Advertisements.Responses

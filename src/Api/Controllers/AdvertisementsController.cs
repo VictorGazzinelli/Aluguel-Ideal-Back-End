@@ -71,6 +71,7 @@ namespace AluguelIdeal.Api.Controllers
         /// </summary>
         /// <remarks> Put Advertisement </remarks>
         [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Put(int id, AdvertisementModel model, CancellationToken cancellationToken)
         {
             UpdateAdvertisementRequest request = new UpdateAdvertisementRequest()
@@ -80,6 +81,9 @@ namespace AluguelIdeal.Api.Controllers
             };
 
             UpdateAdvertisementResponse response = await Mediator.Send(request, cancellationToken).ConfigureAwait(false);
+
+            if (response.Advertisement == null)
+                return new NotFoundObjectResult(null);
 
             return new OkObjectResult(new{ response.Advertisement });
         }

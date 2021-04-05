@@ -1,4 +1,4 @@
-﻿using AluguelIdeal.Application.Dto.Advertisements;
+﻿using AluguelIdeal.Application.Dtos.Advertisements;
 using AluguelIdeal.Application.Interactors.Advertisements.Requests;
 using AluguelIdeal.Application.Interactors.Advertisements.Responses;
 using AluguelIdeal.Application.Repositories;

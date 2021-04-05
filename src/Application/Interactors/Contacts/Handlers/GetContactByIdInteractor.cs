@@ -1,4 +1,4 @@
-﻿using AluguelIdeal.Application.Dto.Contacts;
+﻿using AluguelIdeal.Application.Dtos.Contacts;
 using AluguelIdeal.Application.Interactors.Contacts.Requests;
 using AluguelIdeal.Application.Interactors.Contacts.Responses;
 using AluguelIdeal.Application.Repositories;
