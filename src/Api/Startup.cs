@@ -52,7 +52,6 @@ namespace AluguelIdeal.Api
                 mvcOptions.Filters.Add<ValidationFilter>();
                 mvcOptions.Filters.Add(new ProducesResponseTypeAttribute(typeof(BadRequestResponse), StatusCodes.Status400BadRequest));
                 mvcOptions.Filters.Add(new ProducesResponseTypeAttribute(typeof(InternalServerErrorResponse), StatusCodes.Status500InternalServerError));
-                //mvcOptions.Conventions.Add(new RouteTokenTransformerConvention(new SlugCaseRouteTransformer()));
             })
             .AddFluentValidation(fluentValidationMvcConfiguration =>
             {
