@@ -1,6 +1,4 @@
-﻿using AluguelIdeal.Api.Utils.Extensions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.IO;
 using System;
@@ -15,27 +13,23 @@ namespace AluguelIdeal.Api.Middlewares
         private readonly ILogger logger;
         private readonly RecyclableMemoryStreamManager recyclableMemoryStreamManager;
         private readonly RequestDelegate next;
-        private readonly IHostEnvironment environment;
-        private readonly string[] pathsToIgnore = new string []
+        private readonly string[] pathsToIgnore = new string[]
         {
             "/index",
             "/swagger",
             "/favicon",
         };
 
-        public RequestResponseLoggingMiddleware(ILoggerFactory loggerFactory,
-                                                RequestDelegate next,
-                                                IHostEnvironment environment)
+        public RequestResponseLoggingMiddleware(ILoggerFactory loggerFactory, RequestDelegate next)
         {
             this.logger = loggerFactory.CreateLogger<RequestResponseLoggingMiddleware>();
             this.next = next;
             this.recyclableMemoryStreamManager = new RecyclableMemoryStreamManager();
-            this.environment = environment;
         }
 
         public async Task Invoke(HttpContext context)
         {
-            if(!pathsToIgnore.Any(p => context.Request.Path.ToString().StartsWith(p)))
+            if (!pathsToIgnore.Any(p => context.Request.Path.ToString().StartsWith(p)))
             {
                 await LogRequest(context);
                 await LogResponse(context);
@@ -55,9 +49,11 @@ namespace AluguelIdeal.Api.Middlewares
             context.Request.Body.Position = 0;
         }
 
+
         private void LogRequest(HttpContext context, MemoryStream requestStream)
         {
             logger.LogInformation($"Http Request Information:{Environment.NewLine}" +
+                                    $"TraceIdentifier:{context.TraceIdentifier} " +
                                     $"Schema:{context.Request.Scheme} " +
                                     $"Host: {context.Request.Host} " +
                                     $"Path: {context.Request.Path} " +
@@ -70,23 +66,9 @@ namespace AluguelIdeal.Api.Middlewares
             var originalBodyStream = context.Response.Body;
             await using var temporary = recyclableMemoryStreamManager.GetStream();
             context.Response.Body = temporary;
-            string responseBodyAsJson;
-
-            try
-            {
-                await next(context);
-            }
-            catch (Exception exception)
-            {
-                byte[] responseBody =  exception.GetHttpResponseBody(environment);
-                using (MemoryStream ms = new MemoryStream(responseBody))
-                    responseBodyAsJson = await new StreamReader(ms).ReadToEndAsync();
-                LogResponse(context, responseBodyAsJson, exception.GetHttpResponseStatus());
-                context.Response.Body = originalBodyStream;
-                throw;
-            }
+            await next(context);
             context.Response.Body.Seek(0, SeekOrigin.Begin);
-            responseBodyAsJson = await new StreamReader(context.Response.Body).ReadToEndAsync();
+            string responseBodyAsJson = await new StreamReader(context.Response.Body).ReadToEndAsync();
             context.Response.Body.Seek(0, SeekOrigin.Begin);
             LogResponse(context, responseBodyAsJson);
             await temporary.CopyToAsync(originalBodyStream);
@@ -95,6 +77,7 @@ namespace AluguelIdeal.Api.Middlewares
         private void LogResponse(HttpContext context, string responseBodyAsJson, int? statusCode = null)
         {
             logger.LogInformation($"Http Response Information:{Environment.NewLine}" +
+                                               $"TraceIdentifier:{context.TraceIdentifier} " +
                                                $"Schema:{context.Request.Scheme} " +
                                                $"Host: {context.Request.Host} " +
                                                $"Path: {context.Request.Path} " +
@@ -113,7 +96,7 @@ namespace AluguelIdeal.Api.Middlewares
             int readChunkLength;
             do
             {
-                readChunkLength = reader.ReadBlock(readChunk,0,readChunkBufferLength);
+                readChunkLength = reader.ReadBlock(readChunk, 0, readChunkBufferLength);
                 textWriter.Write(readChunk, 0, readChunkLength);
             } while (readChunkLength > 0);
             return textWriter.ToString();

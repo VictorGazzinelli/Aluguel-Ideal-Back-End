@@ -19,6 +19,7 @@
     <PackageReference Include="FluentMigrator" Version="3.2.15" />
     <PackageReference Include="FluentMigrator.Runner" Version="3.2.15" />
     <PackageReference Include="FluentMigrator.Runner.Postgres" Version="3.2.15" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.2" />
   </ItemGroup>
 
   <ItemGroup>

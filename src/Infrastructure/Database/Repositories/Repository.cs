@@ -16,10 +16,10 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
             this.databaseConnectionFactory = databaseConnectionFactory;
         }
 
-        protected async Task<int> ExecuteCommandAsync(string command, object dynamicParameters = null, string databaseConnectionName = null, CancellationToken cancellationToken = default)
+        protected async Task ExecuteCommandAsync(string command, object dynamicParameters = null, string databaseConnectionName = null, CancellationToken cancellationToken = default)
         {
             using IDbConnection databaseConnection = databaseConnectionFactory.GetDbConnection(databaseConnectionName);
-            return await SqlMapper.ExecuteAsync(databaseConnection, new CommandDefinition(command, dynamicParameters, cancellationToken: cancellationToken));
+            await SqlMapper.ExecuteAsync(databaseConnection, new CommandDefinition(command, dynamicParameters, cancellationToken: cancellationToken));
         }
 
         protected async Task<TScalar> ExecuteScalarFunctionAsync<TScalar>(string function, object dynamicParameters = null, string databaseConnectionName = null, CancellationToken cancellationToken = default)

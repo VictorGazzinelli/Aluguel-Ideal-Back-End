@@ -1,23 +1,19 @@
-using AluguelIdeal.Api.Controllers.Models.Responses.Http;
-using AluguelIdeal.Api.Conventions;
-using AluguelIdeal.Api.Filters;
 using AluguelIdeal.Api.Middlewares;
+using AluguelIdeal.Api.Options.ApiBehavior;
+using AluguelIdeal.Api.Options.Authorization;
+using AluguelIdeal.Api.Options.Cors;
+using AluguelIdeal.Api.Options.Jwt;
+using AluguelIdeal.Api.Options.Mvc;
+using AluguelIdeal.Api.Options.Swagger;
 using AluguelIdeal.Application;
 using AluguelIdeal.Infrastructure;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Swagger;
-using System;
-using System.IO;
-using System.Reflection;
+using System.Text.Json;
 
 namespace AluguelIdeal.Api
 {
@@ -35,54 +31,37 @@ namespace AluguelIdeal.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
-
             services.AddHttpContextAccessor();
+
+            services.AddApplication();
+
+            services.AddInfrastructure(Configuration, Environment);
 
             services.AddRouting(routeOptions => routeOptions.LowercaseUrls = true);
 
-            services.Configure<ApiBehaviorOptions>(apiBehaviorOptions =>
-            {
-                apiBehaviorOptions.SuppressModelStateInvalidFilter = true;
-                apiBehaviorOptions.SuppressMapClientErrors = true;
-            });
+            services.AddCors(CustomCorsOptions.SetupAction);
 
-            services.AddControllers(mvcOptions =>
-            {
-                mvcOptions.Filters.Add<ValidationFilter>();
-                mvcOptions.Filters.Add(new ProducesResponseTypeAttribute(typeof(BadRequestResponse), StatusCodes.Status400BadRequest));
-                mvcOptions.Filters.Add(new ProducesResponseTypeAttribute(typeof(InternalServerErrorResponse), StatusCodes.Status500InternalServerError));
-            })
-            .AddFluentValidation(fluentValidationMvcConfiguration =>
-            {
-                fluentValidationMvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>();
-            });
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(CustomJwtBearerOptions.GetSetupAction(Configuration));
 
-            services.AddSwaggerGen(swaggerGenOptions =>
-            {
-                swaggerGenOptions.SwaggerDoc("v1", new OpenApiInfo { Title = "AluguelIdeal API", Version = "v1" });
-                string xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                string xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFileName);
-                swaggerGenOptions.IncludeXmlComments(xmlFilePath);
-                swaggerGenOptions.AddFluentValidationRules();
-            });
+            services.AddAuthorization(CustomAuthorizationOptions.SetupAction);
 
-            services.AddApplication();
-            services.AddInfrastructure(Configuration, Environment);
+            services.Configure(CustomApiBehaviourOptions.SetupAction);
+
+            services.AddControllers(CustomMvcOptions.SetupAction)
+            .AddFluentValidation(fluentValidationMvcConfiguration => fluentValidationMvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>())
+            .AddJsonOptions(jsonOptions => jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
+
+            services.AddSwaggerGen(CustomSwaggerGenOptions.SetupAction);
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
-            if (Environment.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseExceptionHandler(ExceptionHandlerMiddleware.ExceptionHandler(Environment));
+            app.UseExceptionHandler(ExceptionHandlerMiddleware.ExceptionHandler());
 
             app.UseRouting();
 
-            app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            app.UseCors();
 
             app.UseAuthentication();
 
@@ -90,19 +69,11 @@ namespace AluguelIdeal.Api
 
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
-
             app.UseSwagger();
 
-            app.UseSwaggerUI(swaggerUIOptions =>
-            {
-                swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "AluguelIdeal API V1");
-                swaggerUIOptions.RoutePrefix = string.Empty;
-                swaggerUIOptions.DisplayRequestDuration();
-                swaggerUIOptions.EnableFilter();
-                swaggerUIOptions.EnableDeepLinking();
-                swaggerUIOptions.DefaultModelsExpandDepth(-1);
-            });
+            app.UseSwaggerUI(new CustomSwaggerUIOptions());
+
+            app.UseEndpoints(endpointRouterBuilder => endpointRouterBuilder.MapControllers());
         }
     }
 }

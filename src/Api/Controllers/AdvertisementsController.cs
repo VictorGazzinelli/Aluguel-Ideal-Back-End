@@ -1,109 +1,73 @@
-﻿using AluguelIdeal.Api.Controllers.Models.Advertisement;
-using AluguelIdeal.Application.Interactors.Advertisements.Requests;
-using AluguelIdeal.Application.Interactors.Advertisements.Responses;
-using Microsoft.AspNetCore.Http;
+﻿using AluguelIdeal.Application.Interactors.Advertisements.Commands;
+using AluguelIdeal.Application.Interactors.Advertisements.Queries;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AluguelIdeal.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [Consumes(MediaTypeNames.Application.Json)]
-    [Produces(MediaTypeNames.Application.Json)]
     public class AdvertisementsController : ApiController
     {
         /// <summary>
-        /// Post Advertisement
+        /// Create Advertisement
         /// </summary>
-        /// <remarks> Post Advertisement </remarks>
+        /// <remarks> Create Advertisement </remarks>
         [HttpPost]
-        public async Task<IActionResult> Post(AdvertisementModel model, CancellationToken cancellationToken)
-        {
-            InsertAdvertisementRequest request = new InsertAdvertisementRequest()
-            {
-                Title = model.Title,
-            };
-
-            InsertAdvertisementResponse response = await Mediator.Send(request, cancellationToken);
-
-            return new OkObjectResult(new { response.Advertisement.Id });
-        }
+        public async Task<IActionResult> Create(CreateAdvertisementCommand command, CancellationToken cancellationToken) =>
+            new OkObjectResult(await Mediator.Send(command, cancellationToken));
 
         /// <summary>
-        /// Get Advertisement
+        /// Get Advertisements
         /// </summary>
-        /// <remarks> Get Advertisement </remarks>
+        /// <remarks> Get Advertisements </remarks>
         [HttpGet]
-        public async Task<IActionResult> Get(CancellationToken cancellationToken)
-        {
-            GetAdvertisementRequest request = new GetAdvertisementRequest();
-
-            GetAdvertisementResponse response = await Mediator.Send(request, cancellationToken).ConfigureAwait(false);
-
-            return new OkObjectResult(new { response.Advertisements });
-        }
+        public async Task<IActionResult> Get([FromQuery] GetAdvertisementsQuery query, CancellationToken cancellationToken) =>
+            new OkObjectResult(await Mediator.Send(query, cancellationToken));
 
         /// <summary>
         /// Get Advertisement by id
         /// </summary>
         /// <remarks> Get Advertisement by id </remarks>
-        [HttpGet("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
-        {
-            GetAdvertisementByIdRequest request = new GetAdvertisementByIdRequest()
-            {
-                Id = id,
-            };
+        [HttpGet("{id:Guid}")]
+        public async Task<IActionResult> GetById([FromQuery] GetAdvertisementsByIdQuery query, CancellationToken cancellationToken) =>
+            new OkObjectResult(await Mediator.Send(query, cancellationToken));
 
-            GetAdvertisementByIdResponse response = await Mediator.Send(request, cancellationToken).ConfigureAwait(false);
+        ///// <summary>
+        ///// Put Advertisement
+        ///// </summary>
+        ///// <remarks> Put Advertisement </remarks>
+        //[HttpPut("{id:int}")]
+        //public async Task<IActionResult> Put(int id, AdvertisementModel model, CancellationToken cancellationToken)
+        //{
+        //    UpdateAdvertisementRequest request = new UpdateAdvertisementRequest()
+        //    {
+        //        Id = id,
+        //        Title = model.Title,
+        //    };
 
-            if (response.Advertisement == null)
-                return new NotFoundObjectResult(null);
+        //    UpdateAdvertisementResponse response = await Mediator.Send(request, cancellationToken).ConfigureAwait(false);
 
-            return new OkObjectResult(new { response.Advertisement });
-        }
+        //    if (response.Advertisement == null)
+        //        return new NotFoundObjectResult(null);
 
-        /// <summary>
-        /// Put Advertisement
-        /// </summary>
-        /// <remarks> Put Advertisement </remarks>
-        [HttpPut("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Put(int id, AdvertisementModel model, CancellationToken cancellationToken)
-        {
-            UpdateAdvertisementRequest request = new UpdateAdvertisementRequest()
-            {
-                Id = id,
-                Title = model.Title,
-            };
+        //    return new OkObjectResult(new{ response.Advertisement });
+        //}
 
-            UpdateAdvertisementResponse response = await Mediator.Send(request, cancellationToken).ConfigureAwait(false);
+        ///// <summary>
+        ///// Delete Advertisement
+        ///// </summary>
+        ///// <remarks> Delete Advertisement </remarks>
+        //[HttpDelete("{id:int}")]
+        //public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+        //{
+        //    DeleteAdvertisementRequest request = new DeleteAdvertisementRequest()
+        //    {
+        //        Id = id,
+        //    };
 
-            if (response.Advertisement == null)
-                return new NotFoundObjectResult(null);
+        //    await Mediator.Send(request, cancellationToken).ConfigureAwait(false);
 
-            return new OkObjectResult(new{ response.Advertisement });
-        }
-
-        /// <summary>
-        /// Delete Advertisement
-        /// </summary>
-        /// <remarks> Delete Advertisement </remarks>
-        [HttpDelete("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
-        {
-            DeleteAdvertisementRequest request = new DeleteAdvertisementRequest()
-            {
-                Id = id,
-            };
-
-            await Mediator.Send(request, cancellationToken).ConfigureAwait(false);
-
-            return new NoContentResult();
-        }
+        //    return new NoContentResult();
+        //}
     }
 }

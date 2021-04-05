@@ -7,8 +7,7 @@ namespace AluguelIdeal.Application.Interactors.Advertisements.Validators
     {
         public GetAdvertisementByIdRequestValidator()
         {
-            RuleFor(request => request.Id)
-                .GreaterThan(0);
+
         }
     }
 }

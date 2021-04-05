@@ -1,7 +1,9 @@
 ﻿using AluguelIdeal.Application.Repositories;
+using AluguelIdeal.Application.Services;
 using AluguelIdeal.Infrastructure.Database.Access;
 using AluguelIdeal.Infrastructure.Database.Migrations;
 using AluguelIdeal.Infrastructure.Database.Repositories;
+using AluguelIdeal.Infrastructure.Services;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.Logging;
 using Microsoft.Extensions.Configuration;
@@ -51,9 +53,8 @@ namespace AluguelIdeal.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
         {
             services.Configure<List<ConnectionStringSettings>>(configuration.GetSection(nameof(ConnectionStringSettingsCollection)));
-            services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
-            services.AddTransient<IAdvertisementRepository, AdvertisementRepository>();
-            services.AddTransient<IContactRepository, ContactRepository>();
+            AddRepositories(services);
+            AddServices(services);
 
             if (environment.IsDevelopment())
             {
@@ -65,6 +66,18 @@ namespace AluguelIdeal.Infrastructure
             }
 
             return services;
+        }
+
+        private static void AddServices(IServiceCollection services)
+        {
+            services.AddSingleton<IAuthService, AuthService>();
+        }
+
+        private static void AddRepositories(IServiceCollection services)
+        {
+            services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
+            services.AddTransient<IAdvertisementRepository, AdvertisementRepository>();
+            services.AddTransient<IContactRepository, ContactRepository>();
         }
     }
 }

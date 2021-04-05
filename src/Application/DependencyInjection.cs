@@ -1,8 +1,7 @@
-﻿using AluguelIdeal.Application.Behaviours;
+﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using FluentValidation;
 
 namespace AluguelIdeal.Application
 {
@@ -12,7 +11,6 @@ namespace AluguelIdeal.Application
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateRequestBehaviour<,>));
 
             return services;
         }

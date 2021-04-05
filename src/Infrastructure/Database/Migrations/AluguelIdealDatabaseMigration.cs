@@ -20,7 +20,7 @@ namespace AluguelIdeal.Infrastructure.Database.Migrations
             Execute.Sql("DROP TABLE IF EXISTS contact");
 
             Create.Table("advertisement")
-                .WithColumn("id").AsInt32().PrimaryKey("PK_advertisement").Identity()
+                .WithColumn("id").AsGuid().PrimaryKey("PK_advertisement")
                 .WithColumn("title").AsString(255).NotNullable()
                 .WithColumn("deleted_at").AsDateTime().Nullable();
 
@@ -31,8 +31,8 @@ namespace AluguelIdeal.Infrastructure.Database.Migrations
                 .WithColumn("phone").AsString(255).NotNullable()
                 .WithColumn("deleted_at").AsDateTime().Nullable();
 
-            foreach (object advertisement in GenerateFakeAdvertisements())
-                Insert.IntoTable("advertisement").Row(advertisement);
+            //foreach (object advertisement in GenerateFakeAdvertisements())
+            //    Insert.IntoTable("advertisement").Row(advertisement);
 
             foreach (object contact in GenerateFakeContacts())
                 Insert.IntoTable("contact").Row(contact);

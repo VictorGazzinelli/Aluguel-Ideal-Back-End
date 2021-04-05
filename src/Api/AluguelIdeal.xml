@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AluguelIdeal.Api</name>
+    </assembly>
+    <members>
+        <member name="M:AluguelIdeal.Api.Controllers.AdvertisementsController.Create(AluguelIdeal.Application.Interactors.Advertisements.Commands.CreateAdvertisementCommand,System.Threading.CancellationToken)">
+            <summary>
+            Create Advertisement
+            </summary>
+            <remarks> Create Advertisement </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.AdvertisementsController.Get(AluguelIdeal.Application.Interactors.Advertisements.Queries.GetAdvertisementsQuery,System.Threading.CancellationToken)">
+            <summary>
+            Get Advertisements
+            </summary>
+            <remarks> Get Advertisements </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.AdvertisementsController.GetById(AluguelIdeal.Application.Interactors.Advertisements.Queries.GetAdvertisementsByIdQuery,System.Threading.CancellationToken)">
+            <summary>
+            Get Advertisement by id
+            </summary>
+            <remarks> Get Advertisement by id </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.AuthController.Get(AluguelIdeal.Application.Interactors.Auth.Queries.GetAuthQuery,System.Threading.CancellationToken)">
+            <summary>
+            Get Auth Token
+            </summary>
+            <remarks> Get Auth Token </remarks>
+        </member>
+    </members>
+</doc>

@@ -7,17 +7,17 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>$(MSBuildProjectDirectory)/AluguelIdeal.Api.xml</DocumentationFile>
+    <DocumentationFile>$(MSBuildProjectDirectory)/AluguelIdeal.xml</DocumentationFile>
     <NoWarn>1701;1702;1591;TS2304</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>$(MSBuildProjectDirectory)/AluguelIdeal.Api.xml</DocumentationFile>
+    <DocumentationFile>$(MSBuildProjectDirectory)/AluguelIdeal.xml</DocumentationFile>
     <NoWarn>1701;1702;1591;TS2304</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="AluguelIdeal.Api.xml">
+    <EmbeddedResource Include="AluguelIdeal.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
@@ -25,9 +25,9 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.5.3" />
     <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="4.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.14" />
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.2" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
   </ItemGroup>
 

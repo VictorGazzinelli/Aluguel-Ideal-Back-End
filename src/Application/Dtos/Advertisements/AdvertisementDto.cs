@@ -1,11 +1,11 @@
-﻿using System;
-using AdvertisementEntity = AluguelIdeal.Domain.Entities.Advertisement;
+﻿using AluguelIdeal.Domain.Entities;
+using System;
 
 namespace AluguelIdeal.Application.Dtos.Advertisements
 {
     public class AdvertisementDto
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Title { get; set; }
 
         public AdvertisementDto()
@@ -13,7 +13,7 @@ namespace AluguelIdeal.Application.Dtos.Advertisements
         
         }
 
-        public AdvertisementDto(AdvertisementEntity advertisment)
+        public AdvertisementDto(Advertisement advertisment)
         {
             Id = advertisment.Id;
             Title = advertisment.Title;

@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using System;
 
 namespace AluguelIdeal.Application.Interactors.Advertisements.Requests
 {
     public class DeleteAdvertisementRequest : IRequest
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using AluguelIdeal.Application.Interactors.Advertisements.Requests;
 using AluguelIdeal.Application.Interactors.Advertisements.Responses;
 using AluguelIdeal.Application.Repositories;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AdvertisementEntity = AluguelIdeal.Domain.Entities.Advertisement;
@@ -19,24 +20,25 @@ namespace AluguelIdeal.Application.Interactors.Advertisements.Handlers
 
         public async Task<UpdateAdvertisementResponse> Handle(UpdateAdvertisementRequest request, CancellationToken cancellationToken)
         {
-            if (await advertisementRepository.GetByIdAsync(request.Id, cancellationToken) == null)
-                return new UpdateAdvertisementResponse()
-                {
-                    Advertisement = null
-                };
+            throw new NotImplementedException();
+            //if (await advertisementRepository.GetByIdAsync(request.Id, cancellationToken) == null)
+            //    return new UpdateAdvertisementResponse()
+            //    {
+            //        Advertisement = null
+            //    };
 
-            AdvertisementEntity advertisement = new AdvertisementEntity()
-            {
-                Id = request.Id,
-                Title = request.Title
-            };
+            //AdvertisementEntity advertisement = new AdvertisementEntity()
+            //{
+            //    Id = request.Id,
+            //    Title = request.Title
+            //};
 
-            await advertisementRepository.UpdateAsync(advertisement, cancellationToken);
+            //await advertisementRepository.UpdateAsync(advertisement, cancellationToken);
 
-            return new UpdateAdvertisementResponse()
-            {
-                Advertisement = new AdvertisementDto(advertisement)
-            };
+            //return new UpdateAdvertisementResponse()
+            //{
+            //    Advertisement = new AdvertisementDto(advertisement)
+            //};
         }
     }
 }
