@@ -40,6 +40,6 @@ namespace AluguelIdeal.Infrastructure.Database.Access
 
         private ConnectionStringSettings FindConnectionStringSettingsByName(string name) =>
              connectionStringSettingsList.FirstOrDefault(c => string.Equals(name, c.Name, StringComparison.InvariantCultureIgnoreCase)) ??
-                throw new ArgumentException($"Could not find the connection string settings with name {name}", nameof(name));
+                throw new ArgumentException($"Could not find the connection string settings with name '{name}'", nameof(name));
     }
 }
