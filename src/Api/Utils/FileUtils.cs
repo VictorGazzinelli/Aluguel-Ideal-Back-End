@@ -16,7 +16,7 @@ namespace AluguelIdeal.Api.Utils
             var currentDirPath = GetAssemblyDir();
             while (currentDirPath != null)
             {
-                var fileInCurrentDir = Directory.GetFiles(currentDirPath).Select(f => f.Split(@"\").Last()).ToArray();
+                var fileInCurrentDir = Directory.GetFiles(currentDirPath).Select(f => f.Split(@"\").Last().Split(@"/").Last()).ToArray();
                 var solutionFileName = fileInCurrentDir.SingleOrDefault(f => f.EndsWith(".sln", StringComparison.InvariantCultureIgnoreCase));
                 if (solutionFileName != null)
                     return Path.Combine(currentDirPath, solutionFileName);

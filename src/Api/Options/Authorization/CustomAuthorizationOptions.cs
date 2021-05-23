@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using System;
-using System.Security.Claims;
 
 namespace AluguelIdeal.Api.Options.Authorization
 {

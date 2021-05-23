@@ -1,0 +1,33 @@
+-- UP
+CREATE TABLE "public"."user" ("id" uuid NOT NULL, "name" varchar(255) NOT NULL, "email" varchar(255) NOT NULL, "phone" varchar(20), "password" varchar(255), "deleted_at" timestamp, PRIMARY KEY ("id"));
+CREATE TABLE "public"."role" ("id" uuid NOT NULL, "name" varchar(255) NOT NULL, PRIMARY KEY ("id"));
+CREATE TABLE "public"."profile" ("user_id" uuid NOT NULL, "role_id" uuid NOT NULL);
+ALTER TABLE "public"."profile" ADD CONSTRAINT "FK_profile_user_id_user_id" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id");
+ALTER TABLE "public"."profile" ADD CONSTRAINT "FK_profile_role_id_role_id" FOREIGN KEY ("role_id") REFERENCES "public"."role" ("id");
+ALTER TABLE "public"."profile" ADD CONSTRAINT "PK_profile" PRIMARY KEY ("user_id", "role_id");
+CREATE TABLE "public"."city" ("id" uuid NOT NULL, "name" varchar(255) NOT NULL, PRIMARY KEY ("id"));
+CREATE TABLE "public"."district" ("id" uuid NOT NULL, "city_id" uuid NOT NULL, "name" varchar(255) NOT NULL, PRIMARY KEY ("id"));
+ALTER TABLE "public"."district" ADD CONSTRAINT "FK_district_city_id_city_id" FOREIGN KEY ("city_id") REFERENCES "public"."city" ("id");
+CREATE TABLE "public"."residence" ("id" uuid NOT NULL, "district_id" uuid NOT NULL, "street" varchar(255) NOT NULL, "bedrooms" integer NOT NULL, "bathrooms" integer NOT NULL, "area" float8 NOT NULL, "rent" float8 NOT NULL, "tax" float8 NOT NULL, "description" text, "deleted_at" timestamp, PRIMARY KEY ("id"));
+ALTER TABLE "public"."residence" ADD CONSTRAINT "FK_residence_district_id_district_id" FOREIGN KEY ("district_id") REFERENCES "public"."district" ("id");
+CREATE TABLE "public"."landlord" ("user_id" uuid NOT NULL, "residence_id" uuid NOT NULL);
+ALTER TABLE "public"."landlord" ADD CONSTRAINT "FK_landlord_user_id_user_id" FOREIGN KEY ("user_id") REFERENCES "public"."user" ("id");
+ALTER TABLE "public"."landlord" ADD CONSTRAINT "FK_landlord_residence_id_residence_id" FOREIGN KEY ("residence_id") REFERENCES "public"."residence" ("id");
+ALTER TABLE "public"."landlord" ADD CONSTRAINT "PK_landlord" PRIMARY KEY ("user_id", "residence_id");
+CREATE TABLE "public"."image" ("id" uuid NOT NULL, "residence_id" uuid NOT NULL, "path" varchar(255) NOT NULL, PRIMARY KEY ("id"));
+ALTER TABLE "public"."image" ADD CONSTRAINT "FK_image_residence_id_residence_id" FOREIGN KEY ("residence_id") REFERENCES "public"."residence" ("id");
+CREATE TABLE "public"."house" ("id" uuid NOT NULL, "residence_id" uuid NOT NULL, "yard_area" float8 NOT NULL, PRIMARY KEY ("id"));
+ALTER TABLE "public"."house" ADD CONSTRAINT "FK_house_residence_id_residence_id" FOREIGN KEY ("residence_id") REFERENCES "public"."residence" ("id");
+CREATE TABLE "public"."flat" ("id" uuid NOT NULL, "residence_id" uuid NOT NULL, "condominium" float8 NOT NULL, "floor" integer NOT NULL, PRIMARY KEY ("id"));
+ALTER TABLE "public"."flat" ADD CONSTRAINT "FK_flat_residence_id_residence_id" FOREIGN KEY ("residence_id") REFERENCES "public"."residence" ("id");
+-- DOWN
+DROP TABLE "public"."flat";
+DROP TABLE "public"."house";
+DROP TABLE "public"."image";
+DROP TABLE "public"."landlord";
+DROP TABLE "public"."residence";
+DROP TABLE "public"."district";
+DROP TABLE "public"."city";
+DROP TABLE "public"."profile";
+DROP TABLE "public"."role";
+DROP TABLE "public"."user";

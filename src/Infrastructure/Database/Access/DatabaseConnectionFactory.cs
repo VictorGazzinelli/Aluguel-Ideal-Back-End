@@ -15,7 +15,7 @@ namespace AluguelIdeal.Infrastructure.Database.Access
 
         public DatabaseConnectionFactory(IOptions<List<ConnectionStringSettings>> connectionStringSettingsListOptions)
         {
-            connectionStringSettingsList = connectionStringSettingsListOptions.Value.Any() ?
+            this.connectionStringSettingsList = connectionStringSettingsListOptions.Value.Any() ?
                 connectionStringSettingsListOptions.Value :
                 throw new ArgumentException($"no connection string settings options were given", nameof(connectionStringSettingsListOptions));
             RegisterFactories();

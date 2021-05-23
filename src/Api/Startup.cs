@@ -37,9 +37,9 @@ namespace AluguelIdeal.Api
 
             services.AddInfrastructure(Configuration, Environment);
 
-            services.AddRouting(routeOptions => routeOptions.LowercaseUrls = true);
-
             services.AddCors(CustomCorsOptions.SetupAction);
+            
+            services.AddRouting(routeOptions => routeOptions.LowercaseUrls = true);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(CustomJwtBearerOptions.GetSetupAction(Configuration));

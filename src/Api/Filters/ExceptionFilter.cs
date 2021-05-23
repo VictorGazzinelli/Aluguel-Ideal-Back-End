@@ -1,5 +1,6 @@
 ﻿using AluguelIdeal.Api.Controllers.Models.Responses.Http;
 using AluguelIdeal.Application.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,9 +19,12 @@ namespace AluguelIdeal.Api.Filters
             this.logger = loggerFactory.CreateLogger<ExceptionFilter>();
             exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
-                [typeof(AggregateNotFoundException)] = HandleAggregateNotFoundException
+                [typeof(AggregateNotFoundException)] = HandleAggregateNotFoundException,
+                [typeof(AuthErrorException)] = HandleAuthErrorException
             };
         }
+
+
         public Task OnExceptionAsync(ExceptionContext context)
         {
             LogExceptionContext(context);
@@ -47,6 +51,12 @@ namespace AluguelIdeal.Api.Filters
                 context.Exception as AggregateNotFoundException;
 
             context.Result = new ErrorResponse(aggregateNotFoundException).AsObjectResult();
+
+            context.ExceptionHandled = true;
+        }
+        private void HandleAuthErrorException(ExceptionContext context)
+        {
+            context.Result = new BadRequestObjectResult(new { error = "invalid_request" });
 
             context.ExceptionHandled = true;
         }

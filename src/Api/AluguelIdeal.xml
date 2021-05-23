@@ -4,29 +4,107 @@
         <name>AluguelIdeal.Api</name>
     </assembly>
     <members>
-        <member name="M:AluguelIdeal.Api.Controllers.AdvertisementsController.Create(AluguelIdeal.Application.Interactors.Advertisements.Commands.CreateAdvertisementCommand,System.Threading.CancellationToken)">
+        <member name="M:AluguelIdeal.Api.Controllers.AuthController.GetAuthToken(AluguelIdeal.Application.Interactors.Auth.Queries.GetAuthQuery,System.Threading.CancellationToken)">
             <summary>
-            Create Advertisement
+            Get Auth Token (Login)
             </summary>
-            <remarks> Create Advertisement </remarks>
+            <remarks> Get Auth Token (Login) </remarks>
         </member>
-        <member name="M:AluguelIdeal.Api.Controllers.AdvertisementsController.Get(AluguelIdeal.Application.Interactors.Advertisements.Queries.GetAdvertisementsQuery,System.Threading.CancellationToken)">
+        <member name="M:AluguelIdeal.Api.Controllers.CitiesController.Get(System.Threading.CancellationToken)">
             <summary>
-            Get Advertisements
+            Get Cities
             </summary>
-            <remarks> Get Advertisements </remarks>
+            <remarks> Get Cities </remarks>
         </member>
-        <member name="M:AluguelIdeal.Api.Controllers.AdvertisementsController.GetById(AluguelIdeal.Application.Interactors.Advertisements.Queries.GetAdvertisementsByIdQuery,System.Threading.CancellationToken)">
+        <member name="M:AluguelIdeal.Api.Controllers.DistrictsController.Get(AluguelIdeal.Application.Interactors.Districts.Queries.GetDistrictsQuery,System.Threading.CancellationToken)">
             <summary>
-            Get Advertisement by id
+            Get Districts
             </summary>
-            <remarks> Get Advertisement by id </remarks>
+            <remarks> Get Districts </remarks>
         </member>
-        <member name="M:AluguelIdeal.Api.Controllers.AuthController.Get(AluguelIdeal.Application.Interactors.Auth.Queries.GetAuthQuery,System.Threading.CancellationToken)">
+        <member name="M:AluguelIdeal.Api.Controllers.ProfilesController.Bind(AluguelIdeal.Application.Interactors.Profiles.Commands.BindProfileCommand,System.Threading.CancellationToken)">
             <summary>
-            Get Auth Token
+            Bind Profile
             </summary>
-            <remarks> Get Auth Token </remarks>
+            <remarks> Bind Profile </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.ProfilesController.Unbind(AluguelIdeal.Application.Interactors.Profiles.Commands.UnbindProfileCommand,System.Threading.CancellationToken)">
+            <summary>
+            Unbind Profile
+            </summary>
+            <remarks> Unbind Profile </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.ResidencesController.Create(AluguelIdeal.Application.Interactors.Residences.Commands.CreateResidenceCommand,System.Threading.CancellationToken)">
+            <summary>
+            Create Residence
+            </summary>
+            <remarks> Create Residence </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.ResidencesController.Get(AluguelIdeal.Application.Interactors.Residences.Queries.GetResidencesQuery,System.Threading.CancellationToken)">
+            <summary>
+            Get Residences
+            </summary>
+            <remarks> Get Residences </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.ResidencesController.GetById(AluguelIdeal.Application.Interactors.Residences.Queries.GetResidenceByIdQuery,System.Threading.CancellationToken)">
+            <summary>
+            Get Residence by id
+            </summary>
+            <remarks> Get Residence by id </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.ResidencesController.Put(AluguelIdeal.Application.Interactors.Residences.Commands.UpdateResidenceCommand,System.Threading.CancellationToken)">
+            <summary>
+            Update Residence
+            </summary>
+            <remarks> Update Residence </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.ResidencesController.Delete(AluguelIdeal.Application.Interactors.Residences.Commands.DeleteResidenceCommand,System.Threading.CancellationToken)">
+            <summary>
+            Delete Residence
+            </summary>
+            <remarks> Delete Residence </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.RolesController.Get(AluguelIdeal.Application.Interactors.Roles.Queries.GetRolesQuery,System.Threading.CancellationToken)">
+            <summary>
+            Get Roles
+            </summary>
+            <remarks> Get Roles </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.UsersController.Create(AluguelIdeal.Application.Interactors.Users.Commands.CreateUserCommand,System.Threading.CancellationToken)">
+            <summary>
+            Create User
+            </summary>
+            <remarks> Create User </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.UsersController.Get(AluguelIdeal.Application.Interactors.Users.Queries.GetUsersQuery,System.Threading.CancellationToken)">
+            <summary>
+            Get Users
+            </summary>
+            <remarks> Get Users </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.UsersController.GetById(AluguelIdeal.Application.Interactors.Users.Queries.GetUserByIdQuery,System.Threading.CancellationToken)">
+            <summary>
+            Get User by id
+            </summary>
+            <remarks> Get User by id </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.UsersController.Put(AluguelIdeal.Application.Interactors.Users.Commands.UpdateUserCommand,System.Threading.CancellationToken)">
+            <summary>
+            Update User
+            </summary>
+            <remarks> Update User </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.UsersController.Register(AluguelIdeal.Application.Interactors.Users.Commands.RegisterUserCommand,System.Threading.CancellationToken)">
+            <summary>
+            Register User
+            </summary>
+            <remarks> Register User </remarks>
+        </member>
+        <member name="M:AluguelIdeal.Api.Controllers.UsersController.Delete(AluguelIdeal.Application.Interactors.Users.Commands.DeleteUserCommand,System.Threading.CancellationToken)">
+            <summary>
+            Delete User
+            </summary>
+            <remarks> Delete User </remarks>
         </member>
     </members>
 </doc>
