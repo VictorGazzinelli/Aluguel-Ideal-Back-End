@@ -79,6 +79,8 @@ namespace AluguelIdeal.Infrastructure
                 maintenanceLoader.CreateMigrationsSqlEquivalent(migrationContext, migrationGenerator, sqlScriptsDirectory);
             }
 
+            maintenanceLoader.CreateMigrationsSqlEquivalent(migrationContext, migrationGenerator, sqlScriptsDirectory);
+
             migrationRunner.ListMigrations();
 
             if (environment.EnvironmentName.Equals("Testing"))
