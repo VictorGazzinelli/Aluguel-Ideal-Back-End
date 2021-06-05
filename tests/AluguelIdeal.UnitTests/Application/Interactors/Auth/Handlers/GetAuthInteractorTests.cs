@@ -9,9 +9,9 @@ using Xunit;
 
 namespace AluguelIdeal.UnitTests.Application.Interactors.Auth.Handlers
 {
-    public class GetAuthQueryInteractorTests
+    public class GetAuthInteractorTests
     {
-        [Fact(DisplayName = "When GetAuthQueryInteractor.Handle is called, it should call AuthService.CreateBearerTokenAsync")]
+        [Fact(DisplayName = "When GetAuthInteractor.Handle is called, it should call AuthService.CreateBearerTokenAsync")]
         public async Task Handle_Calls_CreateBearerTokenAsync()
         {
             // Arrange
@@ -29,7 +29,7 @@ namespace AluguelIdeal.UnitTests.Application.Interactors.Auth.Handlers
                 .Setup(service => service.CreateBearerTokenAsync(request.Email, It.IsAny<CancellationToken>()))
                 .ReturnsAsync((anyAccessToken, anyExpiresIn))
                 .Verifiable();
-            GetAuthQueryInteractor sut = mocker.CreateInstance<GetAuthQueryInteractor>();
+            GetAuthInteractor sut = mocker.CreateInstance<GetAuthInteractor>();
 
             // Act
             await sut.Handle(request, default);

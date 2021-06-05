@@ -14,40 +14,40 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
     {
 
         private static readonly string INSERT = @"
-            INSERT INTO residence (Id, DistrictId, Street, Bedrooms, Bathrooms, Area, Rent, Tax, Description, DeletedAt)
+            INSERT INTO residence (id, district_id, street, bedrooms, bathrooms, area, rent, tax, description, deleted_at)
             VALUES (@Id, @DistrictId, @Street, @Bedrooms, @Bathrooms, @Area, @Rent, @Tax, @Description, @DeletedAt)
         ";
 
         private static readonly string SELECT = @"
             SELECT *
             FROM residence
-            WHERE DeletedAt IS NULL
+            WHERE deleted_at IS NULL
         ";
 
         private static readonly string SELECT_BY_ID = @"
             SELECT *
             FROM residence
-            WHERE Id = @Id
+            WHERE id = @Id
         ";
 
         private static readonly string UPDATE = @"
             UPDATE residence
-            SET DistrictId = @DistrictId,
-            Street = @Street,
-            Bedrooms = @Bedrooms,
-            Bathrooms = @Bathrooms,
-            Area = @Area,
-            Rent = @Rent,
-            Tax = @Tax,
-            Description = @Description,
-            WHERE Id = @Id
-            AND DeletedAt IS NULL
+            SET district_id = @DistrictId,
+            street = @Street,
+            bedrooms = @Bedrooms,
+            bathrooms = @Bathrooms,
+            area = @Area,
+            rent = @Rent,
+            tax = @Tax,
+            description = @Description,
+            WHERE id = @Id
+            AND deleted_at IS NULL
         ";
 
         private static readonly string DELETE = @"
             UPDATE residence
-            SET DeletedAt = @DeletedAt
-            WHERE Id = @Id
+            SET deleted_at = @DeletedAt
+            WHERE id = @Id
         ";
 
         public ResidenceRepository(IDatabaseConnectionFactory databaseConnectionFactory) : base(databaseConnectionFactory)

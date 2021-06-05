@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace AluguelIdeal.Application.Interactors.Auth.Handlers
 {
-    public class GetAuthQueryInteractor : IRequestHandler<GetAuthQuery, AuthDto>
+    public class GetAuthInteractor : IRequestHandler<GetAuthQuery, AuthDto>
     {
         private readonly IAuthService authService;
 
-        public GetAuthQueryInteractor(IAuthService authService)
+        public GetAuthInteractor(IAuthService authService)
         {
             this.authService = authService;
         }

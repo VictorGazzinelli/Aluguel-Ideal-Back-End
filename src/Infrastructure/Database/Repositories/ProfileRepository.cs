@@ -2,7 +2,6 @@
 using AluguelIdeal.Domain.Entities;
 using AluguelIdeal.Infrastructure.Database.Access;
 using AluguelIdeal.Infrastructure.Exceptions;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,14 +10,14 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
     public class ProfileRepository : Repository, IProfileRepository
     {
         private static readonly string INSERT = @"
-            INSERT INTO profile (UserId, RoleId)
+            INSERT INTO profile (user_id, role_id)
             VALUES (@UserId, @RoleId)
         ";
 
         private static readonly string DELETE = @"
-            DELETE FROM user
-            WHERE UserId = @UserId 
-            AND RoleId = @RoleId
+            DELETE FROM profile
+            WHERE user_id = @UserId 
+            AND role_id = @RoleId
         ";
 
         public ProfileRepository(IDatabaseConnectionFactory databaseConnectionFactory) : base(databaseConnectionFactory)

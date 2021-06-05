@@ -19,7 +19,7 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
         private static readonly string SELECT_BY_ID = @"
             SELECT *
             FROM city
-            WHERE Id = @Id
+            WHERE id = @Id
         ";
 
         public CityRepository(IDatabaseConnectionFactory databaseConnectionFactory) : base(databaseConnectionFactory)
@@ -30,7 +30,7 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
             return await ExecuteQueryAsync<City>(SELECT, cancellationToken: cancellationToken);
         }
 
-        public async Task<City> GetByIdAsync( Guid id, CancellationToken cancellationToken = default)
+        public async Task<City> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return (await ExecuteQueryAsync<City>(SELECT_BY_ID, new { Id = id }, cancellationToken: cancellationToken)).FirstOrDefault();
         }

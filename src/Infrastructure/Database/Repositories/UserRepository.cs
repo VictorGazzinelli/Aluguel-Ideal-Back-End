@@ -13,7 +13,7 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
     public class UserRepository : Repository, IUserRepository
     {
         private static readonly string INSERT = @"
-            INSERT INTO user (Id, Name, Email, Phone, Password, DeletedAt)
+            INSERT INTO ""user"" (Id, Name, Email, Phone, Password, DeletedAt)
             VALUES (@Id, @Name, @Email, @Phone, @Password, @DeletedAt)
         ";
 
@@ -25,24 +25,24 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
 
         private static readonly string SELECT_BY_ID = @"
             SELECT *
-            FROM user
-            WHERE Id = @Id
+            FROM ""user""
+            WHERE id = @Id
         ";
 
         private static readonly string UPDATE = @"
             UPDATE user
-            SET Name = @Name,
-            Email = @Email,
-            Phone = @Phone,
-            Password = @Password,
-            WHERE Id = @Id
-            AND DeletedAt IS NULL
+            SET name = @Name,
+            email = @Email,
+            phone = @Phone,
+            password = @Password,
+            WHERE id = @Id
+            AND deleted_at IS NULL
         ";
 
         private static readonly string DELETE = @"
             UPDATE user
-            SET DeletedAt = @DeletedAt
-            WHERE Id = @Id
+            SET deleted_at = @DeletedAt
+            WHERE id = @Id
         ";
 
         public UserRepository(IDatabaseConnectionFactory databaseConnectionFactory) : base(databaseConnectionFactory)
