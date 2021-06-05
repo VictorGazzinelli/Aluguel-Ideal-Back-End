@@ -10,7 +10,7 @@ namespace AluguelIdeal.Api.Utils
         public static string GetSolutionName() => GetSolutionFileName().Replace(".sln", "");
         public static string GetAssemblyDir() => Path.GetDirectoryName(GetAssemblyPath());
         public static string GetAssemblyPath() => Assembly.GetExecutingAssembly().Location;
-        public static string GetSolutionFileName() => GetSolutionPath().Split(@"\").Last();
+        public static string GetSolutionFileName() => GetSolutionPath().Split(@"\").Last().Split(@"/").Last();
         public static string GetSolutionPath()
         {
             var currentDirPath = GetAssemblyDir();

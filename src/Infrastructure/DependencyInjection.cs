@@ -67,11 +67,17 @@ namespace AluguelIdeal.Infrastructure
             IMigrationInformationLoader migrationInformationLoader = migrationRunner.MigrationLoader;
             IMigrationContext migrationContext = serviceProvider.GetRequiredService<IMigrationContext>();
             IMigrationGenerator migrationGenerator = serviceProvider.GetRequiredService<IMigrationGenerator>();
+            IMaintenanceLoader maintenanceLoader = serviceProvider.GetRequiredService<IMaintenanceLoader>();
             string sqlScriptsDirectory = Path.Combine(environment.ContentRootPath, "./Scripts/");
 
-            RefreshDirectory(sqlScriptsDirectory);
+            if (!environment.IsProduction())
+            {
+                RefreshDirectory(sqlScriptsDirectory);
 
-            migrationInformationLoader.CreateMigrationsSqlEquivalent(migrationContext, migrationGenerator, sqlScriptsDirectory);
+                migrationInformationLoader.CreateMigrationsSqlEquivalent(migrationContext, migrationGenerator, sqlScriptsDirectory);
+
+                maintenanceLoader.CreateMigrationsSqlEquivalent(migrationContext, migrationGenerator, sqlScriptsDirectory);
+            }
 
             migrationRunner.ListMigrations();
 

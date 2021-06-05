@@ -21,6 +21,17 @@ namespace AluguelIdeal.Infrastructure.Extensions
             File.WriteAllLines(path, sqlExpressions);
         }
 
+        public static void CreateMigrationsSqlEquivalent(this IMaintenanceLoader maintenanceLoader, IMigrationContext migrationContext, IMigrationGenerator migrationGenerator, string sqlScriptsDirectory)
+        {
+            foreach (IMigrationInfo migration in maintenanceLoader.GetAllMaintenances())
+            {
+                IEnumerable<string> sqlExpressions = migration.GetSqlExpressions(migrationContext, migrationGenerator);
+                string fileName = $"{migration.GetName().Replace(": ", "_")}.sql";
+                string path = Path.Combine(sqlScriptsDirectory, fileName);
+                File.WriteAllLines(path, sqlExpressions);
+            }
+        }
+
         public static void CreateMigrationsSqlEquivalent(this IMigrationInformationLoader migrationInformationLoader, IMigrationContext migrationContext, IMigrationGenerator migrationGenerator, string sqlScriptsDirectory)
         {
             foreach (IMigrationInfo migration in migrationInformationLoader.LoadMigrations().Select(kvp => kvp.Value))
@@ -84,5 +95,15 @@ namespace AluguelIdeal.Infrastructure.Extensions
                 return sql;
             }
         }
+
+        public static IEnumerable<IMigrationInfo> GetAllMaintenances(this IMaintenanceLoader maintenanceLoader) =>
+        new[]
+        {
+                    maintenanceLoader.LoadMaintenance(MigrationStage.BeforeAll),
+                    maintenanceLoader.LoadMaintenance(MigrationStage.BeforeEach),
+                    maintenanceLoader.LoadMaintenance(MigrationStage.AfterEach),
+                    maintenanceLoader.LoadMaintenance(MigrationStage.BeforeProfiles),
+                    maintenanceLoader.LoadMaintenance(MigrationStage.AfterAll),
+        }.SelectMany(l => l);
     }
 }
