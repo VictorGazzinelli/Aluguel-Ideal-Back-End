@@ -9,7 +9,7 @@ namespace AluguelIdeal.Infrastructure.Database.Migrations
         transactionBehavior: TransactionBehavior.Default,
         year: 2021, month: 5, day: 16,
         hour: 21, minute: 4, second: 22)]
-    [Tags(TagBehavior.RequireAny, "Testing", "Development", "Staging")]
+    [Tags(TagBehavior.RequireAny, "Testing", "Development", "Staging", "Production")]
     public class AddInitialModelMigration : Migration
     {
         public override void Up()

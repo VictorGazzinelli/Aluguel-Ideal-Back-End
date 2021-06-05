@@ -10,7 +10,7 @@ namespace AluguelIdeal.Infrastructure.Database.Migrations
         transactionBehavior: TransactionBehavior.Default,
         year: 2021, month: 5, day: 16,
         hour: 22, minute: 23, second: 00)]
-    [Tags(TagBehavior.RequireAny, "Testing", "Development", "Staging")]
+    [Tags(TagBehavior.RequireAny, "Testing", "Development", "Staging", "Production")]
     public class AddInitialSeedMigration : Migration
     {
         public override void Up()
