@@ -1,43 +1,22 @@
-﻿using Npgsql;
-using System;
+﻿using Microsoft.Extensions.Options;
+using Npgsql;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
 
 namespace AluguelIdeal.Infrastructure.Database.Other
 {
-    public class ConnectionFactory 
+    public class ConnectionFactory : IConnectionFactory
     {
-        private static readonly object SYNC_ROOT = new object();
-        [ThreadStatic]
-        private static volatile ConnectionFactory instance;
-        public static ConnectionFactory Instance
+        private readonly List<ConnectionStringSettings> connectionStringSettingsList;
+
+        public ConnectionFactory(IOptions<List<ConnectionStringSettings>> connectionStringSettingsListOptions)
         {
-            get
-            {
-                if (instance == null)
-                {
-                    object obj2 = SYNC_ROOT;
-                    lock (obj2)
-                    {
-                        if (instance == null)
-                        {
-                            instance = new ConnectionFactory();
-                        }
-                    }
-                }
-                return instance;
-            }
+
         }
 
-        private ConnectionFactory()
-        {
-        }
-
-        public DbAccessHelper GetConnection(string name) =>
-            new DbAccessHelper(name);
-
-        internal IDbConnection GetIDbConnection(string name)
+        public IDbConnection GetIDbConnection(string name)
         {
             ConnectionStringSettings configuration = new ConnectionStringSettings()
             {
@@ -49,7 +28,7 @@ namespace AluguelIdeal.Infrastructure.Database.Other
             return CreateConnection(configuration);
         }
 
-        private static IDbConnection CreateConnection(ConnectionStringSettings configuration)
+        private IDbConnection CreateConnection(ConnectionStringSettings configuration)
         {
             DbProviderFactories.RegisterFactory("Npgsql", NpgsqlFactory.Instance);
             DbConnection connection1 = DbProviderFactories.GetFactory(configuration.ProviderName).CreateConnection();

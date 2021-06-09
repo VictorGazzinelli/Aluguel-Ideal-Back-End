@@ -108,6 +108,7 @@ namespace AluguelIdeal.Infrastructure
         private static void AddRepositories(IServiceCollection services)
         {
             services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
+            services.AddSingleton<IConnectionFactory, ConnectionFactory>();
             services.AddTransient<ICityRepository, CityRepository>();
             services.AddTransient<IDistrictRepository, DistrictRepository>();
             services.AddTransient<IProfileRepository, ProfileBaseRepository>();

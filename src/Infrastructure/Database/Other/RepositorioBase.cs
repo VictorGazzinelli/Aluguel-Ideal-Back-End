@@ -2,7 +2,7 @@
 {
     public class RepositorioBase<TEntidade> : AdoHelper where TEntidade : class
     {
-        public RepositorioBase(string nomeConexao) : base(nomeConexao)
+        public RepositorioBase(string nomeConexao, IConnectionFactory connectionFactory) : base(nomeConexao, connectionFactory)
         {
         }
     }

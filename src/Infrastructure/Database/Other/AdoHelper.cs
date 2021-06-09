@@ -3,25 +3,17 @@
     public class AdoHelper
     {
         private readonly string nomeConexao;
+        private readonly IConnectionFactory connectionFactory;
 
-        public AdoHelper(string nomeConexao)
+        public AdoHelper(string nomeConexao, IConnectionFactory connectionFactory)
         {
             this.nomeConexao = nomeConexao;
-        }
-
-        public DbAccessHelper ObterConexao()
-        {
-            return ObterConexao(nomeConexao);
-        }
-
-        public static DbAccessHelper ObterConexao(string nomeConexao)
-        {
-            return ConnectionFactory.Instance.GetConnection(nomeConexao);
+            this.connectionFactory = connectionFactory;
         }
 
         public int Executar(string sql, object parametros)
         {
-            DbAccessHelper conexao = ObterConexao();
+            DbAccessHelper conexao = new DbAccessHelper(nomeConexao, connectionFactory);
             return conexao.Execute(sql, parametros);
         }
     }

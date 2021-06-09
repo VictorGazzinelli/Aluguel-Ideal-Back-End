@@ -19,7 +19,7 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
             AND role_id = @RoleId
         ";
 
-        public ProfileBaseRepository() : base("postgres")
+        public ProfileBaseRepository(IConnectionFactory connectionFactory) : base("postgres", connectionFactory)
         {}
 
         public async Task CreateAsync(Profile profile, CancellationToken cancellationToken)
