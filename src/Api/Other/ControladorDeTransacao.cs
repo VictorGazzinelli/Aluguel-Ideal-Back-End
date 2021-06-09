@@ -19,7 +19,7 @@ namespace AluguelIdeal.Api.Other
                 }
                 finally
                 {
-                    ConnectionFactory.Instance.Dispose();
+
                 }
             }
         }

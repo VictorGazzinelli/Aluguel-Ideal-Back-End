@@ -21,10 +21,8 @@
 
         public int Executar(string sql, object parametros)
         {
-            using (DbAccessHelper conexao = ObterConexao())
-            {
-                return conexao.Execute(sql, parametros);
-            }
+            DbAccessHelper conexao = ObterConexao();
+            return conexao.Execute(sql, parametros);
         }
     }
 }

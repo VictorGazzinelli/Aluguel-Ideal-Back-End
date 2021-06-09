@@ -1,21 +1,15 @@
 ﻿using Dapper;
-using System;
-using System.Collections.Generic;
 using System.Data;
 
 namespace AluguelIdeal.Infrastructure.Database.Other
 {
-    public class DbAccessHelper : IDisposable
+    public class DbAccessHelper
     {
         protected readonly string nomeConexao;
 
         public DbAccessHelper(string nomeConexao)
         {
             this.nomeConexao = nomeConexao;
-        }
-
-        public void Dispose()
-        {
         }
 
         public int Execute(string sql, object parametro) =>

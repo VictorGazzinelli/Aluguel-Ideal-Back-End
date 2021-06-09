@@ -6,7 +6,7 @@ using System.Data.Common;
 
 namespace AluguelIdeal.Infrastructure.Database.Other
 {
-    public class ConnectionFactory : IDisposable
+    public class ConnectionFactory 
     {
         private static readonly object SYNC_ROOT = new object();
         [ThreadStatic]
@@ -32,11 +32,6 @@ namespace AluguelIdeal.Infrastructure.Database.Other
 
         private ConnectionFactory()
         {
-        }
-
-        public void Dispose()
-        {
-            // Ignore
         }
 
         public DbAccessHelper GetConnection(string name) =>
