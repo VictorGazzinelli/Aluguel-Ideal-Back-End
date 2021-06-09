@@ -11,11 +11,9 @@ namespace AluguelIdeal.Application.Interactors.Profiles.Handlers
     public class BindProfileInteractor : IRequestHandler<BindProfileCommand>
     {
         private readonly IProfileRepository profileRepository;
-        private readonly ITransactionManager transactionManager;
         public BindProfileInteractor(IProfileRepository profileRepository, ITransactionManager transactionManager)
         {
             this.profileRepository = profileRepository;
-            this.transactionManager = transactionManager;
         }
 
         public async Task<Unit> Handle(BindProfileCommand request, CancellationToken cancellationToken)
