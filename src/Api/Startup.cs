@@ -5,10 +5,10 @@ using AluguelIdeal.Api.Options.Cors;
 using AluguelIdeal.Api.Options.Jwt;
 using AluguelIdeal.Api.Options.Mvc;
 using AluguelIdeal.Api.Options.Swagger;
-using AluguelIdeal.Api.Other;
 using AluguelIdeal.Application;
-using AluguelIdeal.Application.Repositories;
+using AluguelIdeal.Application.Transactions;
 using AluguelIdeal.Infrastructure;
+using AluguelIdeal.Infrastructure.Transactions;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -37,7 +37,7 @@ namespace AluguelIdeal.Api
 
             services.AddApplication();
 
-            services.AddSingleton<IControladorDeTransacao, ControladorDeTransacao>();
+            services.AddSingleton<ITransactionManager, TransactionManager>();
 
             services.AddInfrastructure(Configuration, Environment);
 

@@ -12,6 +12,7 @@ namespace AluguelIdeal.Application
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
+
             return services;
         }
     }

@@ -1,4 +1,4 @@
-﻿using AluguelIdeal.Api.Utils;
+﻿using AluguelIdeal.Api.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
@@ -14,11 +14,11 @@ namespace AluguelIdeal.Api.Options.Swagger
     public static class CustomSwaggerGenOptions
     {
         private static readonly string version = "v1";
-        private static readonly string xmlFileName = $"{FileUtils.GetSolutionName()}.xml";
+        private static readonly string xmlFileName = $"{FileExtensions.GetSolutionName()}.xml";
         private static readonly string xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFileName);
         private static readonly OpenApiInfo info = new OpenApiInfo()
         {
-            Title = $"{FileUtils.GetSolutionName()} API",
+            Title = $"{FileExtensions.GetSolutionName()} API",
             Version = version,
         };
         private static readonly OpenApiSecurityScheme securityScheme = new OpenApiSecurityScheme()
@@ -45,7 +45,7 @@ namespace AluguelIdeal.Api.Options.Swagger
         private static void CustomSwaggerGenOptionsSetupAction(SwaggerGenOptions swaggerGenOptions)
         {
             swaggerGenOptions.SwaggerDoc(version, info);
-            //swaggerGenOptions.IncludeXmlComments(xmlFilePath);
+            swaggerGenOptions.IncludeXmlComments(xmlFilePath);
             swaggerGenOptions.DescribeAllParametersInCamelCase();
             swaggerGenOptions.AddFluentValidationRules();
             swaggerGenOptions.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securityScheme);

@@ -4,7 +4,7 @@ using System.Net.Mime;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace AluguelIdeal.Api.Utils
+namespace AluguelIdeal.Api.Extensions
 {
     public static class HttpContextExtensions
     {

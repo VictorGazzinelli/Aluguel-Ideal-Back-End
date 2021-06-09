@@ -1,5 +1,5 @@
 ﻿using AluguelIdeal.Api.Controllers.Models.Responses.Http;
-using AluguelIdeal.Api.Utils;
+using AluguelIdeal.Api.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.Hosting;

@@ -1,5 +1,5 @@
 ﻿using AluguelIdeal.Api.Controllers.Models.Responses.Http;
-using AluguelIdeal.Api.Utils;
+using AluguelIdeal.Api.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using System;

@@ -2,7 +2,6 @@
 using AluguelIdeal.Application.Services;
 using AluguelIdeal.Infrastructure.Database.Access;
 using AluguelIdeal.Infrastructure.Database.Migrations.Conventions;
-using AluguelIdeal.Infrastructure.Database.Other;
 using AluguelIdeal.Infrastructure.Database.Repositories;
 using AluguelIdeal.Infrastructure.Extensions;
 using AluguelIdeal.Infrastructure.Services;
@@ -108,10 +107,9 @@ namespace AluguelIdeal.Infrastructure
         private static void AddRepositories(IServiceCollection services)
         {
             services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
-            services.AddSingleton<IConnectionFactory, ConnectionFactory>();
             services.AddTransient<ICityRepository, CityRepository>();
             services.AddTransient<IDistrictRepository, DistrictRepository>();
-            services.AddTransient<IProfileRepository, ProfileBaseRepository>();
+            services.AddTransient<IProfileRepository, ProfileRepository>();
             services.AddTransient<IResidenceRepository, ResidenceRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<IUserRepository, UserRepository>();

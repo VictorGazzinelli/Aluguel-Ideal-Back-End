@@ -30,7 +30,7 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
         ";
 
         private static readonly string UPDATE = @"
-            UPDATE user
+            UPDATE ""user""
             SET name = @Name,
             email = @Email,
             phone = @Phone,
@@ -40,7 +40,7 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
         ";
 
         private static readonly string DELETE = @"
-            UPDATE user
+            UPDATE ""user""
             SET deleted_at = @DeletedAt
             WHERE id = @Id
         ";

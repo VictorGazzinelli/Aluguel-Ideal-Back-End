@@ -11,7 +11,7 @@ namespace AluguelIdeal.IntegrationTests.WebTests.Controllers
 {
     public class CitiesTests : IntegrationTestBase
     {
-        private static string _requestUri = "api/cities";
+        private readonly string _requestUri = "api/cities";
 
         public CitiesTests(CustomWebApplicationFactory fixture) : base(fixture)
         {

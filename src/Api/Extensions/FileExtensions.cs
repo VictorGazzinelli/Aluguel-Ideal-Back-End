@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace AluguelIdeal.Api.Utils
+namespace AluguelIdeal.Api.Extensions
 {
-    public static class FileUtils
+    public static class FileExtensions
     {
         public static string GetSolutionName() => GetSolutionFileName().Replace(".sln", "");
         public static string GetAssemblyDir() => Path.GetDirectoryName(GetAssemblyPath());
