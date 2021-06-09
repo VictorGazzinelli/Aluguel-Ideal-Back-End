@@ -54,39 +54,29 @@ namespace AluguelIdeal.IntegrationTests
 
         protected async Task<(HttpStatusCode statusCode, JsonElement jsonResponse)> DoRequest(HttpMethod httpMethod, string requestUri, CancellationToken cancellationToken = default, object parameters = null, string userEmail = null)
         {
-            using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            HttpClient client = fixture.CreateClient();
+
+            if (userEmail != null)
+                client = await client.AddProfileAsync(userEmail, authService);
+
+            HttpResponseMessage httpResponse = httpMethod switch
             {
-                try
-                {
-                    HttpClient client = fixture.CreateClient();
+                HttpMethod m when m == HttpMethod.Post => await client.DoPostRequest(requestUri, parameters, cancellationToken),
+                HttpMethod m when m == HttpMethod.Put => await client.DoPutRequest(requestUri, parameters, cancellationToken),
+                HttpMethod m when m == HttpMethod.Delete => await client.DoDeleteRequest(requestUri, parameters, cancellationToken),
+                HttpMethod m when m == HttpMethod.Get => await client.DoGetRequest(requestUri, parameters, cancellationToken),
+                _ => throw new NotImplementedException(),
+            };
 
-                    if (userEmail != null)
-                        client = await client.AddProfileAsync(userEmail, authService);
-
-                    HttpResponseMessage httpResponse = httpMethod switch
-                    {
-                        HttpMethod m when m == HttpMethod.Post => await client.DoPostRequest(requestUri, parameters, cancellationToken),
-                        HttpMethod m when m == HttpMethod.Put => await client.DoPutRequest(requestUri, parameters, cancellationToken),
-                        HttpMethod m when m == HttpMethod.Delete => await client.DoDeleteRequest(requestUri, parameters, cancellationToken),
-                        HttpMethod m when m == HttpMethod.Get => await client.DoGetRequest(requestUri, parameters, cancellationToken),
-                        _ => throw new NotImplementedException(),
-                    };
-
-                    JsonElement jsonResponse = new JsonElement();
-                    string jsonPayload = await httpResponse.Content.ReadAsStringAsync();
-                    if (!jsonPayload.Equals(string.Empty))
-                    {
-                        JsonSerializerOptions jsonSerializerOptionsIgnoreCase = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-                        jsonResponse = JsonSerializer.Deserialize<JsonElement>(jsonPayload, jsonSerializerOptionsIgnoreCase);
-                    }
-
-                    return (httpResponse.StatusCode, jsonResponse);
-                }
-                finally
-                {
-                    scope.Dispose();
-                }
+            JsonElement jsonResponse = new JsonElement();
+            string jsonPayload = await httpResponse.Content.ReadAsStringAsync();
+            if (!jsonPayload.Equals(string.Empty))
+            {
+                JsonSerializerOptions jsonSerializerOptionsIgnoreCase = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+                jsonResponse = JsonSerializer.Deserialize<JsonElement>(jsonPayload, jsonSerializerOptionsIgnoreCase);
             }
+
+            return (httpResponse.StatusCode, jsonResponse);
         }
 
         protected async Task<(HttpStatusCode statusCode, T response)> DoRequest<T>(HttpMethod httpMethod, string requestUri, CancellationToken cancellationToken = default, object parameters = null, string userEmail = null)

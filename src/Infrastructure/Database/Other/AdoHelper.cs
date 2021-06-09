@@ -26,13 +26,5 @@
                 return conexao.Execute(sql, parametros);
             }
         }
-
-        public int ExecutarRetornandoId(string sql, object parametros)
-        {
-            using (DbAccessHelper conexao = ObterConexao())
-            {
-                return conexao.ExecuteRetornandoIdentity(sql, parametros);
-            }
-        }
     }
 }
