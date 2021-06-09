@@ -30,6 +30,7 @@ namespace AluguelIdeal.Application.Interactors.Profiles.Handlers
             await controladorDeTransacao.FuncaoSemRetorno(async () =>
             {
                 await profileRepository.CreateAsync(profile, cancellationToken);
+                throw new Exception();
             });
 
             return Unit.Value;

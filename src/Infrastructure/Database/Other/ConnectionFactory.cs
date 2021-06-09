@@ -71,15 +71,7 @@ namespace AluguelIdeal.Infrastructure.Database.Other
                 ProviderName = "Npgsql"
 
             };
-            if (configuration == null)
-            {
-                throw new Exception($"Não foi possível criar uma conexão para a connectionstring ( {name} )");
-            }
-            if (GetKey(configuration) != "SYBASE")
-            {
-                return CreateConnection(configuration);
-            }
-            return this.GetConnectionSybase(configuration);
+            return CreateConnection(configuration);
         }
 
         private static IDbConnection CreateConnection(ConnectionStringSettings configuration)
@@ -92,41 +84,6 @@ namespace AluguelIdeal.Infrastructure.Database.Other
             }
             connection1.ConnectionString = configuration.ConnectionString;
             return connection1;
-        }
-
-        private IDbConnection GetConnectionSybase(ConnectionStringSettings configuration)
-        {
-            object obj2 = SYNC_ROOT;
-            lock (obj2)
-            {
-                IDbConnection connection;
-                if (this.connectionSybase == null)
-                {
-                    connection = CreateConnection(configuration);
-                    if (this.inTransaction)
-                    {
-                        this.connectionSybase = connection;
-                        this.connectionSybase.Open();
-                    }
-                    return connection;
-                }
-                connection = this.connectionSybase;
-                if ((connection == null) || (connection.State != ConnectionState.Closed))
-                {
-                    return connection;
-                }
-                connection.Dispose();
-                return CreateConnection(configuration);
-            }
-        }
-
-        private static string GetKey(ConnectionStringSettings configuration)
-        {
-            if (!configuration.ProviderName.ToUpper().Contains("SYBASE"))
-            {
-                return configuration.Name;
-            }
-            return "SYBASE";
         }
     }
 }
