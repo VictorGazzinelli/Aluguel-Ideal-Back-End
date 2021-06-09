@@ -13,7 +13,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace AluguelIdeal.IntegrationTests.WebTests.Auth
+namespace AluguelIdeal.IntegrationTests.WebTests.Controllers
 {
     public class AuthTests : IntegrationTestBase
     {

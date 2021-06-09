@@ -23,7 +23,7 @@ namespace AluguelIdeal.Application.Interactors.Profiles.Handlers
                 UserId = request.UserId
             };
 
-            await profileRepository.Delete(profile, cancellationToken);
+            await profileRepository.DeleteAsync(profile, cancellationToken);
 
             return Unit.Value;
         }

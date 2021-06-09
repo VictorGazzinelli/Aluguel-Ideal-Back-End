@@ -1,5 +1,5 @@
-﻿using AluguelIdeal.Application.Interactors.Cities.Handlers;
-using AluguelIdeal.Application.Interactors.Cities.Queries;
+﻿using AluguelIdeal.Application.Interactors.Users.Handlers;
+using AluguelIdeal.Application.Interactors.Users.Queries;
 using AluguelIdeal.Application.Repositories;
 using AluguelIdeal.Domain.Entities;
 using Moq;
@@ -8,29 +8,28 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace AluguelIdeal.UnitTests.Application.Interactors.Cities.Handlers
+namespace AluguelIdeal.UnitTests.Application.Interactors.Users.Handlers
 {
-    public class GetCitiesInteractorTests
+    public class GetUsersInteractorTests
     {
-        [Fact(DisplayName = "When GetCitiesInteractor.Handle is called, it should call CityRepository.ReadAsync")]
+        [Fact(DisplayName = "When GetUsersInteractor.Handle is called, it should call UserRepository.ReadAsync")]
         public async Task Handle_Calls_ReadAsync()
         {
             // Arrange
-            GetCitiesQuery request = new GetCitiesQuery();
+            GetUsersQuery request = new GetUsersQuery();
             AutoMocker mocker = new AutoMocker(MockBehavior.Strict);
-            mocker.GetMock<ICityRepository>()
+            mocker.GetMock<IUserRepository>()
                 .Setup(repository => repository.ReadAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new City[0])
+                .ReturnsAsync(new User[0])
                 .Verifiable();
-            GetCitiesInteractor sut = mocker.CreateInstance<GetCitiesInteractor>();
+            GetUsersInteractor sut = mocker.CreateInstance<GetUsersInteractor>();
 
             // Act
             await sut.Handle(request, default);
 
             // Assign
-            mocker.GetMock<ICityRepository>()
+            mocker.GetMock<IUserRepository>()
                 .Verify(repository => repository.ReadAsync(It.IsAny<CancellationToken>()), Times.Once, failMessage: "ReadAsync was not called once");
         }
     }
-
 }

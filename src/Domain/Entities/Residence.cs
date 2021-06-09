@@ -17,5 +17,8 @@ namespace AluguelIdeal.Domain.Entities
 
         public virtual double GetFinalPrice() =>
             Rent + Tax;
+
+        public virtual object AsTableRow() =>
+            new { id = Id, district_id = DistrictId, street = Street, bedrooms = Bedrooms, bathrooms = Bathrooms, area = Area, rent = Rent, tax = Tax, description = Description, deleted_at = DeletedAt };
     }
 }

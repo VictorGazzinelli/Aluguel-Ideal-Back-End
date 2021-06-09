@@ -32,6 +32,7 @@ namespace AluguelIdeal.Infrastructure.Database.Access
             DbConnection requestedDatabaseConnection = 
                 DbProviderFactories.GetFactory(requestedConnectionStringSettings.ProviderName).CreateConnection();
             requestedDatabaseConnection.ConnectionString = requestedConnectionStringSettings.ConnectionString;
+
             return requestedDatabaseConnection;
         }
 

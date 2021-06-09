@@ -13,5 +13,8 @@ namespace AluguelIdeal.Domain.Entities
 
         public bool HasRegistered() =>
             Password != null;
+
+        public object AsTableRow() =>
+            new { id = Id, name = Name, email = Email, phone = Phone, password = Password, deleted_at = DeletedAt };
     }
 }

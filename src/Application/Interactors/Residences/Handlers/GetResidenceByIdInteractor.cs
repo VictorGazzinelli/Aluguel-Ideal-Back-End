@@ -7,7 +7,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AluguelIdeal.Application.Interactors.ResidenceById.Handlers
+namespace AluguelIdeal.Application.Interactors.Residences.Handlers
 {
     public class GetResidenceByIdInteractor : IRequestHandler<GetResidenceByIdQuery, ResidenceDto>
     {

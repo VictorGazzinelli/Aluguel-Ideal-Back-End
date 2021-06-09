@@ -6,7 +6,7 @@ namespace AluguelIdeal.Application.Repositories
 {
     public interface IProfileRepository
     {
-        Task Create(Profile profile, CancellationToken cancellationToken);
-        Task Delete(Profile profile, CancellationToken cancellationToken);
+        Task CreateAsync(Profile profile, CancellationToken cancellationToken);
+        Task DeleteAsync(Profile profile, CancellationToken cancellationToken);
     }
 }

@@ -1,13 +1,12 @@
 ﻿using AluguelIdeal.Application.Repositories;
 using AluguelIdeal.Domain.Entities;
-using AluguelIdeal.Infrastructure.Database.Access;
-using AluguelIdeal.Infrastructure.Exceptions;
+using AluguelIdeal.Infrastructure.Database.Other;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AluguelIdeal.Infrastructure.Database.Repositories
 {
-    public class ProfileRepository : Repository, IProfileRepository
+    public class ProfileBaseRepository : RepositorioBase<Profile>, IProfileRepository
     {
         private static readonly string INSERT = @"
             INSERT INTO profile (user_id, role_id)
@@ -20,20 +19,22 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
             AND role_id = @RoleId
         ";
 
-        public ProfileRepository(IDatabaseConnectionFactory databaseConnectionFactory) : base(databaseConnectionFactory)
+        public ProfileBaseRepository() : base("postgres")
         {}
 
         public async Task CreateAsync(Profile profile, CancellationToken cancellationToken)
         {
-            await ExecuteCommandAsync(INSERT, profile, cancellationToken: cancellationToken);
+            Executar(INSERT, profile);
         }
 
         public async Task DeleteAsync(Profile profile, CancellationToken cancellationToken)
         {
-            int numberOfLinesAffected = await ExecuteCommandAsync(DELETE, profile, cancellationToken: cancellationToken);
+            //int numberOfLinesAffected = await ExecuteCommandAsync(DELETE, profile, cancellationToken: cancellationToken);
 
-            if (numberOfLinesAffected <= 0)
-                throw new UnexpectedDatabaseBehaviourException();
+            //if (numberOfLinesAffected <= 0)
+            //    throw new UnexpectedDatabaseBehaviourException();
+
+            //return Task.CompletedTask;
         }
     }
 }

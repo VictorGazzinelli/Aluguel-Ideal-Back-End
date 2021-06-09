@@ -13,5 +13,17 @@ namespace AluguelIdeal.Application.Dtos.Roles
             this.Id = role.Id;
             this.Name = role.Name;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is RoleDto dto &&
+                   Id.Equals(dto.Id) &&
+                   Name == dto.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, Name);
+        }
     }
 }
