@@ -8,6 +8,9 @@ namespace AluguelIdeal.Infrastructure.Database.Other
 {
     public class ConnectionFactory : IDisposable
     {
+        private static readonly object SYNC_ROOT = new object();
+        [ThreadStatic]
+        private static volatile ConnectionFactory instance;
         public static ConnectionFactory Instance
         {
             get
@@ -26,11 +29,6 @@ namespace AluguelIdeal.Infrastructure.Database.Other
                 return instance;
             }
         }
-        private IDbConnection connectionSybase = null;
-        private bool inTransaction { get; set; }
-        [ThreadStatic]
-        private static volatile ConnectionFactory instance;
-        private static readonly object SYNC_ROOT = new object();
 
         private ConnectionFactory()
         {
@@ -38,25 +36,7 @@ namespace AluguelIdeal.Infrastructure.Database.Other
 
         public void Dispose()
         {
-            if (this.connectionSybase != null)
-            {
-                if (this.connectionSybase.State != ConnectionState.Closed)
-                {
-                    this.connectionSybase.Close();
-                }
-                this.connectionSybase.Dispose();
-                this.connectionSybase = null;
-            }
-        }
-
-        public void Begin()
-        {
-            this.inTransaction = true;
-        }
-
-        public void End()
-        {
-            this.inTransaction = false;
+            // Ignore
         }
 
         public DbAccessHelper GetConnection(string name) =>
@@ -78,11 +58,8 @@ namespace AluguelIdeal.Infrastructure.Database.Other
         {
             DbProviderFactories.RegisterFactory("Npgsql", NpgsqlFactory.Instance);
             DbConnection connection1 = DbProviderFactories.GetFactory(configuration.ProviderName).CreateConnection();
-            if (connection1 == null)
-            {
-                throw new Exception($"Não foi possível criar uma conexão para a connectionstring ( {configuration.Name} )");
-            }
             connection1.ConnectionString = configuration.ConnectionString;
+
             return connection1;
         }
     }

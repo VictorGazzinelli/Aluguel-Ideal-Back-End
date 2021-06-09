@@ -12,7 +12,6 @@ namespace AluguelIdeal.Api.Other
         {
             using (TransactionScope scope = new TransactionScope())
             {
-                ConnectionFactory.Instance.Begin();
                 try
                 {
                     await funcaoParaRodar();
@@ -20,7 +19,6 @@ namespace AluguelIdeal.Api.Other
                 }
                 finally
                 {
-                    ConnectionFactory.Instance.End();
                     ConnectionFactory.Instance.Dispose();
                 }
             }
