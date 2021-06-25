@@ -35,5 +35,23 @@ namespace AluguelIdeal.IntegrationTests.WebTests.Controllers
             // Assert
             obtainedStatusCode.Should().Be(expectedStatusCode);
         }
+
+        [Fact(DisplayName = "DELETE api/profiles should unbind user to role")]
+        public async Task Should_UnBindUserToRole()
+        {
+            // Assign
+            UnbindProfileCommand command = new UnbindProfileCommand()
+            {
+                UserId = SeedForTestingMaintenance.Users.First(user => user.Email.Equals("user@mail.com")).Id,
+                RoleId = SeedForTestingMaintenance.Roles.First(role => role.Name.Equals("User")).Id,
+            };
+            HttpStatusCode expectedStatusCode = HttpStatusCode.NoContent;
+
+            // Act
+            (HttpStatusCode obtainedStatusCode, JsonElement _) = await DoDeleteRequest(_requestUri, userEmail: "admin@mail.com", parameters: command);
+
+            // Assert
+            obtainedStatusCode.Should().Be(expectedStatusCode);
+        }
     }
 }

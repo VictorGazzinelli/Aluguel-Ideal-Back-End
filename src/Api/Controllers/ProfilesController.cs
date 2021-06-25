@@ -30,7 +30,7 @@ namespace AluguelIdeal.Api.Controllers
         [HttpDelete]
         [Authorize(Roles = AdminRole)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> Unbind(UnbindProfileCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Unbind([FromQuery] UnbindProfileCommand command, CancellationToken cancellationToken)
         {
             await Mediator.Send(command, cancellationToken);
 

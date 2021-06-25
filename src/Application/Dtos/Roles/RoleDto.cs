@@ -8,6 +8,11 @@ namespace AluguelIdeal.Application.Dtos.Roles
         public Guid Id { get; set; }
         public string Name { get; set; }
 
+        public RoleDto()
+        {
+
+        }
+
         public RoleDto(Role role)
         {
             this.Id = role.Id;
