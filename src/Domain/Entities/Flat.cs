@@ -2,11 +2,17 @@
 
 namespace AluguelIdeal.Domain.Entities
 {
-    public class Flat
+    public class Flat : Residence
     {
-        public Guid Id { get; set; }
-        public Guid ResidenceId { get; set; }
         public double Condominium { get; set; }
         public int Floor { get; set; }
+
+        public override double GetFinalPrice()
+        {
+            return base.GetFinalPrice() + Condominium;
+        }
+
+        public override object AsTableRow() =>
+            new { id = Id, condominium = Condominium, floor = Floor };
     }
 }

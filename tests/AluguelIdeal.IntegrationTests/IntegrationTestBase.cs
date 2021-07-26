@@ -28,6 +28,8 @@ namespace AluguelIdeal.IntegrationTests
             authService = (IAuthService)fixture.Services.GetService(typeof(IAuthService));
         }
 
+        protected T GetService<T>() => (T)fixture.Services.GetService(typeof(T));
+
         protected async Task<(HttpStatusCode statusCode, JsonElement jsonResponse)> DoPostRequest(string requestUri, CancellationToken cancellationToken = default,  object parameters = null, string userEmail = null) =>
             await DoRequest(HttpMethod.Post, requestUri, cancellationToken, parameters, userEmail);
 

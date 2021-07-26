@@ -113,6 +113,8 @@ namespace AluguelIdeal.Infrastructure
             services.AddTransient<IResidenceRepository, ResidenceRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IFlatRepository, FlatRepository>();
+            services.AddTransient<IHouseRepository, HouseRepository>();
         }
     }
 }

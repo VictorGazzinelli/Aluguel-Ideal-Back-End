@@ -2,10 +2,10 @@
 
 namespace AluguelIdeal.Domain.Entities
 {
-    public class House
+    public class House : Residence
     {
-        public Guid Id { get; set; }
-        public Guid ResidenceId { get; set; }
         public double YardArea { get; set; }
+        public override object AsTableRow() =>
+            new { id = Id, yard_area = YardArea };
     }
 }

@@ -134,7 +134,7 @@ namespace AluguelIdeal.Infrastructure.Database.Migrations
         private void CreateHouseTable() =>
             Create.Table(nameof(House).ToLower())
             .WithColumn(nameof(House.Id)).AsGuid().PrimaryKey()
-            .WithColumn(nameof(House.ResidenceId)).AsGuid().ForeignKey(nameof(Residence).ToLower(), nameof(Residence.Id)).NotNullable()
+            .WithColumn("residence_id").AsGuid().ForeignKey(nameof(Residence).ToLower(), nameof(Residence.Id)).NotNullable()
             .WithColumn(nameof(House.YardArea)).AsDouble().NotNullable();
 
         private void DropHouseTable() =>
@@ -143,7 +143,7 @@ namespace AluguelIdeal.Infrastructure.Database.Migrations
         private void CreateFlatTable() =>
             Create.Table(nameof(Flat).ToLower())
             .WithColumn(nameof(Flat.Id)).AsGuid().PrimaryKey()
-            .WithColumn(nameof(Flat.ResidenceId)).AsGuid().ForeignKey(nameof(Residence).ToLower(), nameof(Residence.Id)).NotNullable()
+            .WithColumn("residence_id").AsGuid().ForeignKey(nameof(Residence).ToLower(), nameof(Residence.Id)).NotNullable()
             .WithColumn(nameof(Flat.Condominium)).AsDouble().NotNullable()
             .WithColumn(nameof(Flat.Floor)).AsInt32().NotNullable();
 

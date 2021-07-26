@@ -1,5 +1,6 @@
 ﻿using AluguelIdeal.Infrastructure.Database.Access;
 using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading;
@@ -33,6 +34,12 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
         {
             using IDbConnection databaseConnection = databaseConnectionFactory.GetDbConnection(databaseConnectionName);
             return await SqlMapper.QueryAsync<TQueryResult>(databaseConnection, new CommandDefinition(query, dynamicParameters, transaction: transaction, cancellationToken: cancellationToken));
+        }
+
+        protected async Task<IEnumerable<TQueryResult>> ExecuteQueryAsync<TQueryResult, TInner>(string query, Func<TQueryResult, TInner, TQueryResult> map, object dynamicParameters = null, string databaseConnectionName = null, IDbTransaction transaction = null, CancellationToken cancellationToken = default)
+        {
+            using IDbConnection databaseConnection = databaseConnectionFactory.GetDbConnection(databaseConnectionName);
+            return await SqlMapper.QueryAsync(databaseConnection, new CommandDefinition(query, dynamicParameters, transaction: transaction, cancellationToken: cancellationToken), map);
         }
     }
 }
