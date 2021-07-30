@@ -18,10 +18,10 @@ namespace AluguelIdeal.UnitTests.Application.Interactors.Residences.Handlers
         {
             // Arrange
             GetResidenceByIdQuery request = new GetResidenceByIdQuery();
-            AutoMocker mocker = new AutoMocker(MockBehavior.Strict);
+            AutoMocker mocker = new AutoMocker(MockBehavior.Loose);
             mocker.GetMock<IResidenceRepository>()
                 .Setup(repository => repository.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Residence())
+                .ReturnsAsync(new Flat())
                 .Verifiable();
             GetResidenceByIdInteractor sut = mocker.CreateInstance<GetResidenceByIdInteractor>();
 

@@ -16,6 +16,12 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
             VALUES (@Id, @YardArea)
         ";
 
+        private static readonly string UPDATE = @"
+            UPDATE house
+            SET yard_area = @YardArea
+            WHERE id = @Id
+        ";
+
         private static readonly string SELECT = @"
             SELECT *
             FROM house h
@@ -46,6 +52,11 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
         public async Task<IEnumerable<House>> ReadAsync(CancellationToken cancellationToken = default)
         {
             return await ExecuteQueryAsync<House>(SELECT, cancellationToken: cancellationToken);
+        }
+
+        public async Task UpdateAsync(House house, CancellationToken cancellationToken)
+        {
+            await ExecuteCommandAsync(UPDATE, house, cancellationToken: cancellationToken);
         }
     }
 }

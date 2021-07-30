@@ -11,5 +11,6 @@ namespace AluguelIdeal.Application.Repositories
         Task<IEnumerable<Flat>> ReadAsync(CancellationToken cancellationToken = default);
         Task<Flat> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task CreateAsync(Flat flat, CancellationToken cancellationToken = default);
+        Task UpdateAsync(Flat flat, CancellationToken cancellationToken);
     }
 }

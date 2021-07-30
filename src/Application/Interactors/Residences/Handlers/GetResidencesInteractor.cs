@@ -3,6 +3,7 @@ using AluguelIdeal.Application.Interactors.Common;
 using AluguelIdeal.Application.Interactors.Residences.Queries;
 using AluguelIdeal.Application.Repositories;
 using AluguelIdeal.Domain.Entities;
+using AutoMapper;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,13 @@ namespace AluguelIdeal.Application.Interactors.Residences.Handlers
     {
         private readonly IDistrictRepository districtRepository;
         private readonly IResidenceRepository residenceRepository;
-        public GetResidencesInteractor(IResidenceRepository residenceRepository, IDistrictRepository districtRepository)
+        private readonly IMapper mapper;
+        public GetResidencesInteractor(IResidenceRepository residenceRepository,
+            IDistrictRepository districtRepository, IMapper mapper)
         {
             this.districtRepository = districtRepository;
             this.residenceRepository = residenceRepository;
+            this.mapper = mapper;
         }
 
         public async Task<QueryResult<ResidenceDto>> Handle(GetResidencesQuery request, CancellationToken cancellationToken)
@@ -45,7 +49,7 @@ namespace AluguelIdeal.Application.Interactors.Residences.Handlers
 
             return new QueryResult<ResidenceDto>()
             {
-                Items = residences.Select(r => new ResidenceDto(r)),
+                Items = mapper.Map<IEnumerable<ResidenceDto>>(residences),
             };
         }
     }

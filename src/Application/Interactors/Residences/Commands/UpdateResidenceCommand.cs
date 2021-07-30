@@ -1,10 +1,12 @@
-﻿using MediatR;
+﻿using AluguelIdeal.Application.Enums;
+using MediatR;
 using System;
 
 namespace AluguelIdeal.Application.Interactors.Residences.Commands
 {
     public class UpdateResidenceCommand : IRequest
     {
+        public ResidenceType ResidenceType { get; set; }
         public Guid Id { get; set; }
         public Guid DistrictId { get; set; }
         public string Street { get; set; }
@@ -14,5 +16,10 @@ namespace AluguelIdeal.Application.Interactors.Residences.Commands
         public double Rent { get; set; }
         public double Tax { get; set; }
         public string Description { get; set; }
+
+        public UpdateResidenceCommand()
+        {
+
+        }
     }
 }

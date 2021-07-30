@@ -16,6 +16,13 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
             VALUES (@Id, @Condominium, @Floor)
         ";
 
+        private static readonly string UPDATE = @"
+            UPDATE flat
+            SET condominium = @Condominium,
+            floor = @Floor
+            WHERE id = @Id
+        ";
+
         private static readonly string SELECT = @"
             SELECT *
             FROM flat f
@@ -46,6 +53,11 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
         public async Task<IEnumerable<Flat>> ReadAsync(CancellationToken cancellationToken = default)
         {
             return await ExecuteQueryAsync<Flat>(SELECT, cancellationToken: cancellationToken);
+        }
+
+        public async Task UpdateAsync(Flat flat, CancellationToken cancellationToken)
+        {
+            await ExecuteCommandAsync(UPDATE, flat, cancellationToken: cancellationToken);
         }
     }
 }

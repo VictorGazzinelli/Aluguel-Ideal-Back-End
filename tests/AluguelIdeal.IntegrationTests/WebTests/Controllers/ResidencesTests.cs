@@ -1,10 +1,13 @@
 ﻿using AluguelIdeal.Application.Dtos.Residences;
+using AluguelIdeal.Application.Dtos.Residences.Flats;
 using AluguelIdeal.Application.Interactors.Common;
 using AluguelIdeal.Application.Repositories;
 using AluguelIdeal.Domain.Entities;
 using AluguelIdeal.Infrastructure.Database.Migrations.Testing;
+using AutoMapper;
 using FluentAssertions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -24,17 +27,20 @@ namespace AluguelIdeal.IntegrationTests.WebTests.Controllers
         [Fact(DisplayName = "GET api/residences should return all Residences in database")]
         public async Task Should_ReturnAllResidences()
         {
-            //Assign
-            Guid id = Guid.Parse("668c5b37-f50a-4684-bf09-73d5044ae369");
+            // Assign
+            IMapper mapper = GetService<IMapper>();
+            HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
+            QueryResult<ResidenceDto> expectedResult = new QueryResult<ResidenceDto>()
+            {
+                Items = mapper.Map<IEnumerable<Residence>,IEnumerable<ResidenceDto>>(SeedForTestingMaintenance.Residences)
+            };
 
             // Act
-            Flat flat = await GetService<IFlatRepository>().GetByIdAsync(id);
+            (HttpStatusCode obtainedStatusCode, QueryResult<ResidenceDto> obtainedResult) = await DoGetRequest<QueryResult<ResidenceDto>>(_requestUri);
 
             // Assert
-            flat.Should().NotBeNull();
-            flat.Id.Should().Be(id);
-            flat.Floor.Should().Be(10);
-            flat.Condominium.Should().Be(500);
+            obtainedResult.Should().Be(expectedResult);
+            obtainedStatusCode.Should().Be(expectedStatusCode);
         }
     }
 }

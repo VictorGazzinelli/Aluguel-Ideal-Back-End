@@ -2,7 +2,7 @@
 
 namespace AluguelIdeal.Domain.Entities
 {
-    public class Residence
+    public abstract class Residence
     {
         public Guid Id { get; set; }
         public Guid DistrictId { get; set; }
@@ -18,7 +18,7 @@ namespace AluguelIdeal.Domain.Entities
         public virtual double GetFinalPrice() =>
             Rent + Tax;
 
-        public virtual object AsTableRow() =>
+        public object AsTableRow() =>
             new { id = Id, district_id = DistrictId, street = Street, bedrooms = Bedrooms, bathrooms = Bathrooms, area = Area, rent = Rent, tax = Tax, description = Description, deleted_at = DeletedAt };
     }
 }

@@ -54,7 +54,10 @@ namespace AluguelIdeal.Api
 
             services.AddControllers(CustomMvcOptions.SetupAction)
             .AddFluentValidation(fluentValidationMvcConfiguration => fluentValidationMvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>())
-            .AddJsonOptions(jsonOptions => jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
+            .AddJsonOptions(jsonOptions => {
+                jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                jsonOptions.JsonSerializerOptions.Converters.Add(new ResidencePolymorphismSerialization());
+            });
 
             services.AddSwaggerGen(CustomSwaggerGenOptions.SetupAction);
         }

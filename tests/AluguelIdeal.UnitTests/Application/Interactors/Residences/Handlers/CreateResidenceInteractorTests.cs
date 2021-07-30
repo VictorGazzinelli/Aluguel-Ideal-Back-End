@@ -2,6 +2,7 @@
 using AluguelIdeal.Application.Interactors.Residences.Handlers;
 using AluguelIdeal.Application.Repositories;
 using AluguelIdeal.Domain.Entities;
+using AutoMapper;
 using Moq;
 using Moq.AutoMock;
 using System.Threading;
@@ -17,11 +18,12 @@ namespace AluguelIdeal.UnitTests.Application.Interactors.Residences.Handlers
         {
             // Arrange
             CreateResidenceCommand request = new CreateResidenceCommand();
-            AutoMocker mocker = new AutoMocker(MockBehavior.Strict);
+            AutoMocker mocker = new AutoMocker(MockBehavior.Loose);
             mocker.GetMock<IResidenceRepository>()
                 .Setup(repository => repository.CreateAsync(It.IsAny<Residence>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
+
             CreateResidenceInteractor sut = mocker.CreateInstance<CreateResidenceInteractor>();
 
             // Act

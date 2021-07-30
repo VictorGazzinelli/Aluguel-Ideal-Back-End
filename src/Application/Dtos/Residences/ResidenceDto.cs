@@ -1,5 +1,4 @@
-﻿using AluguelIdeal.Domain.Entities;
-using System;
+﻿using System;
 
 namespace AluguelIdeal.Application.Dtos.Residences
 {
@@ -15,17 +14,38 @@ namespace AluguelIdeal.Application.Dtos.Residences
         public double Tax { get; set; }
         public string Description { get; set; }
 
-        public ResidenceDto(Residence residence)
+        public ResidenceDto()
         {
-            Id = residence.Id;
-            DistrictId = residence.DistrictId;
-            Street = residence.Street;
-            Bedrooms = residence.Bedrooms;
-            Bathrooms = residence.Bathrooms;
-            Area = residence.Area;
-            Rent = residence.Rent;
-            Tax = residence.Tax;
-            Description = residence.Description;
+            
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ResidenceDto dto &&
+                   Id.Equals(dto.Id) &&
+                   DistrictId.Equals(dto.DistrictId) &&
+                   Street == dto.Street &&
+                   Bedrooms == dto.Bedrooms &&
+                   Bathrooms == dto.Bathrooms &&
+                   Area == dto.Area &&
+                   Rent == dto.Rent &&
+                   Tax == dto.Tax &&
+                   Description == dto.Description;
+        }
+
+        public override int GetHashCode()
+        {
+            HashCode hash = new HashCode();
+            hash.Add(Id);
+            hash.Add(DistrictId);
+            hash.Add(Street);
+            hash.Add(Bedrooms);
+            hash.Add(Bathrooms);
+            hash.Add(Area);
+            hash.Add(Rent);
+            hash.Add(Tax);
+            hash.Add(Description);
+            return hash.ToHashCode();
         }
     }
 }

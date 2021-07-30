@@ -12,7 +12,7 @@ namespace AluguelIdeal.Domain.Entities
             return base.GetFinalPrice() + Condominium;
         }
 
-        public override object AsTableRow() =>
+        public new object AsTableRow() =>
             new { id = Id, condominium = Condominium, floor = Floor };
     }
 }

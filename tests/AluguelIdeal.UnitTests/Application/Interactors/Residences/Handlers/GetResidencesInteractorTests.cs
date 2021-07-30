@@ -17,7 +17,7 @@ namespace AluguelIdeal.UnitTests.Application.Interactors.Residences.Handlers
         {
             // Arrange
             GetResidencesQuery request = new GetResidencesQuery();
-            AutoMocker mocker = new AutoMocker(MockBehavior.Strict);
+            AutoMocker mocker = new AutoMocker(MockBehavior.Loose);
             mocker.GetMock<IResidenceRepository>()
                 .Setup(repository => repository.ReadAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new Residence[0])

@@ -58,7 +58,7 @@ namespace AluguelIdeal.Infrastructure.Database.Migrations.Testing
         public static IEnumerable<Residence> Residences =>
             new Residence[]
             {
-                new Residence()
+                new Flat()
                 {
                     Id = Guid.Parse("668c5b37-f50a-4684-bf09-73d5044ae369"),
                     DistrictId = Guid.Parse("8f408fe8-b9fd-4be7-9c67-219bf97c50c2"),
@@ -87,11 +87,13 @@ namespace AluguelIdeal.Infrastructure.Database.Migrations.Testing
             CreateCities();
             CreateDistricts();
             CreateResidences();
+            CreateFlats();
         }
 
 
         public override void Down()
         {
+            DeleteFlats();
             DeleteResidences();
             DeleteDistricts();
             DeleteCities();
@@ -99,7 +101,6 @@ namespace AluguelIdeal.Infrastructure.Database.Migrations.Testing
             DeleteRoles();
             DeleteUsers();
         }
-
 
         private void CreateUsers()
         {
@@ -136,10 +137,22 @@ namespace AluguelIdeal.Infrastructure.Database.Migrations.Testing
                 Insert.IntoTable(nameof(Residence).ToLower()).Row(residence.AsTableRow());
         }
 
+        private void CreateFlats()
+        {
+            foreach (Flat flat in Residences)
+                Insert.IntoTable(nameof(Flat).ToLower()).Row(flat.AsTableRow());
+        }
+
         private void DeleteResidences()
         {
             foreach (Residence residence in Residences)
                 Delete.FromTable(nameof(Residence).ToLower()).Row(residence.AsTableRow());
+        }
+
+        private void DeleteFlats()
+        {
+            foreach (Flat flat in Residences)
+                Delete.FromTable(nameof(Flat).ToLower()).Row(flat.AsTableRow());
         }
 
         private void DeleteDistricts()
