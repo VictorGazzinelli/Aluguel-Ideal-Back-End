@@ -16,5 +16,10 @@ namespace AluguelIdeal.Domain.Entities
 
         public object AsTableRow() =>
             new { id = Id, name = Name, email = Email, phone = Phone, password = Password, deleted_at = DeletedAt };
+
+        public User()
+        {
+
+        }
     }
 }

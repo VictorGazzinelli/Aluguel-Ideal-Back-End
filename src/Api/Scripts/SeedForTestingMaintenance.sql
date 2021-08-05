@@ -2,6 +2,7 @@
 INSERT INTO "public"."user" ("id","name","email","phone","password","deleted_at") VALUES ('a298051c-b6af-11eb-8529-0242ac130003','Admin','admin@mail.com',NULL,'8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92',NULL);
 INSERT INTO "public"."user" ("id","name","email","phone","password","deleted_at") VALUES ('cc5e0018-44be-4bd4-8045-556541eb0b2e','Landlord','landlord@mail.com',NULL,'8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92',NULL);
 INSERT INTO "public"."user" ("id","name","email","phone","password","deleted_at") VALUES ('92145c8e-5f38-471b-9ded-e03b6c0a0767','User','user@mail.com',NULL,'8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92',NULL);
+INSERT INTO "public"."user" ("id","name","email","phone","password","deleted_at") VALUES ('c0a4fc36-ad34-4d4a-883d-81056e4118a7','User2','user2@mail.com',NULL,NULL,NULL);
 INSERT INTO "public"."role" ("id","name") VALUES ('4cc1053a-b6af-11eb-8529-0242ac130003','Admin');
 INSERT INTO "public"."role" ("id","name") VALUES ('4cc1092c-b6af-11eb-8529-0242ac130003','Landlord');
 INSERT INTO "public"."role" ("id","name") VALUES ('4cc10b66-b6af-11eb-8529-0242ac130003','User');
@@ -11,6 +12,7 @@ INSERT INTO "public"."profile" ("user_id","role_id") VALUES ('a298051c-b6af-11eb
 INSERT INTO "public"."profile" ("user_id","role_id") VALUES ('cc5e0018-44be-4bd4-8045-556541eb0b2e','4cc1092c-b6af-11eb-8529-0242ac130003');
 INSERT INTO "public"."profile" ("user_id","role_id") VALUES ('cc5e0018-44be-4bd4-8045-556541eb0b2e','4cc10b66-b6af-11eb-8529-0242ac130003');
 INSERT INTO "public"."profile" ("user_id","role_id") VALUES ('92145c8e-5f38-471b-9ded-e03b6c0a0767','4cc10b66-b6af-11eb-8529-0242ac130003');
+INSERT INTO "public"."profile" ("user_id","role_id") VALUES ('c0a4fc36-ad34-4d4a-883d-81056e4118a7','4cc10b66-b6af-11eb-8529-0242ac130003');
 INSERT INTO "public"."city" ("id","name") VALUES ('29068e9e-39ba-4bb4-b743-a7ec1c4c5be0','Belo Horizonte');
 INSERT INTO "public"."city" ("id","name") VALUES ('aa97dd1d-3536-467e-8879-088fa06f020a','São Paulo');
 INSERT INTO "public"."city" ("id","name") VALUES ('0e6fe16b-814e-4390-9ff2-3d3b304693b4','Rio de Janeiro');
@@ -40,9 +42,11 @@ DELETE FROM "public"."profile" WHERE "user_id" = 'a298051c-b6af-11eb-8529-0242ac
 DELETE FROM "public"."profile" WHERE "user_id" = 'cc5e0018-44be-4bd4-8045-556541eb0b2e' AND "role_id" = '4cc1092c-b6af-11eb-8529-0242ac130003';
 DELETE FROM "public"."profile" WHERE "user_id" = 'cc5e0018-44be-4bd4-8045-556541eb0b2e' AND "role_id" = '4cc10b66-b6af-11eb-8529-0242ac130003';
 DELETE FROM "public"."profile" WHERE "user_id" = '92145c8e-5f38-471b-9ded-e03b6c0a0767' AND "role_id" = '4cc10b66-b6af-11eb-8529-0242ac130003';
+DELETE FROM "public"."profile" WHERE "user_id" = 'c0a4fc36-ad34-4d4a-883d-81056e4118a7' AND "role_id" = '4cc10b66-b6af-11eb-8529-0242ac130003';
 DELETE FROM "public"."role" WHERE "id" = '4cc1053a-b6af-11eb-8529-0242ac130003' AND "name" = 'Admin';
 DELETE FROM "public"."role" WHERE "id" = '4cc1092c-b6af-11eb-8529-0242ac130003' AND "name" = 'Landlord';
 DELETE FROM "public"."role" WHERE "id" = '4cc10b66-b6af-11eb-8529-0242ac130003' AND "name" = 'User';
 DELETE FROM "public"."user" WHERE "id" = 'a298051c-b6af-11eb-8529-0242ac130003' AND "name" = 'Admin' AND "email" = 'admin@mail.com' AND "phone" IS NULL AND "password" = '8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92' AND "deleted_at" IS NULL;
 DELETE FROM "public"."user" WHERE "id" = 'cc5e0018-44be-4bd4-8045-556541eb0b2e' AND "name" = 'Landlord' AND "email" = 'landlord@mail.com' AND "phone" IS NULL AND "password" = '8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92' AND "deleted_at" IS NULL;
 DELETE FROM "public"."user" WHERE "id" = '92145c8e-5f38-471b-9ded-e03b6c0a0767' AND "name" = 'User' AND "email" = 'user@mail.com' AND "phone" IS NULL AND "password" = '8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92' AND "deleted_at" IS NULL;
+DELETE FROM "public"."user" WHERE "id" = 'c0a4fc36-ad34-4d4a-883d-81056e4118a7' AND "name" = 'User2' AND "email" = 'user2@mail.com' AND "phone" IS NULL AND "password" IS NULL AND "deleted_at" IS NULL;

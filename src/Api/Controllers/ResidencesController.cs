@@ -37,7 +37,7 @@ namespace AluguelIdeal.Api.Controllers
         /// <remarks> Get Residence by id </remarks>
         [HttpGet("{id:Guid}")]
         [ProducesResponseType(typeof(ResidenceDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetById([FromQuery] GetResidenceByIdQuery query, CancellationToken cancellationToken) =>
+        public async Task<IActionResult> GetById([FromRoute] GetResidenceByIdQuery query, CancellationToken cancellationToken) =>
             new OkObjectResult(await Mediator.Send(query, cancellationToken));
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace AluguelIdeal.Api.Controllers
         [HttpDelete("{id:Guid}")]
         [Authorize(Roles = AdminOrLandlordRole)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> Delete([FromQuery] DeleteResidenceCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Delete([FromRoute] DeleteResidenceCommand command, CancellationToken cancellationToken)
         {
             await Mediator.Send(command, cancellationToken);
 

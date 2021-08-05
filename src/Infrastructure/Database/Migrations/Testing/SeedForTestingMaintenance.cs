@@ -15,6 +15,7 @@ namespace AluguelIdeal.Infrastructure.Database.Migrations.Testing
                 new User() { Id = Guid.Parse("a298051c-b6af-11eb-8529-0242ac130003"), Name = "Admin", Email = "admin@mail.com", Password = "8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92" },
                 new User() { Id = Guid.Parse("cc5e0018-44be-4bd4-8045-556541eb0b2e"), Name = "Landlord", Email = "landlord@mail.com", Password = "8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92" },
                 new User() { Id = Guid.Parse("92145c8e-5f38-471b-9ded-e03b6c0a0767"), Name = "User", Email = "user@mail.com", Password = "8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92" },
+                new User() { Id = Guid.Parse("c0a4fc36-ad34-4d4a-883d-81056e4118a7"), Name = "User2", Email = "user2@mail.com" },
             };
 
         public static IEnumerable<Role> Roles =>
@@ -34,6 +35,7 @@ namespace AluguelIdeal.Infrastructure.Database.Migrations.Testing
                 new Profile() { UserId = Guid.Parse("cc5e0018-44be-4bd4-8045-556541eb0b2e"), RoleId = Guid.Parse("4cc1092c-b6af-11eb-8529-0242ac130003") },
                 new Profile() { UserId = Guid.Parse("cc5e0018-44be-4bd4-8045-556541eb0b2e"), RoleId = Guid.Parse("4cc10b66-b6af-11eb-8529-0242ac130003") },
                 new Profile() { UserId = Guid.Parse("92145c8e-5f38-471b-9ded-e03b6c0a0767"), RoleId = Guid.Parse("4cc10b66-b6af-11eb-8529-0242ac130003") },
+                new Profile() { UserId = Guid.Parse("c0a4fc36-ad34-4d4a-883d-81056e4118a7"), RoleId = Guid.Parse("4cc10b66-b6af-11eb-8529-0242ac130003") },
             };
 
         public static IEnumerable<City> Cities =>

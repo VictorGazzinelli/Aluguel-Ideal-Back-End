@@ -7,12 +7,10 @@ using System.Text.Json.Serialization;
 
 namespace AluguelIdeal.Api.Options.Mvc
 {
-    public class ResidencePolymorphismSerialization : JsonConverter<ResidenceDto>
+    public class ResidenceDtoJsonConverter : JsonConverter<ResidenceDto>
     {
-        public override bool CanConvert(Type type)
-        {
-            return typeof(ResidenceDto).IsAssignableFrom(type);
-        }
+        public override bool CanConvert(Type type) 
+            => type == typeof(ResidenceDto);
 
         public override ResidenceDto Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

@@ -1,4 +1,6 @@
-﻿using AluguelIdeal.Application.Services;
+﻿using AluguelIdeal.Application.Enums;
+using AluguelIdeal.Application.Services;
+using Ardalis.SmartEnum.JsonNet;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Newtonsoft.Json;
 using System.Linq;
@@ -24,10 +26,15 @@ namespace AluguelIdeal.IntegrationTests.Extensions
         private static string BuildAsQueryString(object parameters) =>
             string.Join("&", parameters.GetType().GetProperties().Select(x => x.Name + "=" + x.GetValue(parameters, null)).ToArray());
 
-        private static HttpContent BuildAsHttpContent(object parameters) =>
-            parameters != null ?
-                new StringContent(JsonConvert.SerializeObject(parameters), Encoding.UTF8, MediaTypeNames.Application.Json):
+        private static HttpContent BuildAsHttpContent(object parameters)
+        {
+            JsonSerializerSettings settings = new JsonSerializerSettings();
+            settings.Converters.Add(new SmartEnumValueConverter<ResidenceType, int>());
+
+            return parameters != null ?
+                new StringContent(JsonConvert.SerializeObject(parameters, settings), Encoding.UTF8, MediaTypeNames.Application.Json):
                 new StringContent(string.Empty, Encoding.UTF8, MediaTypeNames.Application.Json);
+        }
         public static async Task<HttpResponseMessage> DoGetRequest(this HttpClient httpClient, string requestUri, object parameters = null, CancellationToken cancellationToken = default)
         {
             if(parameters != null)

@@ -52,13 +52,16 @@ namespace AluguelIdeal.Api.Middlewares
 
         private void LogRequest(HttpContext context, MemoryStream requestStream)
         {
-            logger.LogInformation($"Http Request Information:{Environment.NewLine}" +
+
+            string info = $"Http Request Information:{Environment.NewLine}" +
                                     $"TraceIdentifier:{context.TraceIdentifier} " +
                                     $"Schema:{context.Request.Scheme} " +
                                     $"Host: {context.Request.Host} " +
                                     $"Path: {context.Request.Path} " +
+                                    $"Method: {context.Request.Method} " +
                                     $"QueryString: {context.Request.QueryString} " +
-                                    $"Request Body: {ReadStreamInChunks(requestStream)}");
+                                    $"RequestBody: {ReadStreamInChunks(requestStream)}";
+            logger.LogInformation(info);
         }
 
         private async Task LogResponse(HttpContext context)
@@ -76,14 +79,15 @@ namespace AluguelIdeal.Api.Middlewares
 
         private void LogResponse(HttpContext context, string responseBodyAsJson, int? statusCode = null)
         {
-            logger.LogInformation($"Http Response Information:{Environment.NewLine}" +
+            string info = $"Http Response Information:{Environment.NewLine}" +
                                                $"TraceIdentifier:{context.TraceIdentifier} " +
                                                $"Schema:{context.Request.Scheme} " +
                                                $"Host: {context.Request.Host} " +
                                                $"Path: {context.Request.Path} " +
                                                $"QueryString: {context.Request.QueryString} " +
                                                $"StatusCode: {statusCode ?? context.Response.StatusCode} " +
-                                               $"Response Body: {responseBodyAsJson}");
+                                               $"Response Body: {responseBodyAsJson}";
+            logger.LogInformation(info);
         }
 
         private static string ReadStreamInChunks(Stream stream)

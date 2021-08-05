@@ -33,7 +33,7 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
             SELECT *
             FROM house h
             INNER JOIN residence r ON r.id = h.id
-            WHERE r.id = @Id
+            WHERE h.id = @Id
         ";
 
         public HouseRepository(IDatabaseConnectionFactory databaseConnectionFactory) : base(databaseConnectionFactory)

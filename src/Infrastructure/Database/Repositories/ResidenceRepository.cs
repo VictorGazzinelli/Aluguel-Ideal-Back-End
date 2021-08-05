@@ -30,7 +30,7 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
             area = @Area,
             rent = @Rent,
             tax = @Tax,
-            description = @Description,
+            description = @Description
             WHERE id = @Id
             AND deleted_at IS NULL
         ";

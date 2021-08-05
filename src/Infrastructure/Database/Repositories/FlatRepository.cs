@@ -34,7 +34,7 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
             SELECT *
             FROM flat f
             INNER JOIN residence r ON r.id = f.id
-            WHERE r.id = @Id
+            WHERE f.id = @Id
         ";
 
         public FlatRepository(IDatabaseConnectionFactory databaseConnectionFactory) : base(databaseConnectionFactory)

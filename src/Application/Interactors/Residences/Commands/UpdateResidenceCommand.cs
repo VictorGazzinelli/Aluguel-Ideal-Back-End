@@ -16,6 +16,9 @@ namespace AluguelIdeal.Application.Interactors.Residences.Commands
         public double Rent { get; set; }
         public double Tax { get; set; }
         public string Description { get; set; }
+        public double Condominium { get; set; }
+        public int Floor { get; set; }
+        public double YardArea { get; set; }
 
         public UpdateResidenceCommand()
         {

@@ -6,9 +6,11 @@ using AluguelIdeal.Api.Options.Jwt;
 using AluguelIdeal.Api.Options.Mvc;
 using AluguelIdeal.Api.Options.Swagger;
 using AluguelIdeal.Application;
+using AluguelIdeal.Application.Enums;
 using AluguelIdeal.Application.Transactions;
 using AluguelIdeal.Infrastructure;
 using AluguelIdeal.Infrastructure.Transactions;
+using Ardalis.SmartEnum.SystemTextJson;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -56,7 +58,9 @@ namespace AluguelIdeal.Api
             .AddFluentValidation(fluentValidationMvcConfiguration => fluentValidationMvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>())
             .AddJsonOptions(jsonOptions => {
                 jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-                jsonOptions.JsonSerializerOptions.Converters.Add(new ResidencePolymorphismSerialization());
+                jsonOptions.JsonSerializerOptions.Converters.Add(new SmartEnumValueConverter<ResidenceType, int>());
+                jsonOptions.JsonSerializerOptions.Converters.Add(new ResidenceDtoJsonConverter());
+                jsonOptions.JsonSerializerOptions.Converters.Add(new QueryResultResidenceDtoJsonConverter(new ResidenceDtoJsonConverter()));
             });
 
             services.AddSwaggerGen(CustomSwaggerGenOptions.SetupAction);

@@ -13,7 +13,7 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
     public class UserRepository : Repository, IUserRepository
     {
         private static readonly string INSERT = @"
-            INSERT INTO ""user"" (Id, Name, Email, Phone, Password, DeletedAt)
+            INSERT INTO ""user"" (Id, Name, Email, Phone, Password, deleted_at)
             VALUES (@Id, @Name, @Email, @Phone, @Password, @DeletedAt)
         ";
 
@@ -34,7 +34,7 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
             SET name = @Name,
             email = @Email,
             phone = @Phone,
-            password = @Password,
+            password = @Password
             WHERE id = @Id
             AND deleted_at IS NULL
         ";
@@ -78,10 +78,7 @@ namespace AluguelIdeal.Infrastructure.Database.Repositories
 
         public async Task UpdateAsync(User user, CancellationToken cancellationToken = default)
         {
-            int numberOfLinesAffected = await ExecuteCommandAsync(UPDATE, user, cancellationToken: cancellationToken);
-
-            if (numberOfLinesAffected <= 0)
-                throw new UnexpectedDatabaseBehaviourException();
+            await ExecuteCommandAsync(UPDATE, user, cancellationToken: cancellationToken);
         }
     }
 }

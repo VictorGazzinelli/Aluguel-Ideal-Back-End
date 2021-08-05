@@ -29,7 +29,7 @@ namespace AluguelIdeal.Api.Controllers
         [HttpGet]
         [Authorize(Roles = AdminRole)]
         [ProducesResponseType(typeof(QueryResult<InsensitiveUserDto>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get(GetUsersQuery query, CancellationToken cancellationToken) =>
+        public async Task<IActionResult> Get([FromQuery] GetUsersQuery query, CancellationToken cancellationToken) =>
             new OkObjectResult(await Mediator.Send(query, cancellationToken));
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace AluguelIdeal.Api.Controllers
         [HttpGet("{id:Guid}")]
         [Authorize(Roles = AdminOrLandlordRole)]
         [ProducesResponseType(typeof(InsensitiveUserDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetById([FromQuery] GetUserByIdQuery query, CancellationToken cancellationToken) =>
+        public async Task<IActionResult> GetById([FromRoute] GetUserByIdQuery query, CancellationToken cancellationToken) =>
             new OkObjectResult(await Mediator.Send(query, cancellationToken));
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace AluguelIdeal.Api.Controllers
         /// Register User
         /// </summary>
         /// <remarks> Register User </remarks>
-        [HttpPut("{id:Guid}/Register")]
+        [HttpPut("{id:Guid}/register")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Register(RegisterUserCommand command, CancellationToken cancellationToken)
         {
@@ -76,7 +76,7 @@ namespace AluguelIdeal.Api.Controllers
         [HttpDelete("{id:Guid}")]
         [Authorize(Roles = AdminOrLandlordRole)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> Delete([FromQuery] DeleteUserCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Delete([FromRoute] DeleteUserCommand command, CancellationToken cancellationToken)
         {
             await Mediator.Send(command, cancellationToken);
 

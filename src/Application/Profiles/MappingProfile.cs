@@ -1,8 +1,9 @@
 ﻿using AluguelIdeal.Application.Dtos.Residences;
 using AluguelIdeal.Application.Dtos.Residences.Flats;
 using AluguelIdeal.Application.Dtos.Residences.Houses;
-using AluguelIdeal.Application.Enums;
+using AluguelIdeal.Application.Dtos.Users;
 using AluguelIdeal.Application.Interactors.Residences.Commands;
+using AluguelIdeal.Application.Interactors.Users.Commands;
 using AluguelIdeal.Domain.Entities;
 
 namespace AluguelIdeal.Application.Profiles
@@ -18,17 +19,23 @@ namespace AluguelIdeal.Application.Profiles
             CreateMap<Flat, FlatDto>();
             CreateMap<House, HouseDto>();
 
-            CreateMap<CreateResidenceCommand, Flat>()
-                .ForAllMembers(opt => opt.PreCondition(cmd => cmd.ResidenceType == ResidenceType.Flat));
+            CreateMap<CreateResidenceCommand, Flat>();
+            CreateMap<CreateResidenceCommand, House>();
 
-            CreateMap<CreateResidenceCommand, House>()
-                .ForAllMembers(opt => opt.PreCondition(cmd => cmd.ResidenceType == ResidenceType.House));
+            CreateMap<UpdateResidenceCommand, Flat>();
+            CreateMap<UpdateResidenceCommand, House>();
 
-            CreateMap<UpdateResidenceCommand, Flat>()
-                .ForAllMembers(opt => opt.PreCondition(cmd => cmd.ResidenceType == ResidenceType.Flat));
+            CreateMap<CreateResidenceCommand, Residence>()
+                .ConstructUsing((cmd, ctx) => cmd.ResidenceType.CreateResidence(cmd,ctx));
 
-            CreateMap<UpdateResidenceCommand, House>()
-                .ForAllMembers(opt => opt.PreCondition(cmd => cmd.ResidenceType == ResidenceType.House));
+            CreateMap<UpdateResidenceCommand, Residence>()
+                .ConstructUsing((cmd, ctx) => cmd.ResidenceType.CreateResidence(cmd, ctx));
+
+            CreateMap<User, InsensitiveUserDto>();
+
+            CreateMap<CreateUserCommand, User>();
+            CreateMap<UpdateUserCommand, User>();
+            CreateMap<RegisterUserCommand, User>();
         }
     }
 }
