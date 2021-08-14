@@ -27,7 +27,8 @@ namespace AluguelIdeal.Api.Options.Mvc
         public override void Write(Utf8JsonWriter writer, QueryResult<ResidenceDto> value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
-            writer.WritePropertyName(nameof(QueryResult<ResidenceDto>.Items));
+            string ItemsPropName = options.PropertyNamingPolicy?.ConvertName(nameof(QueryResult<ResidenceDto>.Items)) ?? nameof(QueryResult<ResidenceDto>.Items);
+            writer.WritePropertyName(ItemsPropName);
             writer.WriteStartArray();
             foreach(var residence in value.Items)
                 residenceDtoJsonConverter.Write(writer, residence, options);
